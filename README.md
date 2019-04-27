@@ -47,7 +47,7 @@ Ar has the following methods:
 - [Ar::unwrap()](#unwrap)
 
 <a name="map"></a>
-### map(array $array, callable $callable): array
+### map
 
 Transform values.
 
@@ -70,7 +70,7 @@ $numbers = ar([1, 2, 3])
 ```
 
 <a name="mapKeys"></a>
-### mapKeys(array $array, callable $callable): array
+### mapKeys
 
 Transform keys.
 
@@ -92,7 +92,7 @@ $numbers = ar([1, 2, 3])
 ```
 
 <a name="filter"></a>
-### filter(array $array, callable $callable): array
+### filter
 
 Only return items that match.
 
