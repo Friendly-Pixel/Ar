@@ -1,4 +1,4 @@
-# Dot - PHP dot notation access to arrays
+# Ar - PHP array utility functions
 
 <!-- [![Build Status](https://travis-ci.org/adbario/php-dot-notation.svg?branch=2.x)](https://travis-ci.org/adbario/php-dot-notation)
 [![Coverage Status](https://coveralls.io/repos/github/adbario/php-dot-notation/badge.svg?branch=2.x)](https://coveralls.io/github/adbario/php-dot-notation?branch=2.x)
@@ -24,7 +24,7 @@ Fluent style
 
 ```php
 $ints = ar([1, 5, 8])
-    ->map(function ($int, $i) { return $int * $int; })
+    ->map(function ($int, $key) { return $int * $int; })
     ->filter(function ($int) { return $int % 2 == 0; })
 ;
 ```
@@ -42,360 +42,76 @@ $ composer require frontwise/ar
 Ar has the following methods:
 
 - [map()](#map)
-- [all()](#all)
-- [clear()](#clear)
-- [count()](#count)
-- [delete()](#delete)
-- [flatten()](#flatten)
-- [get()](#get)
-- [has()](#has)
-- [isEmpty()](#isempty)
-- [merge()](#merge)
-- [mergeRecursive()](#mergerecursive)
-- [mergeRecursiveDistinct()](#mergerecursivedistinct)
-- [pull()](#pull)
-- [push()](#push)
-- [replace()](#replace)
-- [set()](#set)
-- [setArray()](#setarray)
-- [setReference()](#setreference)
-- [toJson()](#tojson)
+- [mapKeys()](#mapKeys)
+- [filter()](#filter)
+- [Ar::unwrap()](#unwrap)
 
-<a name="add"></a>
-### add()
+<a name="map"></a>
+### map(array $array, callable $callable): array
 
-Sets a given key / value pair if the key doesn't exist already:
+Transform values.
+
+Pass every item into a user-supplied callable, and put the returned value into the result array.
+Keys are preserved.
+
 ```php
-$dot->add('user.name', 'John');
-
-// Equivalent vanilla PHP
-if (!isset($array['user']['name'])) {
-    $array['user']['name'] = 'John';
-}
+use Frontwise\Ar;
+// Functional
+$numbers = Ar::map([1, 2, 3], function($value, $key) { return $number * 2; }); 
+// Result: [2, 4, 6]
 ```
 
-Multiple key / value pairs:
 ```php
-$dot->add([
-    'user.name' => 'John',
-    'page.title' => 'Home'
-]);
+// Fluent
+$numbers = ar([1, 2, 3])
+    ->map(function ($int, $key) { return $int * $int; })
+    ->unwrap()
+;
 ```
 
-<a name="all"></a>
-### all()
+<a name="mapKeys"></a>
+### mapKeys(array $array, callable $callable): array
 
-Returns all the stored items as an array:
+Transform keys.
+
+Pass every item and key into a user-supplied callable, and use the returned value as key in the result array.
+
 ```php
-$values = $dot->all();
+use Frontwise\Ar;
+// Functional
+$numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
+// Result: [0 => 2, 2 => 2, 4 => 3]
 ```
 
-<a name="clear"></a>
-### clear()
-
-Deletes the contents of a given key (sets an empty array):
 ```php
-$dot->clear('user.settings');
-
-// Equivalent vanilla PHP
-$array['user']['settings'] = [];
+// Fluent
+$numbers = ar([1, 2, 3])
+    ->mapKeys(function($value, $key) { return $key * 2; })
+    ->unwrap()
+;
 ```
 
-Multiple keys:
+<a name="filter"></a>
+### filter(array $array, callable $callable): array
+
+Only return items that match.
+
+Pass every item into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
+Keys are preserved.
+
 ```php
-$dot->clear(['user.settings', 'app.config']);
+use Frontwise\Ar;
+// Functional
+$even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
+// Result: [0 => 2, 2 => 2, 4 => 3]
 ```
 
-All the stored items:
 ```php
-$dot->clear();
-
-// Equivalent vanilla PHP
-$array = [];
-```
-
-<a name="count"></a>
-### count()
-
-Returns the number of items in a given key:
-```php
-$dot->count('user.siblings');
-```
-
-Items in the root of Dot object:
-```php
-$dot->count();
-
-// Or use coun() function as Dot implements Countable
-count($dot);
-```
-
-<a name="delete"></a>
-### delete()
-
-Deletes the given key:
-```php
-$dot->delete('user.name');
-
-// ArrayAccess
-unset($dot['user.name']);
-
-// Equivalent vanilla PHP
-unset($array['user']['name']);
-```
-
-Multiple keys:
-```php
-$dot->delete([
-    'user.name',
-    'page.title'
-]);
-```
-
-<a name="flatten"></a>
-### flatten()
-
-Returns a flattened array with the keys delimited by a given character (default "."):
-```php
-$flatten = $dot->flatten();
-```
-
-<a name="get"></a>
-### get()
-
-Returns the value of a given key:
-```php
-echo $dot->get('user.name');
-
-// ArrayAccess
-echo $dot['user.name'];
-
-// Equivalent vanilla PHP < 7.0
-echo isset($array['user']['name']) ? $array['user']['name'] : null;
-
-// Equivalent vanilla PHP >= 7.0
-echo $array['user']['name'] ?? null;
-```
-
-Returns a given default value, if the given key doesn't exist:
-```php
-echo $dot->get('user.name', 'some default value');
-```
-
-<a name="has"></a>
-### has()
-
-Checks if a given key exists (returns boolean true or false):
-```php
-$dot->has('user.name');
-
-// ArrayAccess
-isset($dot['user.name']);
-```
-
-Multiple keys:
-```php
-$dot->has([
-    'user.name',
-    'page.title'
-]);
-```
-
-<a name="isempty"></a>
-### isEmpty()
-
-Checks if a given key is empty (returns boolean true or false):
-```php
-$dot->isEmpty('user.name');
-
-// ArrayAccess
-empty($dot['user.name']);
-
-// Equivalent vanilla PHP
-empty($array['user']['name']);
-```
-
-Multiple keys:
-```php
-$dot->isEmpty([
-    'user.name',
-    'page.title'
-]);
-```
-
-Checks the whole Dot object:
-```php
-$dot->isEmpty();
-```
-
-<a name="merge"></a>
-### merge()
-
-Merges a given array or another Dot object:
-```php
-$dot->merge($array);
-
-// Equivalent vanilla PHP
-array_merge($originalArray, $array);
-```
-
-Merges a given array or another Dot object with the given key:
-```php
-$dot->merge('user', $array);
-
-// Equivalent vanilla PHP
-array_merge($originalArray['user'], $array);
-```
-
-<a name="mergerecursive"></a>
-### mergeRecursive()
-
-Recursively merges a given array or another Dot object:
-```php
-$dot->mergeRecursive($array);
-
-// Equivalent vanilla PHP
-array_merge_recursive($originalArray, $array);
-```
-
-Recursively merges a given array or another Dot object with the given key:
-```php
-$dot->mergeRecursive('user', $array);
-
-// Equivalent vanilla PHP
-array_merge_recursive($originalArray['user'], $array);
-```
-
-<a name="mergerecursivedistinct"></a>
-### mergeRecursiveDistinct()
-
-Recursively merges a given array or another Dot object. Duplicate keys overwrite the value in the
-original array (unlike [mergeRecursiveDistinct()](#mergerecursivedistinct), where duplicate keys are transformed
-into arrays with multiple values):
-```php
-$dot->mergeRecursiveDistinct($array);
-```
-
-Recursively merges a given array or another Dot object with the given key. Duplicate keys overwrite the value in the
-original array.
-```php
-$dot->mergeRecursiveDistinct('user', $array);
-```
-
-<a name="pull"></a>
-### pull()
-
-Returns the value of a given key and deletes the key:
-```php
-echo $dot->pull('user.name');
-
-// Equivalent vanilla PHP < 7.0
-echo isset($array['user']['name']) ? $array['user']['name'] : null;
-unset($array['user']['name']);
-
-// Equivalent vanilla PHP >= 7.0
-echo $array['user']['name'] ?? null;
-unset($array['user']['name']);
-```
-
-Returns a given default value, if the given key doesn't exist:
-```php
-echo $dot->pull('user.name', 'some default value');
-```
-
-Returns all the stored items as an array and clears the Dot object:
-```php
-$items = $dot->pull();
-```
-
-<a name="push"></a>
-### push()
-
-Pushes a given value to the end of the array in a given key:
-```php
-$dot->push('users', 'John');
-
-// Equivalent vanilla PHP
-$array['users'][] = 'John';
-```
-
-Pushes a given value to the end of the array:
-```php
-$dot->push('John');
-
-// Equivalent vanilla PHP
-$array[] = 'John';
-```
-
-<a name="replace"></a>
-### replace()
-
-Replaces the values with values having the same keys in the given array or Dot object:
-```php
-$dot->replace($array);
-
-// Equivalent vanilla PHP
-array_replace($originalArray, $array);
-```
-
-Replaces the values with values having the same keys in the given array or Dot object with the given key:
-```php
-$dot->merge('user', $array);
-
-// Equivalent vanilla PHP
-array_replace($originalArray['user'], $array);
-```
-`replace()` is not recursive.
-
-<a name="set"></a>
-### set()
-
-Sets a given key / value pair:
-```php
-$dot->set('user.name', 'John');
-
-// ArrayAccess
-$dot['user.name'] = 'John';
-
-// Equivalent vanilla PHP
-$array['user']['name'] = 'John';
-```
-
-Multiple key / value pairs:
-```php
-$dot->set([
-    'user.name' => 'John',
-    'page.title'     => 'Home'
-]);
-```
-
-<a name="setarray"></a>
-### setArray()
-
-Replaces all items in Dot object with a given array:
-```php
-$dot->setArray($array);
-```
-
-<a name="setreference"></a>
-### setReference()
-
-Replaces all items in Dot object with a given array as a reference and all future changes to Dot will be made directly to the original array:
-```php
-$dot->setReference($array);
-```
-
-<a name="tojson"></a>
-### toJson()
-
-Returns the value of a given key as JSON:
-```php
-echo $dot->toJson('user');
-```
-
-Returns all the stored items as JSON:
-```php
-echo $dot->toJson();
+// Fluent
+$even = ar([1, 2, 3])
+    ->filter(function($value, $key) { return $value % 2 == 0; })
+    ->unwrap()
+;
 ```
 
 ## License
