@@ -42,8 +42,6 @@ $ composer require frontwise/ar
 
 ## Methods
 
-Ar has the following methods:
-
 - [filter()](#filter)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
