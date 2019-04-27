@@ -173,4 +173,4 @@ $numbers = Ar::new([1, 2, 3])
 
 ## License
 
-[MIT license](LICENSE.md)
+[MIT license](LICENSE)
