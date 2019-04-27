@@ -28,6 +28,7 @@ use Frontwise\Ar;
 $ints = Ar::new([1, 5, 8])
     ->map(function($value, $key) { return $value * $value; })
     ->filter(function($value, $key) { return $value % 2 == 0; })
+    ->unwrap()
 ;
 ```
 
