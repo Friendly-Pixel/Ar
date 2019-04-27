@@ -16,16 +16,16 @@ Functional style:
 use Frontwise\Ar;
 
 $ints = [1, 5, 8];
-$ints = Ar::map($ints, function ($int) { return $int * $int; });
-$ints = Ar::filter($ints, function ($int) { return $int % 2 == 0; })
+$ints = Ar::map($ints, function($value, $key) { return $value * $value; });
+$ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
 ```
 
 Fluent style:
 
 ```php
 $ints = ar([1, 5, 8])
-    ->map(function ($int, $key) { return $int * $int; })
-    ->filter(function ($int) { return $int % 2 == 0; })
+    ->map(function($value, $key) { return $value * $value; })
+    ->filter(function($value, $key) { return $value % 2 == 0; })
 ;
 ```
 
@@ -44,7 +44,7 @@ Ar has the following methods:
 - [filter()](#filter)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
-- [Ar::unwrap()](#unwrap)
+- [unwrap()](#unwrap)
 
 <a name="filter"></a>
 ### filter
@@ -55,14 +55,17 @@ Pass every item into a user-supplied callable, and only put the item into the re
 Keys are preserved.
 
 ```php
-use Frontwise\Ar;
 // Functional
+use Frontwise\Ar;
+
 $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
+
 // Result: [0 => 2, 2 => 2, 4 => 3]
 ```
 
 ```php
 // Fluent
+
 $even = ar([1, 2, 3])
     ->filter(function($value, $key) { return $value % 2 == 0; })
     ->unwrap()
@@ -78,16 +81,19 @@ Pass every item into a user-supplied callable, and put the returned value into t
 Keys are preserved.
 
 ```php
-use Frontwise\Ar;
 // Functional
-$numbers = Ar::map([1, 2, 3], function($value, $key) { return $number * 2; }); 
+use Frontwise\Ar;
+
+$numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
+
 // Result: [2, 4, 6]
 ```
 
 ```php
 // Fluent
+
 $numbers = ar([1, 2, 3])
-    ->map(function ($int, $key) { return $int * $int; })
+    ->map(function ($value, $key) { return $value * 2; })
     ->unwrap()
 ;
 ```
@@ -100,18 +106,36 @@ Transform keys.
 Pass every item and key into a user-supplied callable, and use the returned value as key in the result array.
 
 ```php
-use Frontwise\Ar;
 // Functional
+use Frontwise\Ar;
+
 $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
+
 // Result: [0 => 2, 2 => 2, 4 => 3]
 ```
 
 ```php
 // Fluent
+
 $numbers = ar([1, 2, 3])
     ->mapKeys(function($value, $key) { return $key * 2; })
     ->unwrap()
 ;
+```
+
+<a name="unwrap"></a>
+### unwrap
+
+(When using fluent style): get the underlying array back.
+
+```php
+// Fluent
+
+$numbers = ar([1, 2, 3])
+    ->map(function ($value, $key) { return $value * 2; })
+    ->unwrap()
+;
+// Result: [2, 4, 6]
 ```
 
 ## License
