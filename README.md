@@ -8,7 +8,7 @@
 Consistent and (optionally) fluent `map`, `reduce` etc. for PHP arrays.
 
 * All functional style functions accept the array as first parameter.
-* All user-supplied callables get `$value, $key` as parameters.
+* All user-supplied [callables](https://www.php.net/manual/en/language.types.callable.php) get `$value, $key` as parameters.
 
 Functional style:
 
