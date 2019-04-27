@@ -11,9 +11,6 @@
         "phpunit/phpunit": "^8"
     },
     "autoload": {
-        "files": [
-            "src/helpers.php"
-        ],
         "psr-4": {
             "Frontwise\\": "src"
         }

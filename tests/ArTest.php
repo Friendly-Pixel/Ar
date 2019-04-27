@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Frontwise\Ar;
+use Frontwise\ArFluent;
 
 final class ArTest extends TestCase
 {
@@ -16,14 +17,14 @@ final class ArTest extends TestCase
         $this->assertEquals($expected, $b);
         
         // Fluent
-        $b = ar($a)
+        $b = Ar::new($a)
             ->map(function ($v) { return $v + $v; })
             ->unwrap()
         ;
         $this->assertEquals($expected, $b);
         
         // Callable
-        $b = ar($a)
+        $b = Ar::new($a)
             ->map([$this, 'timesTwo'])
             ->unwrap()
         ;
@@ -57,14 +58,14 @@ final class ArTest extends TestCase
         $this->assertEquals($expected, $b);
         
         // Fluent
-        $b = ar($a)
+        $b = Ar::new($a)
             ->filter(function ($v) { return $v % 2 == 0; })
             ->unwrap()
         ;
         $this->assertEquals($expected, $b);
         
         // Callable
-        $b = ar($a)
+        $b = Ar::new($a)
             ->filter([$this, 'even'])
             ->unwrap()
         ;
@@ -85,14 +86,27 @@ final class ArTest extends TestCase
     {
         $expected = [2, 4, 6];
         
-        $a = ar([1, 2, 3])->map([$this, 'timesTwo']);
+        $a = Ar::new([1, 2, 3])->map([$this, 'timesTwo']);
         foreach($a as $key => $value) {
             $this->assertEquals($value, $expected[$key]);
         }
         
-        foreach(ar([1, 2, 3])->map([$this, 'timesTwo']) as $key => $value) {
+        foreach(Ar::new([1, 2, 3])->map([$this, 'timesTwo']) as $key => $value) {
             $this->assertEquals($value, $expected[$key]);
         }
+    }
+    
+    public function testFluent()
+    {
+        $numbers1 = (new ArFluent([1, 2, 3]))
+            ->map(function ($value, $key) { return $value * 2; })
+        ;
+        
+        $numbers2 = Ar::new([1, 2, 3])
+            ->map(function ($value, $key) { return $value * 2; })
+        ;
+        
+        $this->assertEquals($numbers1, $numbers2);
     }
     
     public function timesTwo($input) {

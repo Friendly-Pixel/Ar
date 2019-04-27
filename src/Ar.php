@@ -7,6 +7,10 @@ class Ar {
         return new ArFluent($array);
     }
     
+    public function new(array $array): ArFluent {
+        return new ArFluent($array);
+    }
+    
     /**
      * Transform values.
      * Pass every item into a user-supplied callable, and put the returned value into the result array.
@@ -57,36 +61,4 @@ class Ar {
     
 }
 
-class ArFluent implements \IteratorAggregate {
-    public $array = [];
-    
-    public function __construct(array $array = null) {
-        if ($array) {
-            $this->array = $array;
-        }
-    }
-    
-    public function map(callable $callable): self {
-        $this->array = Ar::map($this->array, $callable);
-        return $this;
-    }
-    
-    public function mapKeys(callable $callable): self {
-        $this->array = Ar::mapKeys($this->array, $callable);
-        return $this;
-    }
-    
-    public function filter(callable $callable): self {
-        $this->array = Ar::filter($this->array, $callable);
-        return $this;
-    }
-    
-    public function unwrap() {
-        return $this->array;
-    }
-    
-    /* IteratorAggregate implementation */
-    public function getIterator() {
-        return new \ArrayIterator($this->array);
-    }
-}
+

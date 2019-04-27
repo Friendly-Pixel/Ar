@@ -23,7 +23,7 @@ $ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
 Fluent style:
 
 ```php
-$ints = ar([1, 5, 8])
+$ints = Ar::new([1, 5, 8])
     ->map(function($value, $key) { return $value * $value; })
     ->filter(function($value, $key) { return $value % 2 == 0; })
 ;
@@ -44,6 +44,10 @@ Ar has the following methods:
 - [filter()](#filter)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
+
+Fluent style only:
+
+- [new()](#new)
 - [unwrap()](#unwrap)
 
 <a name="filter"></a>
@@ -65,8 +69,9 @@ $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }
 
 ```php
 // Fluent
+use Frontwise\Ar;
 
-$even = ar([1, 2, 3])
+$even = Ar::new([1, 2, 3])
     ->filter(function($value, $key) { return $value % 2 == 0; })
     ->unwrap()
 ;
@@ -91,8 +96,9 @@ $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; });
 
 ```php
 // Fluent
+use Frontwise\Ar;
 
-$numbers = ar([1, 2, 3])
+$numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
     ->unwrap()
 ;
@@ -116,11 +122,36 @@ $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; });
 
 ```php
 // Fluent
+use Frontwise\Ar;
 
-$numbers = ar([1, 2, 3])
+$numbers = Ar::new([1, 2, 3])
     ->mapKeys(function($value, $key) { return $key * 2; })
     ->unwrap()
 ;
+```
+
+## Fluent style only methods
+
+<a name="new"></a>
+### new
+
+(When using fluent style): Create a new ArFluent object wrapping the array.
+
+```php
+// Fluent
+use Frontwise\Ar;
+
+$numbers = Ar::new([1, 2, 3])
+    ->map(function ($value, $key) { return $value * 2; })
+;
+
+// If you don't like the Ar::new syntax, you can also use ArFluent directly:
+use Frontwise\ArFluent;
+
+$numbers = (new ArFluent([1, 2, 3]))
+    ->map(function ($value, $key) { return $value * 2; })
+;
+
 ```
 
 <a name="unwrap"></a>
@@ -130,8 +161,9 @@ $numbers = ar([1, 2, 3])
 
 ```php
 // Fluent
+use Frontwise\Ar;
 
-$numbers = ar([1, 2, 3])
+$numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
     ->unwrap()
 ;
