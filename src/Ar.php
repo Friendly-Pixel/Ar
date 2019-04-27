@@ -8,6 +8,7 @@ class Ar {
     }
     
     /**
+     * Transform values.
      * Pass every item into a user-supplied callable, and put the returned value into the result array.
      * Keys are preserved.
      * @return mixed[]
@@ -23,6 +24,7 @@ class Ar {
     }
     
     /**
+     * Transform keys.
      * Pass every item and key into a user-supplied callable, and use the returned value as key in the result array.
      * @return mixed[]
      */
@@ -55,7 +57,7 @@ class Ar {
     
 }
 
-class ArFluent {
+class ArFluent implements \IteratorAggregate {
     public $array = [];
     
     public function __construct(array $array = null) {
@@ -81,5 +83,10 @@ class ArFluent {
     
     public function unwrap() {
         return $this->array;
+    }
+    
+    /* IteratorAggregate implementation */
+    public function getIterator() {
+        return new \ArrayIterator($this->array);
     }
 }

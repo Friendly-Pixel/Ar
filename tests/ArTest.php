@@ -81,6 +81,20 @@ final class ArTest extends TestCase
         $this->assertEquals([81 => 2], $b);
     }
     
+    public function testTraversable(): void
+    {
+        $expected = [2, 4, 6];
+        
+        $a = ar([1, 2, 3])->map([$this, 'timesTwo']);
+        foreach($a as $key => $value) {
+            $this->assertEquals($value, $expected[$key]);
+        }
+        
+        foreach(ar([1, 2, 3])->map([$this, 'timesTwo']) as $key => $value) {
+            $this->assertEquals($value, $expected[$key]);
+        }
+    }
+    
     public function timesTwo($input) {
         return $input + $input;
     }
