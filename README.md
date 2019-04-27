@@ -41,10 +41,33 @@ $ composer require frontwise/ar
 
 Ar has the following methods:
 
+- [filter()](#filter)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
-- [filter()](#filter)
 - [Ar::unwrap()](#unwrap)
+
+<a name="filter"></a>
+### filter
+
+Only return items that match.
+
+Pass every item into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
+Keys are preserved.
+
+```php
+use Frontwise\Ar;
+// Functional
+$even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
+// Result: [0 => 2, 2 => 2, 4 => 3]
+```
+
+```php
+// Fluent
+$even = ar([1, 2, 3])
+    ->filter(function($value, $key) { return $value % 2 == 0; })
+    ->unwrap()
+;
+```
 
 <a name="map"></a>
 ### map
@@ -87,29 +110,6 @@ $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; });
 // Fluent
 $numbers = ar([1, 2, 3])
     ->mapKeys(function($value, $key) { return $key * 2; })
-    ->unwrap()
-;
-```
-
-<a name="filter"></a>
-### filter
-
-Only return items that match.
-
-Pass every item into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-Keys are preserved.
-
-```php
-use Frontwise\Ar;
-// Functional
-$even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
-// Result: [0 => 2, 2 => 2, 4 => 3]
-```
-
-```php
-// Fluent
-$even = ar([1, 2, 3])
-    ->filter(function($value, $key) { return $value % 2 == 0; })
     ->unwrap()
 ;
 ```
