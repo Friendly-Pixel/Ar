@@ -20,7 +20,7 @@ $ints = Ar::map($ints, function ($int) { return $int * $int; });
 $ints = Ar::filter($ints, function ($int) { return $int % 2 == 0; })
 ```
 
-Fluent style
+Fluent style:
 
 ```php
 $ints = ar([1, 5, 8])
