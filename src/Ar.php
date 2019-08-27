@@ -1,13 +1,13 @@
 <?php
 
-namespace Frontwise;
+namespace Frontwise\Ar;
 
 class Ar {
-    public function __construct(array $array = null) {
+    public function __construct(iterable $array = null) {
         return new ArFluent($array);
     }
     
-    public function new(array $array): ArFluent {
+    public function new(iterable $array): ArFluent {
         return new ArFluent($array);
     }
     
@@ -17,7 +17,7 @@ class Ar {
      * Keys are preserved.
      * @return mixed[]
      */
-    public static function map(array $array, callable $callable): array {
+    public static function map(iterable $array, callable $callable): array {
         $result = [];
         
         foreach ($array as $key => $value) {
@@ -32,7 +32,7 @@ class Ar {
      * Pass every item and key into a user-supplied callable, and use the returned value as key in the result array.
      * @return mixed[]
      */
-    public static function mapKeys(array $array, callable $callable): array {
+    public static function mapKeys(iterable $array, callable $callable): array {
         $result = [];
         
         foreach ($array as $key => $value) {
@@ -47,7 +47,7 @@ class Ar {
      * Keys are preserved.
      * @return mixed[]
      */
-    public static function filter(array $array, callable $callable): array {
+    public static function filter(iterable $array, callable $callable): array {
         $result = [];
         
         foreach ($array as $key => $value) {

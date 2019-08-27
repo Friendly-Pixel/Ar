@@ -1,37 +1,67 @@
 <?php
 
-namespace Frontwise;
+namespace Frontwise\Ar;
 
-class ArFluent implements \IteratorAggregate {
-    public $array = [];
+class ArFluent implements \IteratorAggregate, \ArrayAccess {
+    /** @var array $array */
+    private $array = [];
     
-    public function __construct(array $array = null) {
+    public function __construct(iterable $array = null) {
         if ($array) {
-            $this->array = $array;
+            if (is_array($array)) {
+                $this->array = $array;
+            } else {
+                $this->array = iterator_to_array($array, true);
+            }
         }
     }
     
+    /* ======= */
+    
     public function map(callable $callable): self {
-        $this->array = Ar::map($this->array, $callable);
-        return $this;
+        return new static(Ar::map($this->array, $callable));
     }
     
     public function mapKeys(callable $callable): self {
-        $this->array = Ar::mapKeys($this->array, $callable);
-        return $this;
+        return new static(Ar::mapKeys($this->array, $callable));
     }
     
     public function filter(callable $callable): self {
-        $this->array = Ar::filter($this->array, $callable);
-        return $this;
+        return new static(Ar::filter($this->array, $callable));
     }
+    
+    /* ======= */
     
     public function unwrap() {
         return $this->array;
+    }
+    public function toArray() {
+        return $this->unwrap();
     }
     
     /* IteratorAggregate implementation */
     public function getIterator() {
         return new \ArrayIterator($this->array);
+    }
+    
+    /* Arrayaccess implementation */
+    public function offsetSet($offset, $value) {
+        if (!isset($offset)) {
+            $this->array[] = $value;
+        } else {
+            $this->array[$offset] = $value;
+        }
+    }
+
+    public function offsetExists($offset) {
+        return isset($this->array[$offset]);
+    }
+
+    public function offsetUnset($offset) {
+        unset($this->array[$offset]);
+    }
+
+    public function offsetGet($offset) {
+        return isset($this->array[$offset]) ? $this->array[$offset] : null;
     }
 }

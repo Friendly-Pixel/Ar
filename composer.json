@@ -12,7 +12,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Frontwise\\": "src"
+            "Frontwise\\Ar\\": "src",
+            "Frontwise\\Ar\\Test\\": "tests"
         }
     }
 }
