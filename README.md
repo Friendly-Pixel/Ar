@@ -14,7 +14,7 @@ Consistent and (optionally) fluent `map`, `reduce` etc. for PHP arrays.
 Functional style:
 
 ```php
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $ints = [1, 5, 8];
 $ints = Ar::map($ints, function($value, $key) { return $value * $value; });
@@ -24,7 +24,7 @@ $ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
 Fluent style:
 
 ```php
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $ints = Ar::new([1, 5, 8])
     ->map(function($value, $key) { return $value * $value; })
@@ -62,7 +62,7 @@ Keys are preserved.
 
 ```php
 // Functional
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
 
@@ -71,7 +71,7 @@ $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }
 
 ```php
 // Fluent
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $even = Ar::new([1, 2, 3])
     ->filter(function($value, $key) { return $value % 2 == 0; })
@@ -89,7 +89,7 @@ Keys are preserved.
 
 ```php
 // Functional
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
 
@@ -98,7 +98,7 @@ $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; });
 
 ```php
 // Fluent
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
@@ -115,7 +115,7 @@ Pass every item and key into a user-supplied callable, and use the returned valu
 
 ```php
 // Functional
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
 
@@ -124,7 +124,7 @@ $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; });
 
 ```php
 // Fluent
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $numbers = Ar::new([1, 2, 3])
     ->mapKeys(function($value, $key) { return $key * 2; })
@@ -141,14 +141,14 @@ $numbers = Ar::new([1, 2, 3])
 
 ```php
 // Fluent
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
 ;
 
 // If you don't like the Ar::new syntax, you can also use ArFluent directly:
-use Frontwise\ArFluent;
+use Frontwise\Ar\ArFluent;
 
 $numbers = (new ArFluent([1, 2, 3]))
     ->map(function ($value, $key) { return $value * 2; })
@@ -163,7 +163,7 @@ $numbers = (new ArFluent([1, 2, 3]))
 
 ```php
 // Fluent
-use Frontwise\Ar;
+use Frontwise\Ar\Ar;
 
 $numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
