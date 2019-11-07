@@ -13,7 +13,7 @@ class Ar {
     
     /**
      * Transform values.
-     * Pass every item into a user-supplied callable, and put the returned value into the result array.
+     * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
      * Keys are preserved.
      * @return mixed[]
      */
@@ -29,7 +29,7 @@ class Ar {
     
     /**
      * Transform keys.
-     * Pass every item and key into a user-supplied callable, and use the returned value as key in the result array.
+     * Pass every value, key and key into a user-supplied callable, and use the returned value as key in the result array.
      * @return mixed[]
      */
     public static function mapKeys(iterable $array, callable $callable): array {
@@ -43,7 +43,7 @@ class Ar {
     }
     
     /**
-     * Pass every item into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
+     * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
      * Keys are preserved.
      * @return mixed[]
      */
@@ -58,7 +58,6 @@ class Ar {
         
         return $result;
     }
-    
 }
 
 

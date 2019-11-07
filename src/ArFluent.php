@@ -30,6 +30,17 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess {
         return new static(Ar::filter($this->array, $callable));
     }
     
+    /* String functions */
+    
+    /**
+     * Join all values into a big string, using `$glue` as separator.
+     * `$glue` is optional.
+     * @return string
+     */
+    public function implode(string $glue = ''): string {
+        return implode($glue, $this->array);
+    }
+    
     /* ======= */
     
     public function unwrap() {

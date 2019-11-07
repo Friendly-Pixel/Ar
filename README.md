@@ -50,6 +50,7 @@ $ composer require frontwise/ar
 Fluent style only:
 
 - [new()](#new)
+- [implode()](#implode)
 - [unwrap()](#unwrap)
 
 <a name="filter"></a>
@@ -170,6 +171,22 @@ $numbers = Ar::new([1, 2, 3])
     ->unwrap()
 ;
 // Result: [2, 4, 6]
+```
+
+<a name="implode"></a>
+### implode
+
+(When using fluent style): Join all items into a big string, using `$glue` as separator.
+
+```php
+// Fluent
+use Frontwise\Ar\Ar;
+
+$numbers = Ar::new([1, 2, 3])
+    ->map(function ($value, $key) { return $value * 2; })
+    ->join(' - ')
+;
+// Result: "1 - 2 - 3"
 ```
 
 ## License
