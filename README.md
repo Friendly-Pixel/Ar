@@ -53,6 +53,8 @@ Fluent style only:
 - [implode()](#implode)
 - [unwrap()](#unwrap)
 
+
+
 <a name="filter"></a>
 ### filter
 
@@ -79,6 +81,8 @@ $even = Ar::new([1, 2, 3])
     ->unwrap()
 ;
 ```
+
+
 
 <a name="map"></a>
 ### map
@@ -107,6 +111,8 @@ $numbers = Ar::new([1, 2, 3])
 ;
 ```
 
+
+
 <a name="mapKeys"></a>
 ### mapKeys
 
@@ -133,7 +139,38 @@ $numbers = Ar::new([1, 2, 3])
 ;
 ```
 
+
+
+<a name="search"></a>
+### search
+
+Return the first value for which the callable returns `true`.
+Returns `null` otherwise.
+
+```php
+// Functional
+use Frontwise\Ar\Ar;
+
+$found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
+
+// Result: ['a' => 3]
+```
+
+```php
+// Fluent
+use Frontwise\Ar\Ar;
+
+$found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
+    ->search(function($value, $key) { return $value['a'] == 3; })
+;
+```
+
+
+
 ## Fluent style only methods
+
+
+
 
 <a name="new"></a>
 ### new
@@ -157,6 +194,8 @@ $numbers = (new ArFluent([1, 2, 3]))
 
 ```
 
+
+
 <a name="unwrap"></a>
 ### unwrap
 
@@ -173,6 +212,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
+
+
 <a name="implode"></a>
 ### implode
 
@@ -188,6 +230,8 @@ $numbers = Ar::new([1, 2, 3])
 ;
 // Result: "1 - 2 - 3"
 ```
+
+
 
 ## License
 

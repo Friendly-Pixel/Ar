@@ -61,7 +61,7 @@ class Ar {
     
     /**
      * Return the first value for which the callable returns `true`.
-     * Returs `null` otherwise.
+     * Returns `null` otherwise.
      * @return mixed
      */
     public static function search(iterable $array, callable $callable) {
