@@ -52,14 +52,12 @@ console.log(`New version tag: ${newTag}`);
 execSync(`git add -A`);
 
 confirm(`This will:
-* commit to git
 * git tag
 * git push
 
 Please  check git staging area
 
 Type y to confirm:`).then(() => {
-  execSync(`git commit -m ${newTag}`);
   execSync(`git tag ${newTag}`);
   execSync(`git push`);
   execSync(`git push --tags`);
