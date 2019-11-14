@@ -46,6 +46,7 @@ $ composer require frontwise/ar
 - [filter()](#filter)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
+- [search()](#search)
 
 Fluent style only:
 
