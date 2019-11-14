@@ -30,6 +30,13 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess {
         return new static(Ar::filter($this->array, $callable));
     }
     
+    /**
+     * @return mixed
+     */
+    public function search(callable $callable) {
+        return Ar::search($this->array, $callable);
+    }
+    
     /* String functions */
     
     /**

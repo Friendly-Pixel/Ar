@@ -58,6 +58,21 @@ class Ar {
         
         return $result;
     }
+    
+    /**
+     * Return the first value for which the callable returns `true`.
+     * Returs `null` otherwise.
+     * @return mixed
+     */
+    public static function search(iterable $array, callable $callable) {
+        foreach ($array as $key => $value) {
+            if (call_user_func($callable, $value, $key) === true) {
+                return $value;
+            }
+        }
+        
+        return null;
+    }
 }
 
 

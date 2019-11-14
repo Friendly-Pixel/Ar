@@ -9,8 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 final class ArTest extends TestCase
 {
-    /** @dataProvider backendUrlProvider */
-    public function testFunc(string $funcName, array $input, array $expected, callable $callable) {
+    /** @dataProvider returnsArrayProvider */
+    public function testReturnsArrayFunc(string $funcName, array $input, array $expected, callable $callable) {
         // Functional
         $a = $input;
         $b = Ar::$funcName($a, $callable);
@@ -29,7 +29,26 @@ final class ArTest extends TestCase
         $this->assertEquals($expected, $b);
     }
     
-    public function backendUrlProvider() {
+    /** @dataProvider returnsValueProvider */
+    public function testReturnsValueFunc(string $funcName, array $input, $expected, callable $callable) {
+        // Functional
+        $a = $input;
+        $b = Ar::$funcName($a, $callable);
+        $this->assertEquals($expected, $b);
+        
+        // Iterable
+        $it = new MyIterable($a);
+        $b = Ar::$funcName($a, $callable);
+        $this->assertEquals($expected, $b);
+        
+        // Fluent
+        $b = Ar::new($a)
+            ->$funcName($callable)
+        ;
+        $this->assertEquals($expected, $b);
+    }
+    
+    public function returnsArrayProvider() {
         $result = [];
         
         // map
@@ -76,8 +95,35 @@ final class ArTest extends TestCase
             ];
         }
         
+        
         return $result;
     }
+    
+        public function returnsValueProvider() {
+            $result = [];
+
+            // search
+            $target = ['a' => 2, 'c' => 3];
+            foreach([
+                function ($v) { return ($v['a'] ?? 0) == 2; },
+            ] as $callable) {
+                $result[] = [
+                    'search',
+                    [[], ['a' => 1], $target],
+                    $target,
+                    $callable
+                ];
+                $result[] = [
+                    'search',
+                    [[], ['a' => 1], ['b' => 8]],
+                    null,
+                    $callable
+                ];
+            }
+
+            return $result;
+        }
+    
     
     public function testTraversable(): void
     {
