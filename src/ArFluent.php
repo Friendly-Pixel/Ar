@@ -6,7 +6,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess {
     /** @var array $array */
     private $array = [];
     
-    public function __construct(iterable $array = null) {
+    public function __construct(/* iterable */ $array = null) {
         if ($array) {
             if (is_array($array)) {
                 $this->array = $array;

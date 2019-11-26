@@ -3,11 +3,11 @@
 namespace Frontwise\Ar;
 
 class Ar {
-    public function __construct(iterable $array = null) {
+    public function __construct(/* iterable */ $array = null) {
         return new ArFluent($array);
     }
     
-    public function new(iterable $array): ArFluent {
+    public function new(/* iterable */ $array): ArFluent {
         return new ArFluent($array);
     }
     
@@ -17,7 +17,7 @@ class Ar {
      * Keys are preserved.
      * @return mixed[]
      */
-    public static function map(iterable $array, callable $callable): array {
+    public static function map(/* iterable */ $array, callable $callable): array {
         $result = [];
         
         foreach ($array as $key => $value) {
@@ -32,7 +32,7 @@ class Ar {
      * Pass every value, key and key into a user-supplied callable, and use the returned value as key in the result array.
      * @return mixed[]
      */
-    public static function mapKeys(iterable $array, callable $callable): array {
+    public static function mapKeys(/* iterable */ $array, callable $callable): array {
         $result = [];
         
         foreach ($array as $key => $value) {
@@ -47,7 +47,7 @@ class Ar {
      * Keys are preserved.
      * @return mixed[]
      */
-    public static function filter(iterable $array, callable $callable): array {
+    public static function filter(/* iterable */ $array, callable $callable): array {
         $result = [];
         
         foreach ($array as $key => $value) {
@@ -64,7 +64,7 @@ class Ar {
      * Returns `null` otherwise.
      * @return mixed
      */
-    public static function search(iterable $array, callable $callable) {
+    public static function search(/* iterable */ $array, callable $callable) {
         foreach ($array as $key => $value) {
             if (call_user_func($callable, $value, $key) === true) {
                 return $value;
@@ -72,6 +72,12 @@ class Ar {
         }
         
         return null;
+    }
+    
+    public static function sort(/* iterable */ $array, callable $callable): array {
+        usort($array, $callable);
+        
+        return $array;
     }
 }
 
