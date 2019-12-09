@@ -7,7 +7,7 @@ class Ar {
         return new ArFluent($array);
     }
     
-    public function new(/* iterable */ $array): ArFluent {
+    public static function new(/* iterable */ $array): ArFluent {
         return new ArFluent($array);
     }
     
