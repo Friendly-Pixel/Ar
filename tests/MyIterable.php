@@ -95,7 +95,7 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
      */
     public function remove($key)
     {
-        if (! isset($this->elements[$key]) && ! array_key_exists($key, $this->elements)) {
+        if (!isset($this->elements[$key]) && !array_key_exists($key, $this->elements)) {
             return null;
         }
 
@@ -148,7 +148,7 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (! isset($offset)) {
+        if (!isset($offset)) {
             $this->add($value);
 
             return;
@@ -301,7 +301,7 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
     public function forAll(Closure $p)
     {
         foreach ($this->elements as $key => $element) {
-            if (! $p($key, $element)) {
+            if (!$p($key, $element)) {
                 return false;
             }
         }
@@ -352,5 +352,4 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
     {
         return array_slice($this->elements, $offset, $length, true);
     }
-
 }
