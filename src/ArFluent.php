@@ -24,7 +24,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     {
         return new static(Ar::map($this->array, $callable));
     }
-    
+
     public function mapKeys(callable $callable): self
     {
         return new static(Ar::mapKeys($this->array, $callable));
@@ -59,19 +59,27 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     {
         return implode($glue, $this->array);
     }
-    
+
     public function forEach(callable $callable): self
     {
         Ar::forEach($this->array, $callable);
         return $this;
     }
-    
+
     /**
      * @see Ar::reduce
      */
     public function reduce(callable $callable, $initial = null)
     {
         return Ar::reduce($this->array, $callable, $initial);
+    }
+
+    /**
+     * @see Ar::flat
+     */
+    public function flat($depth = 1)
+    {
+        return new static(Ar::flat($this->array, $depth));
     }
 
     /* ======= */

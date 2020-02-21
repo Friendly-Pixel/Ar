@@ -30,7 +30,7 @@ class Ar
 
         return $result;
     }
-    
+
     /**
      * Transform keys.
      * Pass every value, key and key into a user-supplied callable, and use the returned value as key in the result array.
@@ -87,7 +87,7 @@ class Ar
 
         return $array;
     }
-    
+
     /**
      * Walk over every value, key.
      * Pass every value, key into a user-supplied callable.
@@ -101,7 +101,7 @@ class Ar
 
         return $array;
     }
-    
+
     /**
      * Iteratively reduce the array to a single value using a callback function.
      * 
@@ -118,5 +118,28 @@ class Ar
         }
 
         return $result;
+    }
+
+    /**
+     * The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+     */
+    public static function flat(/* iterable */$array, int $depth = 1)
+    {
+        $result = [];
+
+        self::_flat($result, $array, $depth);
+
+        return $result;
+    }
+
+    private static function _flat(array &$result, $input, int $depth)
+    {
+        foreach ($input as $value) {
+            if (is_iterable($value) && $depth > 0) {
+                self::_flat($result, $value, $depth - 1);
+            } else {
+                $result[] = $value;
+            }
+        }
     }
 }
