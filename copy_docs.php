@@ -37,6 +37,7 @@ file_put_contents('src/ArFluent.php', $arFluent);
 
 /* Generate README.md */
 $readme = file_get_contents('./README.template.md');
+$comments = $matches[1];
 $funcNames = $matches[2];
 sort($funcNames);
 foreach ($matches[1] as $i => $comment) {
@@ -49,7 +50,8 @@ foreach ($matches[1] as $i => $comment) {
     $readme = str_replace('<!-- METHOD_TOC_HERE -->', $toc, $readme);
 
     $methodDocs = Ar::new($funcNames)
-        ->map(function ($funcName) use ($comment) {
+        ->map(function ($funcName, $i) use ($comments) {
+            $comment = $comments[$i];
             $comment = str_replace("     * @", "     * \n     * @", $comment);
             $comment = str_replace("/**\n", '', $comment);
             $comment = str_replace('     * ', '', $comment);

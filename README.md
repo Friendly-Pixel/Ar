@@ -87,18 +87,17 @@ $numbers = Ar::new([1, 2, 3])
 <a name="flat"></a>
 ### flat
 
-Transform values.
-Pass every value, key into a user-supplied callable, and put the returned value into the result array.
-Keys are preserved.
+Transform keys.
+Pass every value, key and key into a user-supplied callable, and use the returned value as key in the result array.
 
 ```php
 use Frontwise\Ar\Ar;
-$numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
+$numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
 $numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
+    ->mapKeys(function($value, $key) { return $key * 2; })
     ->unwrap()
 ;
-// Result: [2, 4, 6]
+// Result: [0 => 2, 2 => 2, 4 => 3]
 ```
 
 
@@ -111,22 +110,21 @@ $numbers = Ar::new([1, 2, 3])
 <a name="forEach"></a>
 ### forEach
 
-Transform values.
-Pass every value, key into a user-supplied callable, and put the returned value into the result array.
+Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
 Keys are preserved.
 
 ```php
 use Frontwise\Ar\Ar;
-$numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
-$numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
+$even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
+$even = Ar::new([1, 2, 3])
+    ->filter(function($value, $key) { return $value % 2 == 0; })
     ->unwrap()
 ;
-// Result: [2, 4, 6]
+// Result: [0 => 2, 2 => 2, 4 => 3]
 ```
 
 
-@param callable $callable function ($value, $key): mixed
+@param callable $callable function ($value, $key): bool
 
 @return mixed[]
 
@@ -135,46 +133,35 @@ $numbers = Ar::new([1, 2, 3])
 <a name="map"></a>
 ### map
 
-Transform values.
-Pass every value, key into a user-supplied callable, and put the returned value into the result array.
-Keys are preserved.
+Return the first value for which the callable returns `true`.
+Returns `null` otherwise.
 
 ```php
 use Frontwise\Ar\Ar;
-$numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
-$numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
-    ->unwrap()
+$found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
+$found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
+    ->search(function($value, $key) { return $value['a'] == 3; })
 ;
-// Result: [2, 4, 6]
+// Result: ['a' => 3]
 ```
 
 
-@param callable $callable function ($value, $key): mixed
+@param callable $callable function ($value, $key): bool
 
-@return mixed[]
+@return mixed
 
 
 
 <a name="mapKeys"></a>
 ### mapKeys
 
-Transform values.
-Pass every value, key into a user-supplied callable, and put the returned value into the result array.
-Keys are preserved.
-
-```php
-use Frontwise\Ar\Ar;
-$numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
-$numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
-    ->unwrap()
-;
-// Result: [2, 4, 6]
-```
+Sort an array by values using a user-defined comparison function.
 
 
-@param callable $callable function ($value, $key): mixed
+@param callable $callable    function ($valueA, $valueB): int 
+                             Return an integer smaller then, equal to,
+                             or larger than 0 to indicate that $valueA is less
+                             then, equal to, or larger than $valueB.
 
 @return mixed[]
 
@@ -183,22 +170,11 @@ $numbers = Ar::new([1, 2, 3])
 <a name="reduce"></a>
 ### reduce
 
-Transform values.
-Pass every value, key into a user-supplied callable, and put the returned value into the result array.
-Keys are preserved.
-
-```php
-use Frontwise\Ar\Ar;
-$numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
-$numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
-    ->unwrap()
-;
-// Result: [2, 4, 6]
-```
+Walk over every value, key.
+Pass every value, key into a user-supplied callable.
 
 
-@param callable $callable function ($value, $key): mixed
+@param callable $callable function ($value, $key)
 
 @return mixed[]
 
@@ -207,46 +183,23 @@ $numbers = Ar::new([1, 2, 3])
 <a name="search"></a>
 ### search
 
-Transform values.
-Pass every value, key into a user-supplied callable, and put the returned value into the result array.
-Keys are preserved.
-
-```php
-use Frontwise\Ar\Ar;
-$numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
-$numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
-    ->unwrap()
-;
-// Result: [2, 4, 6]
-```
+Iteratively reduce the array to a single value using a callback function.
 
 
-@param callable $callable function ($value, $key): mixed
+@param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
 
-@return mixed[]
+@param callable $callable function($carry, $value, $key): mixed
+
+@return mixed
 
 
 
 <a name="sort"></a>
 ### sort
 
-Transform values.
-Pass every value, key into a user-supplied callable, and put the returned value into the result array.
-Keys are preserved.
+The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
 
-```php
-use Frontwise\Ar\Ar;
-$numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
-$numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
-    ->unwrap()
-;
-// Result: [2, 4, 6]
-```
-
-
-@param callable $callable function ($value, $key): mixed
+@param int $depth To what level to flatten the array. Default: 1
 
 @return mixed[]
 
