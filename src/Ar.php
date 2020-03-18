@@ -106,18 +106,18 @@ class Ar
      * Iteratively reduce the array to a single value using a callback function.
      * 
      * @param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
-     * @param callable $callable function($value, $key, $carry): mixed
+     * @param callable $callable function($carry, $value, $key): mixed
      * @return mixed
      */
     public static function reduce(/* iterable */$array, callable $callable, $initial = null)
     {
-        $result = $initial;
+        $carry = $initial;
 
         foreach ($array as $key => $value) {
-            $result = call_user_func($callable, $value, $key, $initial);
+            $carry = call_user_func($callable, $carry, $value, $key);
         }
 
-        return $result;
+        return $carry;
     }
 
     /**

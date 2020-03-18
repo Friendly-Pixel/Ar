@@ -155,6 +155,70 @@ final class ArTest extends TestCase
         return $result;
     }
 
+    /** @dataProvider reduceProvider */
+    public function testReduce(array $input, $initial, $expected, callable $callable)
+    {
+        // Functional
+        $a = $input;
+        $b = Ar::reduce($a, $callable, $initial);
+        $this->assertEquals($expected, $b);
+
+        // Iterable
+        $it = new MyIterable($a);
+        $b = Ar::reduce($a, $callable, $initial);
+        $this->assertEquals($expected, $b);
+
+        // Fluent
+        $b = Ar::new($a)
+            ->reduce($callable, $initial);
+        $this->assertEquals($expected, $b);
+    }
+
+    public function reduceProvider()
+    {
+        $result = [];
+
+        $add = function ($carry, $value, $key) {
+            return $value + $carry;
+        };
+        $result[] = [
+            [1, 2, 4],
+            0,
+            7,
+            $add
+        ];
+        $result[] = [
+            [1, 2, 4],
+            null,
+            7,
+            $add
+        ];
+        $result[] = [
+            [1, 2, 4],
+            3,
+            10,
+            $add
+        ];
+        $result[] = [
+            ['a' => 1, 2, 'b' => 4],
+            0,
+            7,
+            $add
+        ];
+
+        $addKeys = function ($carry, $value, $key) {
+            return $key + $carry;
+        };
+        $result[] = [
+            [1, 2, 4],
+            4,
+            7,
+            $addKeys
+        ];
+
+        return $result;
+    }
+
     public function testTraversable(): void
     {
         $expected = [2, 4, 6];
