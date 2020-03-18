@@ -18,6 +18,18 @@ class Ar
      * Transform values.
      * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
      * Keys are preserved.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
+     * $numbers = Ar::new([1, 2, 3])
+     *     ->map(function ($value, $key) { return $value * 2; })
+     *     ->unwrap()
+     * ;
+     * // Result: [2, 4, 6]
+     * ```
+     * 
+     * @param callable $callable function ($value, $key): mixed
      * @return mixed[]
      */
     public static function map(/* iterable */$array, callable $callable): array
@@ -34,6 +46,18 @@ class Ar
     /**
      * Transform keys.
      * Pass every value, key and key into a user-supplied callable, and use the returned value as key in the result array.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
+     * $numbers = Ar::new([1, 2, 3])
+     *     ->mapKeys(function($value, $key) { return $key * 2; })
+     *     ->unwrap()
+     * ;
+     * // Result: [0 => 2, 2 => 2, 4 => 3]
+     * ```
+     * 
+     * @param callable $callable function ($value, $key): mixed
      * @return mixed[]
      */
     public static function mapKeys(/* iterable */$array, callable $callable): array
@@ -50,6 +74,18 @@ class Ar
     /**
      * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
      * Keys are preserved.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
+     * $even = Ar::new([1, 2, 3])
+     *     ->filter(function($value, $key) { return $value % 2 == 0; })
+     *     ->unwrap()
+     * ;
+     * // Result: [0 => 2, 2 => 2, 4 => 3]
+     * ```
+     * 
+     * @param callable $callable function ($value, $key): bool
      * @return mixed[]
      */
     public static function filter(/* iterable */$array, callable $callable): array
@@ -68,6 +104,17 @@ class Ar
     /**
      * Return the first value for which the callable returns `true`.
      * Returns `null` otherwise.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
+     * $found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
+     *     ->search(function($value, $key) { return $value['a'] == 3; })
+     * ;
+     * // Result: ['a' => 3]
+     * ```
+     * 
+     * @param callable $callable function ($value, $key): bool
      * @return mixed
      */
     public static function search(/* iterable */$array, callable $callable)
@@ -81,6 +128,15 @@ class Ar
         return null;
     }
 
+    /**
+     * Sort an array by values using a user-defined comparison function.
+     * 
+     * @param callable $callable    function ($valueA, $valueB): int 
+     *                              Return an integer smaller then, equal to,
+     *                              or larger than 0 to indicate that $valueA is less
+     *                              then, equal to, or larger than $valueB.
+     * @return mixed[]
+     */
     public static function sort(/* iterable */$array, callable $callable): array
     {
         usort($array, $callable);
@@ -91,7 +147,9 @@ class Ar
     /**
      * Walk over every value, key.
      * Pass every value, key into a user-supplied callable.
-     * @return mixed[] the array
+     * 
+     * @param callable $callable function ($value, $key)
+     * @return mixed[]
      */
     public static function forEach(/* iterable */$array, callable $callable): array
     {
@@ -122,6 +180,8 @@ class Ar
 
     /**
      * The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+     * @param int $depth To what level to flatten the array. Default: 1
+     * @return mixed[]
      */
     public static function flat(/* iterable */$array, int $depth = 1)
     {
