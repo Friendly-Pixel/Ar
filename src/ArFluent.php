@@ -40,15 +40,47 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
         return new static(Ar::sort($this->array, $callable));
     }
 
-    /**
-     * @return mixed
-     */
     public function search(callable $callable)
     {
         return Ar::search($this->array, $callable);
     }
 
-    /* String functions */
+    public function forEach(callable $callable): self
+    {
+        Ar::forEach($this->array, $callable);
+        return $this;
+    }
+
+    public function reduce(callable $callable, $initial = null)
+    {
+        return Ar::reduce($this->array, $callable, $initial);
+    }
+
+    public function flat($depth = 1)
+    {
+        return new static(Ar::flat($this->array, $depth));
+    }
+
+    /* ======= Fluent only ======= */
+
+    /**
+     * Return the underlying array.
+     * @return array 
+     */
+    public function unwrap()
+    {
+        return $this->array;
+    }
+
+    /**
+     * Return the underlying array.
+     * Alias for `ArFluent::unwrap`
+     * @return array 
+     */
+    public function toArray()
+    {
+        return $this->unwrap();
+    }
 
     /**
      * Join all values into a big string, using `$glue` as separator.
@@ -60,50 +92,15 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
         return implode($glue, $this->array);
     }
 
-    public function forEach(callable $callable): self
-    {
-        Ar::forEach($this->array, $callable);
-        return $this;
-    }
-
-    /**
-     * Iteratively reduce the array to a single value using a callback function.
-     * 
-     * @param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
-     * @param callable $callable function($carry, $value, $key): mixed
-     * @return mixed
-     */
-    public function reduce(callable $callable, $initial = null)
-    {
-        return Ar::reduce($this->array, $callable, $initial);
-    }
-
-    /**
-     * @see Ar::flat
-     */
-    public function flat($depth = 1)
-    {
-        return new static(Ar::flat($this->array, $depth));
-    }
-
-    /* ======= */
-
-    public function unwrap()
-    {
-        return $this->array;
-    }
-    public function toArray()
-    {
-        return $this->unwrap();
-    }
-
     /* IteratorAggregate implementation */
+
     public function getIterator()
     {
         return new \ArrayIterator($this->array);
     }
 
     /* Arrayaccess implementation */
+
     public function offsetSet($offset, $value)
     {
         if (!isset($offset)) {
