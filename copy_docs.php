@@ -37,29 +37,37 @@ file_put_contents('src/ArFluent.php', $arFluent);
 
 /* Generate README.md */
 $readme = file_get_contents('./README.template.md');
-$comments = $matches[1];
-$funcNames = $matches[2];
-sort($funcNames);
-foreach ($matches[1] as $i => $comment) {
 
-    $toc = Ar::new($funcNames)
-        ->map(function ($funcName) {
-            return "- [$funcName()](#$funcName)";
-        })
-        ->implode("\n");
-    $readme = str_replace('<!-- METHOD_TOC_HERE -->', $toc, $readme);
+$rows = Ar::new($matches[2])
+    ->map(function ($funcName, $i) use ($matches) {
+        return [
+            'funcName' => $funcName,
+            'comment' => $matches[1][$i],
+        ];
+    })
+    ->sort(function ($a, $b) {
+        return strnatcmp($a['funcName'], $b['funcName']);
+    });
 
-    $methodDocs = Ar::new($funcNames)
-        ->map(function ($funcName, $i) use ($comments) {
-            $comment = $comments[$i];
-            $comment = str_replace("     * @", "     * \n     * @", $comment);
-            $comment = str_replace("/**\n", '', $comment);
-            $comment = str_replace('     * ', '', $comment);
-            $comment = str_replace("\n     */", '', $comment);
+$toc = Ar::new($rows)
+    ->map(function ($row) {
+        $funcName = $row['funcName'];
+        return "- [$funcName()](#$funcName)";
+    })
+    ->implode("\n");
+$readme = str_replace('<!-- METHOD_TOC_HERE -->', $toc, $readme);
 
-            return "<a name=\"$funcName\"></a>\n### $funcName\n\n$comment\n\n\n";
-        })
-        ->implode("\n");
-    $readme = str_replace('<!-- METHODS_HERE -->', $methodDocs, $readme);
-}
-file_put_contents('./README.md', $readme);
+$methodDocs = Ar::new($rows)
+    ->map(function ($row) {
+        $comment = $row['comment'];
+        $comment = str_replace("     * @", "     * \n     * @", $comment);
+        $comment = str_replace("/**\n", '', $comment);
+        $comment = str_replace('     * ', '', $comment);
+        $comment = str_replace("\n     */", '', $comment);
+
+        $funcName = $row['funcName'];
+        return "<a name=\"$funcName\"></a>\n### $funcName\n\n$comment\n\n\n";
+    })
+    ->implode("\n");
+$readme = str_replace('<!-- METHODS_HERE -->', $methodDocs, $readme);
+file_put_contents('./README2.md', $readme);
