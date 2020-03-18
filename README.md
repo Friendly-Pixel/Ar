@@ -77,7 +77,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
 @param callable $callable function ($value, $key): mixed
+
 @return mixed[]
 
 
@@ -99,7 +101,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
 @param callable $callable function ($value, $key): mixed
+
 @return mixed[]
 
 
@@ -121,7 +125,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
 @param callable $callable function ($value, $key): mixed
+
 @return mixed[]
 
 
@@ -143,7 +149,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
 @param callable $callable function ($value, $key): mixed
+
 @return mixed[]
 
 
@@ -165,7 +173,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
 @param callable $callable function ($value, $key): mixed
+
 @return mixed[]
 
 
@@ -187,7 +197,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
 @param callable $callable function ($value, $key): mixed
+
 @return mixed[]
 
 
@@ -209,7 +221,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
 @param callable $callable function ($value, $key): mixed
+
 @return mixed[]
 
 
@@ -231,7 +245,9 @@ $numbers = Ar::new([1, 2, 3])
 // Result: [2, 4, 6]
 ```
 
+
 @param callable $callable function ($value, $key): mixed
+
 @return mixed[]
 
 

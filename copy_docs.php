@@ -50,6 +50,7 @@ foreach ($matches[1] as $i => $comment) {
 
     $methodDocs = Ar::new($funcNames)
         ->map(function ($funcName) use ($comment) {
+            $comment = str_replace("     * @", "     * \n     * @", $comment);
             $comment = str_replace("/**\n", '', $comment);
             $comment = str_replace('     * ', '', $comment);
             $comment = str_replace("\n     */", '', $comment);
