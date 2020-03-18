@@ -70,4 +70,4 @@ $methodDocs = Ar::new($rows)
     })
     ->implode("\n");
 $readme = str_replace('<!-- METHODS_HERE -->', $methodDocs, $readme);
-file_put_contents('./README2.md', $readme);
+file_put_contents('./README.md', $readme);

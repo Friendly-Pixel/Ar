@@ -63,6 +63,53 @@ Fluent style only:
 <a name="filter"></a>
 ### filter
 
+Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
+Keys are preserved.
+
+```php
+use Frontwise\Ar\Ar;
+$even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
+$even = Ar::new([1, 2, 3])
+    ->filter(function($value, $key) { return $value % 2 == 0; })
+    ->unwrap()
+;
+// Result: [0 => 2, 2 => 2, 4 => 3]
+```
+
+
+@param callable $callable function ($value, $key): bool
+
+@return mixed[]
+
+
+
+<a name="flat"></a>
+### flat
+
+The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+
+@param int $depth To what level to flatten the array. Default: 1
+
+@return mixed[]
+
+
+
+<a name="forEach"></a>
+### forEach
+
+Walk over every value, key.
+Pass every value, key into a user-supplied callable.
+
+
+@param callable $callable function ($value, $key)
+
+@return mixed[]
+
+
+
+<a name="map"></a>
+### map
+
 Transform values.
 Pass every value, key into a user-supplied callable, and put the returned value into the result array.
 Keys are preserved.
@@ -84,8 +131,8 @@ $numbers = Ar::new([1, 2, 3])
 
 
 
-<a name="flat"></a>
-### flat
+<a name="mapKeys"></a>
+### mapKeys
 
 Transform keys.
 Pass every value, key and key into a user-supplied callable, and use the returned value as key in the result array.
@@ -107,31 +154,22 @@ $numbers = Ar::new([1, 2, 3])
 
 
 
-<a name="forEach"></a>
-### forEach
+<a name="reduce"></a>
+### reduce
 
-Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-Keys are preserved.
-
-```php
-use Frontwise\Ar\Ar;
-$even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
-$even = Ar::new([1, 2, 3])
-    ->filter(function($value, $key) { return $value % 2 == 0; })
-    ->unwrap()
-;
-// Result: [0 => 2, 2 => 2, 4 => 3]
-```
+Iteratively reduce the array to a single value using a callback function.
 
 
-@param callable $callable function ($value, $key): bool
+@param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
 
-@return mixed[]
+@param callable $callable function($carry, $value, $key): mixed
+
+@return mixed
 
 
 
-<a name="map"></a>
-### map
+<a name="search"></a>
+### search
 
 Return the first value for which the callable returns `true`.
 Returns `null` otherwise.
@@ -152,8 +190,8 @@ $found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
 
 
 
-<a name="mapKeys"></a>
-### mapKeys
+<a name="sort"></a>
+### sort
 
 Sort an array by values using a user-defined comparison function.
 
@@ -162,44 +200,6 @@ Sort an array by values using a user-defined comparison function.
                              Return an integer smaller then, equal to,
                              or larger than 0 to indicate that $valueA is less
                              then, equal to, or larger than $valueB.
-
-@return mixed[]
-
-
-
-<a name="reduce"></a>
-### reduce
-
-Walk over every value, key.
-Pass every value, key into a user-supplied callable.
-
-
-@param callable $callable function ($value, $key)
-
-@return mixed[]
-
-
-
-<a name="search"></a>
-### search
-
-Iteratively reduce the array to a single value using a callback function.
-
-
-@param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
-
-@param callable $callable function($carry, $value, $key): mixed
-
-@return mixed
-
-
-
-<a name="sort"></a>
-### sort
-
-The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
-
-@param int $depth To what level to flatten the array. Default: 1
 
 @return mixed[]
 
