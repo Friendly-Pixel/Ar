@@ -30,7 +30,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * // Result: [1 => 2, 3 => 12]
      * ```
      * 
-     * @param callable $callable callable($value, $key): bool
+     * @param callable $callable ($value, $key): bool
      * @return ArFluent
      */
     public function filter(callable $callable): self
@@ -40,7 +40,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are NOT preserved, the returned array is sequential. Use `filter` to preserve keys.
+     * Keys are not preserved, the returned array is sequential. Use `filter` to preserve keys.
      * 
      * ```php
      * use Frontwise\Ar\Ar;
@@ -52,7 +52,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * // Result: [2, 12]
      * ```
      * 
-     * @param callable $callable callable($value, $key): bool
+     * @param callable $callable ($value, $key): bool
      * @return ArFluent
      */
     public function filterValues(callable $callable): self
@@ -74,7 +74,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * Walk over every value, key.
      * Pass every value, key into a user-supplied callable.
      * 
-     * @param callable $callable callable($value, $key)
+     * @param callable $callable ($value, $key)
      * @return ArFluent
      */
     public function forEach(callable $callable): self
@@ -116,7 +116,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * // Result: [2, 4, 6]
      * ```
      * 
-     * @param callable $callable callable($value, $key): mixed
+     * @param callable $callable ($value, $key): mixed
      * @return ArFluent
      */
     public function map(callable $callable): self
@@ -138,7 +138,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
-     * @param callable $callable callable($value, $key): mixed
+     * @param callable $callable ($value, $key): mixed
      * @return ArFluent
      */
     public function mapKeys(callable $callable): self
@@ -159,7 +159,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * // Result: ['a' => 3]
      * ```
      * 
-     * @param callable $callable callable($value, $key): bool
+     * @param callable $callable ($value, $key): bool
      * @return mixed
      */
     public function search(callable $callable)

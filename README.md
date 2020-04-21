@@ -78,7 +78,7 @@ $even = Ar::new([1, 2, 3, 12])
 ```
 
 
-@param callable $callable callable($value, $key): bool
+@param callable $callable ($value, $key): bool
 
 @return mixed[]
 
@@ -88,7 +88,7 @@ $even = Ar::new([1, 2, 3, 12])
 ### filterValues
 
 Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-Keys are NOT preserved, the returned array is sequential. Use `filter` to preserve keys.
+Keys are not preserved, the returned array is sequential. Use `filter` to preserve keys.
 
 ```php
 use Frontwise\Ar\Ar;
@@ -101,7 +101,7 @@ $even = Ar::new([1, 2, 3, 12])
 ```
 
 
-@param callable $callable callable($value, $key): bool
+@param callable $callable ($value, $key): bool
 
 @return mixed[]
 
@@ -125,7 +125,7 @@ Walk over every value, key.
 Pass every value, key into a user-supplied callable.
 
 
-@param callable $callable callable($value, $key)
+@param callable $callable ($value, $key)
 
 @return mixed[]
 
@@ -166,7 +166,7 @@ $numbers = Ar::new([1, 2, 3])
 ```
 
 
-@param callable $callable callable($value, $key): mixed
+@param callable $callable ($value, $key): mixed
 
 @return mixed[]
 
@@ -189,7 +189,7 @@ $numbers = Ar::new([1, 2, 3])
 ```
 
 
-@param callable $callable callable($value, $key): mixed
+@param callable $callable ($value, $key): mixed
 
 @return mixed[]
 
@@ -225,7 +225,7 @@ $found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
 ```
 
 
-@param callable $callable callable($value, $key): bool
+@param callable $callable ($value, $key): bool
 
 @return mixed
 

@@ -32,7 +32,7 @@ class Ar
      * // Result: [1 => 2, 3 => 12]
      * ```
      * 
-     * @param callable $callable callable($value, $key): bool
+     * @param callable $callable ($value, $key): bool
      * @return mixed[]
      */
     public static function filter(/* iterable */$array, callable $callable): array
@@ -51,7 +51,7 @@ class Ar
 
     /**
      * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are NOT preserved, the returned array is sequential. Use `filter` to preserve keys.
+     * Keys are not preserved, the returned array is sequential. Use `filter` to preserve keys.
      * 
      * ```php
      * use Frontwise\Ar\Ar;
@@ -63,7 +63,7 @@ class Ar
      * // Result: [2, 12]
      * ```
      * 
-     * @param callable $callable callable($value, $key): bool
+     * @param callable $callable ($value, $key): bool
      * @return mixed[]
      */
     public static function filterValues(/* iterable */$array, callable $callable): array
@@ -111,7 +111,7 @@ class Ar
      * Walk over every value, key.
      * Pass every value, key into a user-supplied callable.
      * 
-     * @param callable $callable callable($value, $key)
+     * @param callable $callable ($value, $key)
      * @return mixed[]
      */
     public static function forEach(/* iterable */$array, callable $callable): array
@@ -174,7 +174,7 @@ class Ar
      * // Result: [2, 4, 6]
      * ```
      * 
-     * @param callable $callable callable($value, $key): mixed
+     * @param callable $callable ($value, $key): mixed
      * @return mixed[]
      */
     public static function map(/* iterable */$array, callable $callable): array
@@ -203,7 +203,7 @@ class Ar
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
-     * @param callable $callable callable($value, $key): mixed
+     * @param callable $callable ($value, $key): mixed
      * @return mixed[]
      */
     public static function mapKeys(/* iterable */$array, callable $callable): array
@@ -251,7 +251,7 @@ class Ar
      * // Result: ['a' => 3]
      * ```
      * 
-     * @param callable $callable callable($value, $key): bool
+     * @param callable $callable ($value, $key): bool
      * @return mixed
      */
     public static function search(/* iterable */$array, callable $callable)

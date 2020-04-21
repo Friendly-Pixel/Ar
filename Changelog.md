@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Allow iterable everywhere.
 - Make ArFluent immutable.
+### Added
 - Improve tests.
 
 ## [0.0.1] - 2019-04-27
