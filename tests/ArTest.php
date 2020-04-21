@@ -223,6 +223,20 @@ final class ArTest extends TestCase
     {
         $tests = [];
 
+        // count
+        $tests[] = [
+            'count', // funcName
+            [1, 2, 3], // input
+            3, // expected
+            null
+        ];
+        $tests[] = [
+            'count', // funcName
+            [], // input
+            0, // expected
+            null
+        ];
+
         // search
         $target = ['a' => 2, 'c' => 3];
         $callable = function ($v) {

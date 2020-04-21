@@ -17,6 +17,23 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     /* ======= */
 
     /**
+     * Count how many items there are in the array.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $count = Ar::count([1, 2, 3]); 
+     * $count = Ar::new([1, 2, 3])
+     *     ->count()
+     * ;
+     * // Result: 3
+     * ```
+     */
+    public function count(): int
+    {
+        return Ar::count($this->array);
+    }
+
+    /**
      * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
      * Keys are preserved, this means that the returned array will be associative. Use `filterValues` if you want a sequential result.
      * 

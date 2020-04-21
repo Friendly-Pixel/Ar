@@ -43,6 +43,7 @@ $ composer require frontwise/ar
 
 ## Methods
 
+- [count()](#count)
 - [filter()](#filter)
 - [filterValues()](#filterValues)
 - [flat()](#flat)
@@ -61,6 +62,22 @@ Fluent style only:
 - [new()](#new)
 - [unwrap()](#unwrap)
 - [toArray()](#toArray)
+
+
+
+<a name="count"></a>
+### count
+
+Count how many items there are in the array.
+
+```php
+use Frontwise\Ar\Ar;
+$count = Ar::count([1, 2, 3]); 
+$count = Ar::new([1, 2, 3])
+    ->count()
+;
+// Result: 3
+```
 
 
 
