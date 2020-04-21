@@ -1,0 +1,23 @@
+<phpunit
+    bootstrap="vendor/autoload.php"
+>
+    <testsuite name="tests">
+        <directory>tests</directory>
+    </testsuite>
+    
+    <filter>
+      <whitelist>
+        <directory>src</directory>
+      </whitelist>
+    </filter>
+    
+    <logging>
+        <log type="coverage-text" target="php://stdout"/>
+    </logging>
+    
+    <php>
+        <ini name="error_reporting" value="E_ALL" />
+        <ini name="display_errors" value="On" />
+        <ini name="display_startup_errors" value="On" />
+    </php>
+</phpunit>

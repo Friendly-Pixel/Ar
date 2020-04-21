@@ -1,2 +1,2 @@
 #!/bin/bash
-./vendor/bin/phpunit --color --bootstrap vendor/autoload.php --coverage-html coverage --whitelist src tests
+./vendor/bin/phpunit -c phpunit.xml --coverage-html coverage
