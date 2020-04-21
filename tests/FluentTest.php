@@ -72,10 +72,18 @@ final class FluentTest extends TestCase
         $a[] = 10;
         $this->assertEquals($a->unwrap(), [1, 5, 3, 10]);
     }
+
     public function testOffsetUnset()
     {
         $a = Ar::new(['a', 'b', 'c']);
         unset($a[1]);
         $this->assertEquals($a->unwrap(), [0 => 'a', 2 => 'c']);
+    }
+
+    public function testJsonSerializable()
+    {
+        $array = ['a', 'b', 'c'];
+        $a = Ar::new($array);
+        $this->assertEquals(json_encode($array), json_encode($a));
     }
 }

@@ -2,7 +2,11 @@
 
 namespace Frontwise\Ar;
 
-class ArFluent implements \IteratorAggregate, \ArrayAccess
+use ArrayAccess;
+use IteratorAggregate;
+use JsonSerializable;
+
+class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
 {
     /** @var array $array */
     private $array = [];
@@ -296,5 +300,12 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     public function offsetGet($offset)
     {
         return isset($this->array[$offset]) ? $this->array[$offset] : null;
+    }
+
+    /* === JsonSerializable implementation === */
+
+    public function jsonSerialize()
+    {
+        return $this->array;
     }
 }
