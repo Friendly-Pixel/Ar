@@ -6,11 +6,16 @@ namespace Frontwise\Ar\Test;
 
 use Frontwise\Ar\Ar;
 use Frontwise\Ar\ArFluent;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 final class ArTest extends TestCase
 {
-    /** @dataProvider returnsArrayProvider */
+    /**
+     * Test all functions that return an array.
+     * 
+     * @dataProvider returnsArrayProvider
+     */
     public function testReturnsArrayFunc(string $funcName, array $input, array $expected, callable $callable)
     {
         // Functional
@@ -27,25 +32,6 @@ final class ArTest extends TestCase
         $b = Ar::new($a)
             ->$funcName($callable)
             ->unwrap();
-        $this->assertEquals($expected, $b);
-    }
-
-    /** @dataProvider returnsValueProvider */
-    public function testReturnsValueFunc(string $funcName, array $input, $expected, callable $callable)
-    {
-        // Functional
-        $a = $input;
-        $b = Ar::$funcName($a, $callable);
-        $this->assertEquals($expected, $b);
-
-        // Iterable
-        $it = new MyIterable($a);
-        $b = Ar::$funcName($a, $callable);
-        $this->assertEquals($expected, $b);
-
-        // Fluent
-        $b = Ar::new($a)
-            ->$funcName($callable);
         $this->assertEquals($expected, $b);
     }
 
@@ -127,6 +113,29 @@ final class ArTest extends TestCase
         return $result;
     }
 
+    /**
+     * Test all functions that return a value.
+     * 
+     * @dataProvider returnsValueProvider
+     */
+    public function testReturnsValueFunc(string $funcName, array $input, $expected, callable $callable)
+    {
+        // Functional
+        $a = $input;
+        $b = Ar::$funcName($a, $callable);
+        $this->assertEquals($expected, $b);
+
+        // Iterable
+        $it = new MyIterable($a);
+        $b = Ar::$funcName($a, $callable);
+        $this->assertEquals($expected, $b);
+
+        // Fluent
+        $b = Ar::new($a)
+            ->$funcName($callable);
+        $this->assertEquals($expected, $b);
+    }
+
     public function returnsValueProvider()
     {
         $result = [];
@@ -155,139 +164,13 @@ final class ArTest extends TestCase
         return $result;
     }
 
-    /** @dataProvider reduceProvider */
-    public function testReduce(array $input, $initial, $expected, callable $callable)
-    {
-        // Functional
-        $a = $input;
-        $b = Ar::reduce($a, $callable, $initial);
-        $this->assertEquals($expected, $b);
-
-        // Iterable
-        $it = new MyIterable($a);
-        $b = Ar::reduce($a, $callable, $initial);
-        $this->assertEquals($expected, $b);
-
-        // Fluent
-        $b = Ar::new($a)
-            ->reduce($callable, $initial);
-        $this->assertEquals($expected, $b);
-    }
-
-    public function reduceProvider()
-    {
-        $result = [];
-
-        $add = function ($carry, $value, $key) {
-            return $value + $carry;
-        };
-        $result[] = [
-            [1, 2, 4],
-            0,
-            7,
-            $add
-        ];
-        $result[] = [
-            [1, 2, 4],
-            null,
-            7,
-            $add
-        ];
-        $result[] = [
-            [1, 2, 4],
-            3,
-            10,
-            $add
-        ];
-        $result[] = [
-            ['a' => 1, 2, 'b' => 4],
-            0,
-            7,
-            $add
-        ];
-
-        $addKeys = function ($carry, $value, $key) {
-            return $key + $carry;
-        };
-        $result[] = [
-            [1, 2, 4],
-            4,
-            7,
-            $addKeys
-        ];
-
-        return $result;
-    }
-
-    public function testTraversable(): void
-    {
-        $expected = [2, 4, 6];
-
-        $a = Ar::new([1, 2, 3])->map([$this, 'timesTwo']);
-        foreach ($a as $key => $value) {
-            $this->assertEquals($value, $expected[$key]);
-        }
-
-        foreach (Ar::new([1, 2, 3])->map([$this, 'timesTwo']) as $key => $value) {
-            $this->assertEquals($value, $expected[$key]);
-        }
-    }
-
-    public function testFluentEquals()
-    {
-        $numbers1 = (new ArFluent([1, 2, 3]))
-            ->map(function ($value, $key) {
-                return $value * 2;
-            });
-
-        $numbers2 = Ar::new([1, 2, 3])
-            ->map(function ($value, $key) {
-                return $value * 2;
-            });
-
-        $this->assertEquals($numbers1, $numbers2);
-    }
-
-    public function testFluentArrayAccess()
-    {
-        $fluent = Ar::new(['a' => 1, 'b' => 15]);
-        $this->assertEquals(1, $fluent['a']);
-        $this->assertEquals(15, $fluent['b']);
-
-        $fluent2 = $fluent->map([$this, 'timesTwo']);
-        $this->assertEquals(2, $fluent2['a']);
-        $this->assertEquals(30, $fluent2['b']);
-
-        $fluent2['c'] = 81;
-        $this->assertEquals(81, $fluent2['c']);
-
-
-        $this->assertEquals(false, isset($fluent2['f']));
-        $this->assertEquals(true, isset($fluent2['c']));
-    }
-
-    public function testFluentImplode()
-    {
-        $this->assertEquals(Ar::new([1, 2, 3])->implode(' - '), '1 - 2 - 3');
-        $this->assertEquals(Ar::new(['a', 22])->implode(','), 'a,22');
-        $this->assertEquals(Ar::new([2, 3, 4])->implode(), '234');
-    }
-
-    public function testSortDoesntModify()
-    {
-        $array = [3, 2, 8];
-        $result = Ar::sort($array, [$this, 'sortIncreasing']);
-        $this->assertEquals($array, [3, 2, 8]);
-        $this->assertEquals($result, [2, 3, 8]);
-        $result = Ar::new($array)->sort([$this, 'sortIncreasing'])->toArray();
-        $this->assertEquals($array, [3, 2, 8]);
-        $this->assertEquals($result, [2, 3, 8]);
-    }
+    /* Callables */
 
     public function timesTwo($value)
     {
         return $value * 2;
     }
+
     public function keyTimesTwo($value, $key)
     {
         return $key * 2;
@@ -296,10 +179,5 @@ final class ArTest extends TestCase
     public function isEven($value)
     {
         return $value % 2 == 0;
-    }
-
-    public function sortIncreasing($a, $b)
-    {
-        return $a - $b;
     }
 }
