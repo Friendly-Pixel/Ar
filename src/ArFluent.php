@@ -102,6 +102,23 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * Return the keys of an array as a sequential array.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
+     * $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys();
+     * // result: [3, 'foo', 1]
+     * ```
+     * 
+     * @return ArFluent
+     */
+    public function keys(): self
+    {
+        return new static(Ar::keys($this->array));
+    }
+
+    /**
      * Transform values.
      * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
      * Keys are preserved.
@@ -191,6 +208,23 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     public function reduce(callable $callable, $initial = null)
     {
         return Ar::reduce($this->array, $callable, $initial);
+    }
+
+    /**
+     * Return the values of an array as a sequential array.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
+     * $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
+     * // result: [0 => 'a', 1 => 'b', 2 => 'c']
+     * ```
+     * 
+     * @return ArFluent
+     */
+    public function values(): self
+    {
+        return new static(Ar::values($this->array));
     }
 
     /* ======= Fluent only ======= */

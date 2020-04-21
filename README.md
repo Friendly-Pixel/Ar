@@ -47,11 +47,13 @@ $ composer require frontwise/ar
 - [flat()](#flat)
 - [forEach()](#forEach)
 - [implode()](#implode)
+- [keys()](#keys)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
 - [reduce()](#reduce)
 - [search()](#search)
 - [sort()](#sort)
+- [values()](#values)
 
 Fluent style only:
 
@@ -148,6 +150,23 @@ $result = Ar::new(['a', 'b', 'c'])
 
 
 
+<a name="keys"></a>
+### keys
+
+Return the keys of an array as a sequential array.
+
+```php
+use Frontwise\Ar\Ar;
+$result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
+$result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys();
+// result: [3, 'foo', 1]
+```
+
+
+@return mixed[]
+
+
+
 <a name="map"></a>
 ### map
 
@@ -241,6 +260,23 @@ Sort an array by values using a user-defined comparison function.
                              Return an integer smaller then, equal to,
                              or larger than 0 to indicate that $valueA is less
                              then, equal to, or larger than $valueB.
+
+@return mixed[]
+
+
+
+<a name="values"></a>
+### values
+
+Return the values of an array as a sequential array.
+
+```php
+use Frontwise\Ar\Ar;
+$result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
+$result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
+// result: [0 => 'a', 1 => 'b', 2 => 'c']
+```
+
 
 @return mixed[]
 

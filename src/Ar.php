@@ -143,6 +143,23 @@ class Ar
         return implode($glue, $array);
     }
 
+    /**
+     * Return the keys of an array as a sequential array.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
+     * $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys();
+     * // result: [3, 'foo', 1]
+     * ```
+     * 
+     * @return mixed[]
+     */
+    public static function keys(/* iterable */$array): array
+    {
+        $array = self::makeArray($array);
+        return array_keys($array);
+    }
 
     public static function makeArray(/* iterable */$array)
     {
@@ -282,5 +299,23 @@ class Ar
         usort($array, $callable);
 
         return $array;
+    }
+
+    /**
+     * Return the values of an array as a sequential array.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
+     * $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
+     * // result: [0 => 'a', 1 => 'b', 2 => 'c']
+     * ```
+     * 
+     * @return mixed[]
+     */
+    public static function values(/* iterable */$array): array
+    {
+        $array = self::makeArray($array);
+        return array_values($array);
     }
 }

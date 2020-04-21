@@ -12,6 +12,8 @@ use PHPUnit\Framework\TestCase;
 
 final class ArTest extends TestCase
 {
+    use BaseTrait;
+
     /**
      * Test all functions that return an array.
      * 
@@ -39,29 +41,6 @@ final class ArTest extends TestCase
     public function returnsArrayProvider()
     {
         $result = [];
-
-        // map
-        foreach ([
-            function ($v) {
-                return $v + $v;
-            },
-            [$this, 'timesTwo'],
-        ] as $callable) {
-            $result[] = ['map', [1, 2, 3], [2, 4, 6], $callable];
-            $result[] = ['map', ['a' => 1, 'b' => 2, 'c' => 3], ['a' => 2, 'b' => 4, 'c' => 6], $callable];
-            $result[] = ['map', [12 => 1, 81 => 2, 13 => 3], [12 => 2, 81 => 4, 13 => 6], $callable];
-        }
-
-        // mapKeys
-        foreach ([
-            function ($v, $k) {
-                return $k * 2;
-            },
-            [$this, 'keyTimesTwo'],
-        ] as $callable) {
-            $result[] = ['mapKeys', [1, 2, 3], [0 => 1, 2 => 2, 4 => 3], $callable];
-            $result[] = ['mapKeys', [12 => 1,  81 => 2, 13 => 3], [24 => 1, 162 => 2, 26 => 3], $callable];
-        }
 
         // filter
         foreach ([
@@ -129,6 +108,43 @@ final class ArTest extends TestCase
             ];
         }
 
+        // keys
+        $result[] = [
+            'keys',
+            [3 => 'a', 'foo' => 'b', 1 => 'c'],
+            [3, 'foo', 1],
+            $callable
+        ];
+        $result[] = [
+            'keys',
+            [],
+            [],
+            $callable
+        ];
+
+        // map
+        foreach ([
+            function ($v) {
+                return $v + $v;
+            },
+            [$this, 'timesTwo'],
+        ] as $callable) {
+            $result[] = ['map', [1, 2, 3], [2, 4, 6], $callable];
+            $result[] = ['map', ['a' => 1, 'b' => 2, 'c' => 3], ['a' => 2, 'b' => 4, 'c' => 6], $callable];
+            $result[] = ['map', [12 => 1, 81 => 2, 13 => 3], [12 => 2, 81 => 4, 13 => 6], $callable];
+        }
+
+        // mapKeys
+        foreach ([
+            function ($v, $k) {
+                return $k * 2;
+            },
+            [$this, 'keyTimesTwo'],
+        ] as $callable) {
+            $result[] = ['mapKeys', [1, 2, 3], [0 => 1, 2 => 2, 4 => 3], $callable];
+            $result[] = ['mapKeys', [12 => 1,  81 => 2, 13 => 3], [24 => 1, 162 => 2, 26 => 3], $callable];
+        }
+
         // Sort
         foreach ([
             function ($a, $b) {
@@ -149,6 +165,25 @@ final class ArTest extends TestCase
             ];
         }
 
+        // values
+        $result[] = [
+            'values',
+            [3 => 'a', 'foo' => 'b', 1 => 'c'],
+            [0 => 'a', 1 => 'b', 2 => 'c'],
+            $callable
+        ];
+        $result[] = [
+            'values',
+            [3 => 'a', 'foo' => 'b', 1 => 'c'],
+            ['a', 'b', 'c'],
+            $callable
+        ];
+        $result[] = [
+            'values',
+            [],
+            [],
+            $callable
+        ];
 
         return $result;
     }
