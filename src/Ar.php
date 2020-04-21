@@ -6,11 +6,6 @@ use InvalidArgumentException;
 
 class Ar
 {
-    public function __construct(/* iterable */$array = null)
-    {
-        return new ArFluent($array);
-    }
-
     public static function new(/* iterable */$array): ArFluent
     {
         return new ArFluent($array);
@@ -37,7 +32,7 @@ class Ar
      */
     public static function filter(/* iterable */$array, callable $callable): array
     {
-        $array = self::makeArray($array);
+        self::testIterable($array);
         $result = [];
 
         foreach ($array as $key => $value) {
@@ -68,7 +63,7 @@ class Ar
      */
     public static function filterValues(/* iterable */$array, callable $callable): array
     {
-        $array = self::makeArray($array);
+        self::testIterable($array);
         $result = [];
 
         foreach ($array as $key => $value) {
@@ -87,7 +82,7 @@ class Ar
      */
     public static function flat(/* iterable */$array, int $depth = 1)
     {
-        $array = self::makeArray($array);
+        self::testIterable($array);
         $result = [];
 
         self::_flat($result, $array, $depth);
@@ -97,7 +92,6 @@ class Ar
 
     private static function _flat(array &$result, $input, int $depth)
     {
-        $array = self::makeArray($array);
         foreach ($input as $value) {
             if (is_iterable($value) && $depth > 0) {
                 self::_flat($result, $value, $depth - 1);
@@ -116,7 +110,7 @@ class Ar
      */
     public static function forEach(/* iterable */$array, callable $callable): array
     {
-        $array = self::makeArray($array);
+        self::testIterable($array);
         foreach ($array as $key => $value) {
             call_user_func($callable, $value, $key);
         }
@@ -245,7 +239,7 @@ class Ar
      */
     public static function reduce(/* iterable */$array, callable $callable, $initial = null)
     {
-        $array = self::makeArray($array);
+        self::testIterable($array);
         $carry = $initial;
 
         foreach ($array as $key => $value) {
@@ -273,7 +267,7 @@ class Ar
      */
     public static function search(/* iterable */$array, callable $callable)
     {
-        $array = self::makeArray($array);
+        self::testIterable($array);
 
         foreach ($array as $key => $value) {
             if (call_user_func($callable, $value, $key) === true) {
@@ -299,6 +293,17 @@ class Ar
         usort($array, $callable);
 
         return $array;
+    }
+
+    private function testIterable($array)
+    {
+        if (!is_iterable($array)) {
+            $type = gettype($array);
+            if ($type == "object") {
+                $type = get_class($array);
+            }
+            throw new InvalidArgumentException('You must pass an array or iterable. You passed: ' . $type);
+        }
     }
 
     /**

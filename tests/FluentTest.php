@@ -6,10 +6,13 @@ namespace Frontwise\Ar\Test;
 
 use Frontwise\Ar\Ar;
 use Frontwise\Ar\ArFluent;
+use Frontwise\Ar\Test\Traits\BaseTrait;
 use PHPUnit\Framework\TestCase;
 
 final class FluentTest extends TestCase
 {
+    use BaseTrait;
+
     public function testTraversable(): void
     {
         $expected = [2, 4, 6];
@@ -60,5 +63,19 @@ final class FluentTest extends TestCase
     public function timesTwo($value)
     {
         return $value * 2;
+    }
+
+    public function testOffsetSet()
+    {
+        $a = Ar::new([1, 2, 3]);
+        $a[1] = 5;
+        $a[] = 10;
+        $this->assertEquals($a->unwrap(), [1, 5, 3, 10]);
+    }
+    public function testOffsetUnset()
+    {
+        $a = Ar::new(['a', 'b', 'c']);
+        unset($a[1]);
+        $this->assertEquals($a->unwrap(), [0 => 'a', 2 => 'c']);
     }
 }

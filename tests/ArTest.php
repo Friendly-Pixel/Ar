@@ -19,21 +19,21 @@ final class ArTest extends TestCase
      * 
      * @dataProvider returnsArrayProvider
      */
-    public function testReturnsArrayFunc(string $funcName, array $input, array $expected, callable $callable)
+    public function testReturnsArrayFunc(string $funcName, array $input, array $expected, $param0)
     {
         // Functional
         $a = $input;
-        $b = Ar::$funcName($a, $callable);
+        $b = Ar::$funcName($a, $param0);
         $this->assertEquals($expected, $b);
 
         // Iterable
         $it = new MyIterable($a);
-        $b = Ar::$funcName($it, $callable);
+        $b = Ar::$funcName($it, $param0);
         $this->assertEquals($expected, $b);
 
         // Fluent
         $b = Ar::new($a)
-            ->$funcName($callable)
+            ->$funcName($param0)
             ->unwrap();
         $this->assertEquals($expected, $b);
     }
@@ -107,6 +107,14 @@ final class ArTest extends TestCase
                 $callable
             ];
         }
+
+        // flat
+        $result[] = [
+            'flat',
+            [['a', 'b'], ['c']],
+            ['a', 'b', 'c'],
+            1
+        ];
 
         // keys
         $result[] = [
@@ -193,21 +201,21 @@ final class ArTest extends TestCase
      * 
      * @dataProvider returnsValueProvider
      */
-    public function testReturnsValueFunc(string $funcName, /* array */ $input, $expected, $param1)
+    public function testReturnsValueFunc(string $funcName, /* array */ $input, $expected, $param0)
     {
         // Functional
         $a = $input;
-        $b = Ar::$funcName($a, $param1);
+        $b = Ar::$funcName($a, $param0);
         $this->assertEquals($expected, $b);
 
         // Iterable
         $it = new MyIterable($a);
-        $b = Ar::$funcName($a, $param1);
+        $b = Ar::$funcName($a, $param0);
         $this->assertEquals($expected, $b);
 
         // Fluent
         $b = Ar::new($a)
-            ->$funcName($param1);
+            ->$funcName($param0);
         $this->assertEquals($expected, $b);
     }
 

@@ -11,6 +11,7 @@ Consistent and (optionally) fluent `map`, `reduce` etc. for PHP arrays.
 
 * All functional style functions accept the array as first parameter.
 * Immutable: the input array is never modified. Fluent style returns a new object for every call.
+* Tested: unit-tested with 100% code coverage.
 
 Functional style:
 
