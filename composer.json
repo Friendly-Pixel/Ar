@@ -16,5 +16,13 @@
             "Frontwise\\Ar\\": "src",
             "Frontwise\\Ar\\Test\\": "tests"
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "bash ./githooks/install.sh"
+        ],
+        "post-update-cmd": [
+            "bash ./githooks/install.sh"
+        ]
     }
 }

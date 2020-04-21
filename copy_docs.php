@@ -15,6 +15,7 @@ $matches = [];
 $re = '/(\/\*\*(?:.|\n)*\*\/)\s+public static function ([a-zA-Z]+)\(/U';
 preg_match_all($re, $arString, $matches);
 // dump($matches);
+$madeChanges = false;
 
 /* Update ArFluent.php */
 $arFluent = file_get_contents('./src/ArFluent.php');
@@ -32,7 +33,10 @@ foreach ($matches[1] as $i => $comment) {
     // dump('---------------');
     // dump('');
 }
-file_put_contents('src/ArFluent.php', $arFluent);
+if ($arFluent != file_get_contents('src/ArFluent.php')) {
+    $madeChanges = true;
+    file_put_contents('src/ArFluent.php', $arFluent);
+}
 
 
 /* Generate README.md */
@@ -70,4 +74,12 @@ $methodDocs = Ar::new($rows)
     })
     ->implode("\n");
 $readme = str_replace('<!-- METHODS_HERE -->', $methodDocs, $readme);
-file_put_contents('./README.md', $readme);
+if ($readme != file_get_contents('./README.md')) {
+    $madeChanges = true;
+    file_put_contents('./README.md', $readme);
+}
+
+if ($madeChanges) {
+    echo ('Updated docs' . PHP_EOL);
+    exit(1);
+}
