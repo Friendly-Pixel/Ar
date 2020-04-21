@@ -21,6 +21,51 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     /* ======= */
 
     /**
+     * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
+     * Keys are preserved.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
+     * $even = Ar::new([1, 2, 3])
+     *     ->filter(function($value, $key) { return $value % 2 == 0; })
+     *     ->unwrap()
+     * ;
+     * // Result: [0 => 2, 2 => 2, 4 => 3]
+     * ```
+     * 
+     * @param callable $callable callable($value, $key): bool
+     * @return ArFluent
+     */
+    public function filter(callable $callable): self
+    {
+        return new static(Ar::filter($this->array, $callable));
+    }
+
+    /**
+     * The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+     * @param int $depth To what level to flatten the array. Default: 1
+     * @return ArFluent
+     */
+    public function flat($depth = 1)
+    {
+        return new static(Ar::flat($this->array, $depth));
+    }
+
+    /**
+     * Walk over every value, key.
+     * Pass every value, key into a user-supplied callable.
+     * 
+     * @param callable $callable callable($value, $key)
+     * @return ArFluent
+     */
+    public function forEach(callable $callable): self
+    {
+        Ar::forEach($this->array, $callable);
+        return $this;
+    }
+
+    /**
      * Transform values.
      * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
      * Keys are preserved.
@@ -66,42 +111,6 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are preserved.
-     * 
-     * ```php
-     * use Frontwise\Ar\Ar;
-     * $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
-     * $even = Ar::new([1, 2, 3])
-     *     ->filter(function($value, $key) { return $value % 2 == 0; })
-     *     ->unwrap()
-     * ;
-     * // Result: [0 => 2, 2 => 2, 4 => 3]
-     * ```
-     * 
-     * @param callable $callable callable($value, $key): bool
-     * @return ArFluent
-     */
-    public function filter(callable $callable): self
-    {
-        return new static(Ar::filter($this->array, $callable));
-    }
-
-    /**
-     * Sort an array by values using a user-defined comparison function.
-     * 
-     * @param callable $callable    function($valueA, $valueB): int 
-     *                              Return an integer smaller then, equal to,
-     *                              or larger than 0 to indicate that $valueA is less
-     *                              then, equal to, or larger than $valueB.
-     * @return ArFluent
-     */
-    public function sort(callable $callable): self
-    {
-        return new static(Ar::sort($this->array, $callable));
-    }
-
-    /**
      * Return the first value for which the callable returns `true`.
      * Returns `null` otherwise.
      * 
@@ -123,16 +132,17 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Walk over every value, key.
-     * Pass every value, key into a user-supplied callable.
+     * Sort an array by values using a user-defined comparison function.
      * 
-     * @param callable $callable callable($value, $key)
+     * @param callable $callable    function($valueA, $valueB): int 
+     *                              Return an integer smaller then, equal to,
+     *                              or larger than 0 to indicate that $valueA is less
+     *                              then, equal to, or larger than $valueB.
      * @return ArFluent
      */
-    public function forEach(callable $callable): self
+    public function sort(callable $callable): self
     {
-        Ar::forEach($this->array, $callable);
-        return $this;
+        return new static(Ar::sort($this->array, $callable));
     }
 
     /**
@@ -147,26 +157,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
         return Ar::reduce($this->array, $callable, $initial);
     }
 
-    /**
-     * The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
-     * @param int $depth To what level to flatten the array. Default: 1
-     * @return ArFluent
-     */
-    public function flat($depth = 1)
-    {
-        return new static(Ar::flat($this->array, $depth));
-    }
-
     /* ======= Fluent only ======= */
-
-    /**
-     * Return the underlying array.
-     * @return array 
-     */
-    public function unwrap()
-    {
-        return $this->array;
-    }
 
     /**
      * Return the underlying array.
@@ -179,23 +170,22 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Join all values into a big string, using `$glue` as separator.
-     * `$glue` is optional.
-     * @return string
+     * Return the underlying array.
+     * @return array 
      */
-    public function implode(string $glue = ''): string
+    public function unwrap()
     {
-        return implode($glue, $this->array);
+        return $this->array;
     }
 
-    /* IteratorAggregate implementation */
+    /* === IteratorAggregate implementation === */
 
     public function getIterator()
     {
         return new \ArrayIterator($this->array);
     }
 
-    /* Arrayaccess implementation */
+    /* === Arrayaccess implementation === */
 
     public function offsetSet($offset, $value)
     {
