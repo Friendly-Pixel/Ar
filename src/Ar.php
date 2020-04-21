@@ -313,7 +313,7 @@ class Ar
         return $array;
     }
 
-    private function testIterable($array)
+    private static function testIterable($array)
     {
         if (!is_iterable($array)) {
             $type = gettype($array);
