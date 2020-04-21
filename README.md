@@ -45,6 +45,7 @@ $ composer require frontwise/ar
 - [filter()](#filter)
 - [flat()](#flat)
 - [forEach()](#forEach)
+- [implode()](#implode)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
 - [reduce()](#reduce)
@@ -54,7 +55,6 @@ $ composer require frontwise/ar
 Fluent style only:
 
 - [new()](#new)
-- [implode()](#implode)
 - [unwrap()](#unwrap)
 - [toArray()](#toArray)
 
@@ -104,6 +104,23 @@ Pass every value, key into a user-supplied callable.
 @param callable $callable callable($value, $key)
 
 @return mixed[]
+
+
+
+<a name="implode"></a>
+### implode
+
+Join all values into a big string, using `$glue` as separator.
+`$glue` is optional.
+
+```php
+use Frontwise\Ar\Ar;
+$result = Ar::implode(['a', 'b', 'c'], ','); 
+$result = Ar::new(['a', 'b', 'c'])
+    ->implode(',')
+;
+// result: "a,b,c"
+```
 
 
 
@@ -260,22 +277,6 @@ $numbers = Ar::new([1, 2, 3])
 
 Alias for [unwrap()](#unwrap)
 
-
-
-<a name="implode"></a>
-### implode
-
-Join all values into a big string, using `$glue` as separator.
-`$glue` is optional.
-
-```php
-use Frontwise\Ar\Ar;
-$numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
-    ->join(' - ')
-;
-// Result: "1 - 2 - 3"
-```
 
 
 

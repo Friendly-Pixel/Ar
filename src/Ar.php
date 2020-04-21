@@ -112,6 +112,22 @@ class Ar
         return implode($glue, $array);
     }
 
+
+    public static function makeArray(/* iterable */$array)
+    {
+        if (is_array($array)) {
+            return $array;
+        } elseif (is_iterable($array)) {
+            return iterator_to_array($array, true);
+        } else {
+            $type = gettype($array);
+            if ($type == "object") {
+                $type = get_class($array);
+            }
+            throw new InvalidArgumentException('You must pass an array or iterable. You passed: ' . $type);
+        }
+    }
+
     /**
      * Transform values.
      * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
@@ -235,20 +251,5 @@ class Ar
         usort($array, $callable);
 
         return $array;
-    }
-
-    public static function makeArray(/* iterable */$array)
-    {
-        if (is_array($array)) {
-            return $array;
-        } elseif (is_iterable($array)) {
-            return iterator_to_array($array, true);
-        } else {
-            $type = gettype($array);
-            if ($type == "object") {
-                $type = get_class($array);
-            }
-            throw new InvalidArgumentException('You must pass an array or iterable. You passed: ' . $type);
-        }
     }
 }

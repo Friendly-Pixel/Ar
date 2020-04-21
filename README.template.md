@@ -47,7 +47,6 @@ $ composer require frontwise/ar
 Fluent style only:
 
 - [new()](#new)
-- [implode()](#implode)
 - [unwrap()](#unwrap)
 - [toArray()](#toArray)
 
@@ -109,22 +108,6 @@ $numbers = Ar::new([1, 2, 3])
 
 Alias for [unwrap()](#unwrap)
 
-
-
-<a name="implode"></a>
-### implode
-
-Join all values into a big string, using `$glue` as separator.
-`$glue` is optional.
-
-```php
-use Frontwise\Ar\Ar;
-$numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
-    ->join(' - ')
-;
-// Result: "1 - 2 - 3"
-```
 
 
 
