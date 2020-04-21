@@ -14,6 +14,79 @@ class Ar
         return new ArFluent($array);
     }
 
+    /* === Functions, sorted alphabetically === */
+
+    /**
+     * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
+     * Keys are preserved.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
+     * $even = Ar::new([1, 2, 3])
+     *     ->filter(function($value, $key) { return $value % 2 == 0; })
+     *     ->unwrap()
+     * ;
+     * // Result: [0 => 2, 2 => 2, 4 => 3]
+     * ```
+     * 
+     * @param callable $callable function ($value, $key): bool
+     * @return mixed[]
+     */
+    public static function filter(/* iterable */$array, callable $callable): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (call_user_func($callable, $value, $key)) {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+     * @param int $depth To what level to flatten the array. Default: 1
+     * @return mixed[]
+     */
+    public static function flat(/* iterable */$array, int $depth = 1)
+    {
+        $result = [];
+
+        self::_flat($result, $array, $depth);
+
+        return $result;
+    }
+
+    private static function _flat(array &$result, $input, int $depth)
+    {
+        foreach ($input as $value) {
+            if (is_iterable($value) && $depth > 0) {
+                self::_flat($result, $value, $depth - 1);
+            } else {
+                $result[] = $value;
+            }
+        }
+    }
+
+    /**
+     * Walk over every value, key.
+     * Pass every value, key into a user-supplied callable.
+     * 
+     * @param callable $callable function ($value, $key)
+     * @return mixed[]
+     */
+    public static function forEach(/* iterable */$array, callable $callable): array
+    {
+        foreach ($array as $key => $value) {
+            call_user_func($callable, $value, $key);
+        }
+
+        return $array;
+    }
+
     /**
      * Transform values.
      * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
@@ -71,34 +144,23 @@ class Ar
         return $result;
     }
 
+
     /**
-     * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are preserved.
+     * Iteratively reduce the array to a single value using a callback function.
      * 
-     * ```php
-     * use Frontwise\Ar\Ar;
-     * $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
-     * $even = Ar::new([1, 2, 3])
-     *     ->filter(function($value, $key) { return $value % 2 == 0; })
-     *     ->unwrap()
-     * ;
-     * // Result: [0 => 2, 2 => 2, 4 => 3]
-     * ```
-     * 
-     * @param callable $callable function ($value, $key): bool
-     * @return mixed[]
+     * @param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
+     * @param callable $callable function($carry, $value, $key): mixed
+     * @return mixed
      */
-    public static function filter(/* iterable */$array, callable $callable): array
+    public static function reduce(/* iterable */$array, callable $callable, $initial = null)
     {
-        $result = [];
+        $carry = $initial;
 
         foreach ($array as $key => $value) {
-            if (call_user_func($callable, $value, $key)) {
-                $result[$key] = $value;
-            }
+            $carry = call_user_func($callable, $carry, $value, $key);
         }
 
-        return $result;
+        return $carry;
     }
 
     /**
@@ -142,64 +204,5 @@ class Ar
         usort($array, $callable);
 
         return $array;
-    }
-
-    /**
-     * Walk over every value, key.
-     * Pass every value, key into a user-supplied callable.
-     * 
-     * @param callable $callable function ($value, $key)
-     * @return mixed[]
-     */
-    public static function forEach(/* iterable */$array, callable $callable): array
-    {
-        foreach ($array as $key => $value) {
-            call_user_func($callable, $value, $key);
-        }
-
-        return $array;
-    }
-
-    /**
-     * Iteratively reduce the array to a single value using a callback function.
-     * 
-     * @param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
-     * @param callable $callable function($carry, $value, $key): mixed
-     * @return mixed
-     */
-    public static function reduce(/* iterable */$array, callable $callable, $initial = null)
-    {
-        $carry = $initial;
-
-        foreach ($array as $key => $value) {
-            $carry = call_user_func($callable, $carry, $value, $key);
-        }
-
-        return $carry;
-    }
-
-    /**
-     * The flat() method creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
-     * @param int $depth To what level to flatten the array. Default: 1
-     * @return mixed[]
-     */
-    public static function flat(/* iterable */$array, int $depth = 1)
-    {
-        $result = [];
-
-        self::_flat($result, $array, $depth);
-
-        return $result;
-    }
-
-    private static function _flat(array &$result, $input, int $depth)
-    {
-        foreach ($input as $value) {
-            if (is_iterable($value) && $depth > 0) {
-                self::_flat($result, $value, $depth - 1);
-            } else {
-                $result[] = $value;
-            }
-        }
     }
 }
