@@ -77,7 +77,7 @@ $even = Ar::new([1, 2, 3])
 ```
 
 
-@param callable $callable function ($value, $key): bool
+@param callable $callable callable($value, $key): bool
 
 @return mixed[]
 
@@ -101,7 +101,7 @@ Walk over every value, key.
 Pass every value, key into a user-supplied callable.
 
 
-@param callable $callable function ($value, $key)
+@param callable $callable callable($value, $key)
 
 @return mixed[]
 
@@ -118,14 +118,14 @@ Keys are preserved.
 use Frontwise\Ar\Ar;
 $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
 $numbers = Ar::new([1, 2, 3])
-    ->map(function ($value, $key) { return $value * 2; })
+    ->map(function($value, $key) { return $value * 2; })
     ->unwrap()
 ;
 // Result: [2, 4, 6]
 ```
 
 
-@param callable $callable function ($value, $key): mixed
+@param callable $callable callable($value, $key): mixed
 
 @return mixed[]
 
@@ -148,7 +148,7 @@ $numbers = Ar::new([1, 2, 3])
 ```
 
 
-@param callable $callable function ($value, $key): mixed
+@param callable $callable callable($value, $key): mixed
 
 @return mixed[]
 
@@ -184,7 +184,7 @@ $found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
 ```
 
 
-@param callable $callable function ($value, $key): bool
+@param callable $callable callable($value, $key): bool
 
 @return mixed
 
@@ -196,7 +196,7 @@ $found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
 Sort an array by values using a user-defined comparison function.
 
 
-@param callable $callable    function ($valueA, $valueB): int 
+@param callable $callable    function($valueA, $valueB): int 
                              Return an integer smaller then, equal to,
                              or larger than 0 to indicate that $valueA is less
                              then, equal to, or larger than $valueB.

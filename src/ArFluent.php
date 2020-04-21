@@ -29,13 +29,13 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * use Frontwise\Ar\Ar;
      * $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
      * $numbers = Ar::new([1, 2, 3])
-     *     ->map(function ($value, $key) { return $value * 2; })
+     *     ->map(function($value, $key) { return $value * 2; })
      *     ->unwrap()
      * ;
      * // Result: [2, 4, 6]
      * ```
      * 
-     * @param callable $callable function ($value, $key): mixed
+     * @param callable $callable callable($value, $key): mixed
      * @return ArFluent
      */
     public function map(callable $callable): self
@@ -57,7 +57,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
-     * @param callable $callable function ($value, $key): mixed
+     * @param callable $callable callable($value, $key): mixed
      * @return ArFluent
      */
     public function mapKeys(callable $callable): self
@@ -79,7 +79,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
-     * @param callable $callable function ($value, $key): bool
+     * @param callable $callable callable($value, $key): bool
      * @return ArFluent
      */
     public function filter(callable $callable): self
@@ -90,7 +90,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     /**
      * Sort an array by values using a user-defined comparison function.
      * 
-     * @param callable $callable    function ($valueA, $valueB): int 
+     * @param callable $callable    function($valueA, $valueB): int 
      *                              Return an integer smaller then, equal to,
      *                              or larger than 0 to indicate that $valueA is less
      *                              then, equal to, or larger than $valueB.
@@ -114,7 +114,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * // Result: ['a' => 3]
      * ```
      * 
-     * @param callable $callable function ($value, $key): bool
+     * @param callable $callable callable($value, $key): bool
      * @return mixed
      */
     public function search(callable $callable)
@@ -126,7 +126,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
      * Walk over every value, key.
      * Pass every value, key into a user-supplied callable.
      * 
-     * @param callable $callable function ($value, $key)
+     * @param callable $callable callable($value, $key)
      * @return ArFluent
      */
     public function forEach(callable $callable): self

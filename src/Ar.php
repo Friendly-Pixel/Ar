@@ -30,7 +30,7 @@ class Ar
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
-     * @param callable $callable function ($value, $key): bool
+     * @param callable $callable callable($value, $key): bool
      * @return mixed[]
      */
     public static function filter(/* iterable */$array, callable $callable): array
@@ -75,7 +75,7 @@ class Ar
      * Walk over every value, key.
      * Pass every value, key into a user-supplied callable.
      * 
-     * @param callable $callable function ($value, $key)
+     * @param callable $callable callable($value, $key)
      * @return mixed[]
      */
     public static function forEach(/* iterable */$array, callable $callable): array
@@ -96,13 +96,13 @@ class Ar
      * use Frontwise\Ar\Ar;
      * $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
      * $numbers = Ar::new([1, 2, 3])
-     *     ->map(function ($value, $key) { return $value * 2; })
+     *     ->map(function($value, $key) { return $value * 2; })
      *     ->unwrap()
      * ;
      * // Result: [2, 4, 6]
      * ```
      * 
-     * @param callable $callable function ($value, $key): mixed
+     * @param callable $callable callable($value, $key): mixed
      * @return mixed[]
      */
     public static function map(/* iterable */$array, callable $callable): array
@@ -130,7 +130,7 @@ class Ar
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
-     * @param callable $callable function ($value, $key): mixed
+     * @param callable $callable callable($value, $key): mixed
      * @return mixed[]
      */
     public static function mapKeys(/* iterable */$array, callable $callable): array
@@ -176,7 +176,7 @@ class Ar
      * // Result: ['a' => 3]
      * ```
      * 
-     * @param callable $callable function ($value, $key): bool
+     * @param callable $callable callable($value, $key): bool
      * @return mixed
      */
     public static function search(/* iterable */$array, callable $callable)
@@ -193,7 +193,7 @@ class Ar
     /**
      * Sort an array by values using a user-defined comparison function.
      * 
-     * @param callable $callable    function ($valueA, $valueB): int 
+     * @param callable $callable    function($valueA, $valueB): int 
      *                              Return an integer smaller then, equal to,
      *                              or larger than 0 to indicate that $valueA is less
      *                              then, equal to, or larger than $valueB.
