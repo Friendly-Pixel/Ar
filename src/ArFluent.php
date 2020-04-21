@@ -10,11 +10,7 @@ class ArFluent implements \IteratorAggregate, \ArrayAccess
     public function __construct(/* iterable */$array = null)
     {
         if ($array) {
-            if (is_array($array)) {
-                $this->array = $array;
-            } else {
-                $this->array = iterator_to_array($array, true);
-            }
+            $this->array = Ar::makeArray($array);
         }
     }
 

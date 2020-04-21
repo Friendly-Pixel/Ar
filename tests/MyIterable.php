@@ -2,6 +2,9 @@
 
 namespace Frontwise\Ar\Test;
 
+use ArrayIterator;
+use Closure;
+
 class MyIterable implements \IteratorAggregate, \ArrayAccess
 {
     /**

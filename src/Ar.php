@@ -2,6 +2,8 @@
 
 namespace Frontwise\Ar;
 
+use InvalidArgumentException;
+
 class Ar
 {
     public function __construct(/* iterable */$array = null)
@@ -35,6 +37,7 @@ class Ar
      */
     public static function filter(/* iterable */$array, callable $callable): array
     {
+        $array = self::makeArray($array);
         $result = [];
 
         foreach ($array as $key => $value) {
@@ -53,6 +56,7 @@ class Ar
      */
     public static function flat(/* iterable */$array, int $depth = 1)
     {
+        $array = self::makeArray($array);
         $result = [];
 
         self::_flat($result, $array, $depth);
@@ -62,6 +66,7 @@ class Ar
 
     private static function _flat(array &$result, $input, int $depth)
     {
+        $array = self::makeArray($array);
         foreach ($input as $value) {
             if (is_iterable($value) && $depth > 0) {
                 self::_flat($result, $value, $depth - 1);
@@ -80,6 +85,7 @@ class Ar
      */
     public static function forEach(/* iterable */$array, callable $callable): array
     {
+        $array = self::makeArray($array);
         foreach ($array as $key => $value) {
             call_user_func($callable, $value, $key);
         }
@@ -126,6 +132,7 @@ class Ar
      */
     public static function map(/* iterable */$array, callable $callable): array
     {
+        $array = self::makeArray($array);
         $result = [];
 
         foreach ($array as $key => $value) {
@@ -154,6 +161,7 @@ class Ar
      */
     public static function mapKeys(/* iterable */$array, callable $callable): array
     {
+        $array = self::makeArray($array);
         $result = [];
 
         foreach ($array as $key => $value) {
@@ -173,6 +181,7 @@ class Ar
      */
     public static function reduce(/* iterable */$array, callable $callable, $initial = null)
     {
+        $array = self::makeArray($array);
         $carry = $initial;
 
         foreach ($array as $key => $value) {
@@ -200,6 +209,8 @@ class Ar
      */
     public static function search(/* iterable */$array, callable $callable)
     {
+        $array = self::makeArray($array);
+
         foreach ($array as $key => $value) {
             if (call_user_func($callable, $value, $key) === true) {
                 return $value;
@@ -220,8 +231,24 @@ class Ar
      */
     public static function sort(/* iterable */$array, callable $callable): array
     {
+        $array = self::makeArray($array);
         usort($array, $callable);
 
         return $array;
+    }
+
+    public static function makeArray(/* iterable */$array)
+    {
+        if (is_array($array)) {
+            return $array;
+        } elseif (is_iterable($array)) {
+            return iterator_to_array($array, true);
+        } else {
+            $type = gettype($array);
+            if ($type == "object") {
+                $type = get_class($array);
+            }
+            throw new InvalidArgumentException('You must pass an array or iterable. You passed: ' . $type);
+        }
     }
 }

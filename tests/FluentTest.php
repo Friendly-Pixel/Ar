@@ -57,13 +57,6 @@ final class FluentTest extends TestCase
         $this->assertEquals(true, isset($fluent2['c']));
     }
 
-    public function testFluentImplode()
-    {
-        $this->assertEquals(Ar::new([1, 2, 3])->implode(' - '), '1 - 2 - 3');
-        $this->assertEquals(Ar::new(['a', 22])->implode(','), 'a,22');
-        $this->assertEquals(Ar::new([2, 3, 4])->implode(), '234');
-    }
-
     public function timesTwo($value)
     {
         return $value * 2;

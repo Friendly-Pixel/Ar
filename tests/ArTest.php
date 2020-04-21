@@ -6,6 +6,7 @@ namespace Frontwise\Ar\Test;
 
 use Frontwise\Ar\Ar;
 use Frontwise\Ar\ArFluent;
+use Frontwise\Ar\Test\Traits\BaseTrait;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +26,7 @@ final class ArTest extends TestCase
 
         // Iterable
         $it = new MyIterable($a);
-        $b = Ar::$funcName($a, $callable);
+        $b = Ar::$funcName($it, $callable);
         $this->assertEquals($expected, $b);
 
         // Fluent
@@ -118,21 +119,21 @@ final class ArTest extends TestCase
      * 
      * @dataProvider returnsValueProvider
      */
-    public function testReturnsValueFunc(string $funcName, array $input, $expected, callable $callable)
+    public function testReturnsValueFunc(string $funcName, /* array */ $input, $expected, $param1)
     {
         // Functional
         $a = $input;
-        $b = Ar::$funcName($a, $callable);
+        $b = Ar::$funcName($a, $param1);
         $this->assertEquals($expected, $b);
 
         // Iterable
         $it = new MyIterable($a);
-        $b = Ar::$funcName($a, $callable);
+        $b = Ar::$funcName($a, $param1);
         $this->assertEquals($expected, $b);
 
         // Fluent
         $b = Ar::new($a)
-            ->$funcName($callable);
+            ->$funcName($param1);
         $this->assertEquals($expected, $b);
     }
 
@@ -143,7 +144,7 @@ final class ArTest extends TestCase
         // search
         $target = ['a' => 2, 'c' => 3];
         $callable = function ($v) {
-                return ($v['a'] ?? 0) == 2;
+            return ($v['a'] ?? 0) == 2;
         };
         $tests[] = [
             'search', // funcName
@@ -170,13 +171,13 @@ final class ArTest extends TestCase
             [], // input
             '', // expected
             ' - ' // glue
-            ];
+        ];
         $tests[] = [
             'implode', // funcName
             ['a', 'b' => 10], // input
             'a,10', // expected
             ',' // glue
-            ];
+        ];
 
         return $tests;
     }
