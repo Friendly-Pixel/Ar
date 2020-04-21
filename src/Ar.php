@@ -20,16 +20,16 @@ class Ar
 
     /**
      * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are preserved.
+     * Keys are preserved, this means that the returned array will be associative. Use `filterValues` if you want a sequential result.
      * 
      * ```php
      * use Frontwise\Ar\Ar;
-     * $even = Ar::filter([1, 2, 3], function($value, $key) { return $value % 2 == 0; }); 
-     * $even = Ar::new([1, 2, 3])
+     * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
+     * $even = Ar::new([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
      *     ->unwrap()
      * ;
-     * // Result: [0 => 2, 2 => 2, 4 => 3]
+     * // Result: [1 => 2, 3 => 12]
      * ```
      * 
      * @param callable $callable callable($value, $key): bool
@@ -41,8 +41,39 @@ class Ar
         $result = [];
 
         foreach ($array as $key => $value) {
-            if (call_user_func($callable, $value, $key)) {
+            if (call_user_func($callable, $value, $key) === true) {
                 $result[$key] = $value;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
+     * Keys are NOT preserved, the returned array is sequential. Use `filter` to preserve keys.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
+     * $even = Ar::new([1, 2, 3, 12])
+     *     ->filter(function($value, $key) { return $value % 2 == 0; })
+     *     ->unwrap()
+     * ;
+     * // Result: [2, 12]
+     * ```
+     * 
+     * @param callable $callable callable($value, $key): bool
+     * @return mixed[]
+     */
+    public static function filterValues(/* iterable */$array, callable $callable): array
+    {
+        $array = self::makeArray($array);
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (call_user_func($callable, $value, $key) === true) {
+                $result[] = $value;
             }
         }
 

@@ -88,6 +88,45 @@ final class ArTest extends TestCase
                 [81 => 2],
                 $callable
             ];
+            $result[] = [
+                'filter',
+                [],
+                [],
+                $callable
+            ];
+        }
+
+        // filterValues
+        foreach ([
+            function ($v) {
+                return $v % 2 == 0;
+            },
+            [$this, 'isEven'],
+        ] as $callable) {
+            $result[] = [
+                'filterValues',
+                [1, 2, 3, 12],
+                [2, 12],
+                $callable
+            ];
+            $result[] = [
+                'filterValues',
+                ['a' => 1,  'b' => 2, 'c' => 3],
+                [2],
+                $callable
+            ];
+            $result[] = [
+                'filterValues',
+                [12 => 1,  81 => 2, 13 => 3],
+                [2],
+                $callable
+            ];
+            $result[] = [
+                'filterValues',
+                [],
+                [],
+                $callable
+            ];
         }
 
         // Sort

@@ -29,16 +29,19 @@ final class ExceptionsTest extends TestCase
         };
 
         $tests[] = ['new', new stdClass(), null];
-        $tests[] = ['filter', null, $func];
-        $tests[] = ['flat', null, 1];
-        $tests[] = ['forEach', null, $func];
-        $tests[] = ['implode', null, ','];
-        $tests[] = ['map', null, $func];
-        $tests[] = ['mapKeys', null, $func];
-        $tests[] = ['reduce', null, $func];
-        $tests[] = ['search', null, $func];
-        $tests[] = ['sort', null, $func];
-        $tests[] = ['makeArray', null, $func];
+        foreach ([null, new stdClass()] as $empty) {
+            $tests[] = ['filter', $empty, $func];
+            $tests[] = ['filterValues', $empty, $func];
+            $tests[] = ['flat', $empty, 1];
+            $tests[] = ['forEach', $empty, $func];
+            $tests[] = ['implode', $empty, ','];
+            $tests[] = ['map', $empty, $func];
+            $tests[] = ['mapKeys', $empty, $func];
+            $tests[] = ['reduce', $empty, $func];
+            $tests[] = ['search', $empty, $func];
+            $tests[] = ['sort', $empty, $func];
+            $tests[] = ['makeArray', $empty, $func];
+        }
         return $tests;
     }
 
