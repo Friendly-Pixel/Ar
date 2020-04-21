@@ -138,30 +138,47 @@ final class ArTest extends TestCase
 
     public function returnsValueProvider()
     {
-        $result = [];
+        $tests = [];
 
         // search
         $target = ['a' => 2, 'c' => 3];
-        foreach ([
-            function ($v) {
+        $callable = function ($v) {
                 return ($v['a'] ?? 0) == 2;
-            },
-        ] as $callable) {
-            $result[] = [
-                'search',
-                [[], ['a' => 1], $target],
-                $target,
-                $callable
-            ];
-            $result[] = [
-                'search',
-                [[], ['a' => 1], ['b' => 8]],
-                null,
-                $callable
-            ];
-        }
+        };
+        $tests[] = [
+            'search', // funcName
+            [[], ['a' => 1], $target], // input
+            $target, // expected
+            $callable // callable
+        ];
+        $tests[] = [
+            'search', // funcName
+            [[], ['a' => 1], ['b' => 8]], // input
+            null, // expected
+            $callable // callable
+        ];
 
-        return $result;
+        // implode
+        $tests[] = [
+            'implode', // funcName
+            [1, 2, 3], // input
+            '1 - 2 - 3', // expected
+            ' - ' // glue
+        ];
+        $tests[] = [
+            'implode', // funcName
+            [], // input
+            '', // expected
+            ' - ' // glue
+            ];
+        $tests[] = [
+            'implode', // funcName
+            ['a', 'b' => 10], // input
+            'a,10', // expected
+            ',' // glue
+            ];
+
+        return $tests;
     }
 
     /* Callables */

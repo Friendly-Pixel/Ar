@@ -88,6 +88,25 @@ class Ar
     }
 
     /**
+     * Join all values into a big string, using `$glue` as separator.
+     * `$glue` is optional.
+     * 
+     * ```php
+     * use Frontwise\Ar\Ar;
+     * $result = Ar::implode(['a', 'b', 'c'], ','); 
+     * $result = Ar::new(['a', 'b', 'c'])
+     *     ->implode(',')
+     * ;
+     * // result: "a,b,c"
+     * ```
+     */
+    public static function implode(/* iterable */$array, string $glue = ''): string
+    {
+        $array = self::makeArray($array);
+        return implode($glue, $array);
+    }
+
+    /**
      * Transform values.
      * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
      * Keys are preserved.
