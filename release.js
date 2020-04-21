@@ -27,16 +27,26 @@ process.argv;
 // Get latest git version tag
 const tags = execSync("git tag -l")
   .toString()
-  .split("\n");
-if (tags.length <= 1) {
+  .trim()
+  .split("\n")
+  .map(tag => tag
+    .replace("v", "")
+    .trim()
+    .split(".")
+    .map(p => parseInt(p))
+  )
+  .sort((a, b) => {
+    for (let i = 0; i < 3; i++) {
+      if (a[i] != b[i]) return b[i] - a[i];
+    }
+    return 0;
+  })
+;
+if (!tags.length) {
   throw "Could not load git tag names";
 }
-const tag = tags[tags.length - 2];
-const tagParts = tag
-  .replace("v", "")
-  .trim()
-  .split(".")
-  .map(p => parseInt(p));
+const tagParts = tags[0];
+const tag = `v${tagParts.join('.')}`;
 console.log(`Last version: ${tag}`);
 
 // Create new version
@@ -45,8 +55,7 @@ const newVersionParts = tagParts.slice().map((value, i) => {
   if (i > typeIndex) value = 0;
   return value;
 });
-const newVersion = newVersionParts.join(".");
-const newTag = "v" + newVersionParts.join(".");
+const newTag = `v${newVersionParts.join(".")}`;
 console.log(`New version tag: ${newTag}`);
 
 execSync(`git add -A`);
