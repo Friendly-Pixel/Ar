@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Frontwise\Ar\Test;
+namespace FriendlyPixel\Ar\Test;
 
-use Frontwise\Ar\Ar;
-use Frontwise\Ar\ArFluent;
-use Frontwise\Ar\Test\Traits\BaseTrait;
+use FriendlyPixel\Ar\Ar;
+use FriendlyPixel\Ar\ArFluent;
+use FriendlyPixel\Ar\Test\Traits\BaseTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;

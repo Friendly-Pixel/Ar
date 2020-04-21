@@ -16,7 +16,7 @@ Consistent and (optionally) fluent `map`, `reduce` etc. for PHP arrays.
 Functional style:
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $ints = [1, 5, 8];
 $ints = Ar::map($ints, function($value, $key) { return $value * $value; });
 $ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
@@ -25,7 +25,7 @@ $ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
 Fluent style:
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $ints = Ar::new([1, 5, 8])
     ->map(function($value, $key) { return $value * $value; })
     ->filter(function($value, $key) { return $value % 2 == 0; })
@@ -38,7 +38,7 @@ $ints = Ar::new([1, 5, 8])
 Install the latest version using [Composer](https://getcomposer.org/):
 
 ```
-$ composer require frontwise/ar
+$ composer require friendly-pixel/ar
 ```
 
 ## Methods
@@ -72,13 +72,13 @@ Fluent style only:
 Create a new ArFluent object wrapping the array.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
 ;
 
 // If you don't like the Ar::new syntax, you can also use ArFluent directly:
-use Frontwise\Ar\ArFluent;
+use FriendlyPixel\Ar\ArFluent;
 
 $numbers = (new ArFluent([1, 2, 3]))
     ->map(function ($value, $key) { return $value * 2; })
@@ -94,7 +94,7 @@ $numbers = (new ArFluent([1, 2, 3]))
 Return the underlying array.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
     ->unwrap()

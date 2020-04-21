@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Frontwise\Ar\Test\Traits;
+namespace FriendlyPixel\Ar\Test\Traits;
 
 trait BaseTrait
 {

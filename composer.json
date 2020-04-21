@@ -1,7 +1,7 @@
 {
-    "name": "frontwise/ar",
+    "name": "friendly-pixel/ar",
     "description": "Consistent array functions",
-    "homepage": "https://github.com/frontwise/ar/",
+    "homepage": "https://github.com/friendly-pixel/ar/",
     "type": "library",
     "license": "MIT",
     "require": {
@@ -13,8 +13,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Frontwise\\Ar\\": "src",
-            "Frontwise\\Ar\\Test\\": "tests"
+            "FriendlyPixel\\Ar\\": "src",
+            "FriendlyPixel\\Ar\\Test\\": "tests"
         }
     },
     "scripts": {

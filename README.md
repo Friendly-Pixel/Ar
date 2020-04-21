@@ -16,7 +16,7 @@ Consistent and (optionally) fluent `map`, `reduce` etc. for PHP arrays.
 Functional style:
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $ints = [1, 5, 8];
 $ints = Ar::map($ints, function($value, $key) { return $value * $value; });
 $ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
@@ -25,7 +25,7 @@ $ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
 Fluent style:
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $ints = Ar::new([1, 5, 8])
     ->map(function($value, $key) { return $value * $value; })
     ->filter(function($value, $key) { return $value % 2 == 0; })
@@ -38,7 +38,7 @@ $ints = Ar::new([1, 5, 8])
 Install the latest version using [Composer](https://getcomposer.org/):
 
 ```
-$ composer require frontwise/ar
+$ composer require friendly-pixel/ar
 ```
 
 ## Methods
@@ -71,7 +71,7 @@ Fluent style only:
 Count how many items there are in the array.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $count = Ar::count([1, 2, 3]); 
 $count = Ar::new([1, 2, 3])
     ->count()
@@ -88,7 +88,7 @@ Pass every value, key into a user-supplied callable, and only put the item into 
 Keys are preserved, this means that the returned array will be associative. Use `filterValues` if you want a sequential result.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
 $even = Ar::new([1, 2, 3, 12])
     ->filter(function($value, $key) { return $value % 2 == 0; })
@@ -111,7 +111,7 @@ Pass every value, key into a user-supplied callable, and only put the item into 
 Keys are not preserved, the returned array is sequential. Use `filter` to preserve keys.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
 $even = Ar::new([1, 2, 3, 12])
     ->filter(function($value, $key) { return $value % 2 == 0; })
@@ -158,7 +158,7 @@ Join all values into a big string, using `$glue` as separator.
 `$glue` is optional.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $result = Ar::implode(['a', 'b', 'c'], ','); 
 $result = Ar::new(['a', 'b', 'c'])
     ->implode(',')
@@ -174,7 +174,7 @@ $result = Ar::new(['a', 'b', 'c'])
 Return the keys of an array as a sequential array.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
 $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys();
 // result: [3, 'foo', 1]
@@ -193,7 +193,7 @@ Pass every value, key into a user-supplied callable, and put the returned value 
 Keys are preserved.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
 $numbers = Ar::new([1, 2, 3])
     ->map(function($value, $key) { return $value * 2; })
@@ -216,7 +216,7 @@ Transform keys.
 Pass every value, key and key into a user-supplied callable, and use the returned value as key in the result array.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
 $numbers = Ar::new([1, 2, 3])
     ->mapKeys(function($value, $key) { return $key * 2; })
@@ -253,7 +253,7 @@ Return the first value for which the callable returns `true`.
 Returns `null` otherwise.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
 $found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
     ->search(function($value, $key) { return $value['a'] == 3; })
@@ -289,7 +289,7 @@ Sort an array by values using a user-defined comparison function.
 Return the values of an array as a sequential array.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
 $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
 // result: [0 => 'a', 1 => 'b', 2 => 'c']
@@ -318,13 +318,13 @@ $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
 Create a new ArFluent object wrapping the array.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
 ;
 
 // If you don't like the Ar::new syntax, you can also use ArFluent directly:
-use Frontwise\Ar\ArFluent;
+use FriendlyPixel\Ar\ArFluent;
 
 $numbers = (new ArFluent([1, 2, 3]))
     ->map(function ($value, $key) { return $value * 2; })
@@ -340,7 +340,7 @@ $numbers = (new ArFluent([1, 2, 3]))
 Return the underlying array.
 
 ```php
-use Frontwise\Ar\Ar;
+use FriendlyPixel\Ar\Ar;
 $numbers = Ar::new([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
     ->unwrap()

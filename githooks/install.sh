@@ -8,4 +8,4 @@ echo 'Copying pre-commit script'
 cp pre-commit ../.git/hooks
 
 echo 'Symlinking pre-commit.d'
-ln -s ../../githooks/pre-commit.d ../.git/hooks
+ln -sf ../../githooks/pre-commit.d ../.git/hooks

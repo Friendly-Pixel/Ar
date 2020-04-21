@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Frontwise\Ar\Test;
+namespace FriendlyPixel\Ar\Test;
 
-use Frontwise\Ar\Ar;
-use Frontwise\Ar\ArFluent;
+use FriendlyPixel\Ar\Ar;
+use FriendlyPixel\Ar\ArFluent;
 use PHPUnit\Framework\TestCase;
 
 final class ForeachTest extends TestCase

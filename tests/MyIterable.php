@@ -1,6 +1,6 @@
 <?php
 
-namespace Frontwise\Ar\Test;
+namespace FriendlyPixel\Ar\Test;
 
 use ArrayIterator;
 use Closure;

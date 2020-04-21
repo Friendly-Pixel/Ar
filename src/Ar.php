@@ -1,6 +1,6 @@
 <?php
 
-namespace Frontwise\Ar;
+namespace FriendlyPixel\Ar;
 
 use InvalidArgumentException;
 
@@ -17,7 +17,7 @@ class Ar
      * Count how many items there are in the array.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $count = Ar::count([1, 2, 3]); 
      * $count = Ar::new([1, 2, 3])
      *     ->count()
@@ -36,7 +36,7 @@ class Ar
      * Keys are preserved, this means that the returned array will be associative. Use `filterValues` if you want a sequential result.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
      * $even = Ar::new([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
@@ -67,7 +67,7 @@ class Ar
      * Keys are not preserved, the returned array is sequential. Use `filter` to preserve keys.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
      * $even = Ar::new([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
@@ -141,7 +141,7 @@ class Ar
      * `$glue` is optional.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $result = Ar::implode(['a', 'b', 'c'], ','); 
      * $result = Ar::new(['a', 'b', 'c'])
      *     ->implode(',')
@@ -159,7 +159,7 @@ class Ar
      * Return the keys of an array as a sequential array.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
      * $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys();
      * // result: [3, 'foo', 1]
@@ -194,7 +194,7 @@ class Ar
      * Keys are preserved.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
      * $numbers = Ar::new([1, 2, 3])
      *     ->map(function($value, $key) { return $value * 2; })
@@ -223,7 +223,7 @@ class Ar
      * Pass every value, key and key into a user-supplied callable, and use the returned value as key in the result array.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
      * $numbers = Ar::new([1, 2, 3])
      *     ->mapKeys(function($value, $key) { return $key * 2; })
@@ -272,7 +272,7 @@ class Ar
      * Returns `null` otherwise.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
      * $found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
      *     ->search(function($value, $key) { return $value['a'] == 3; })
@@ -328,7 +328,7 @@ class Ar
      * Return the values of an array as a sequential array.
      * 
      * ```php
-     * use Frontwise\Ar\Ar;
+     * use FriendlyPixel\Ar\Ar;
      * $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
      * $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
      * // result: [0 => 'a', 1 => 'b', 2 => 'c']
