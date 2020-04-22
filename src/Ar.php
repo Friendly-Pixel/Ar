@@ -111,7 +111,7 @@ class Ar
     private static function _flat(array &$result, $input, int $depth)
     {
         foreach ($input as $value) {
-            if (self::is_iterable($value) && $depth > 0) {
+            if (is_iterable($value) && $depth > 0) {
                 self::_flat($result, $value, $depth - 1);
             } else {
                 $result[] = $value;
@@ -315,7 +315,7 @@ class Ar
 
     private static function testIterable($array)
     {
-        if (!self::is_iterable($array)) {
+        if (!is_iterable($array)) {
             $type = gettype($array);
             if ($type == "object") {
                 $type = get_class($array);
