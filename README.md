@@ -33,6 +33,8 @@ $ints = Ar::new([1, 5, 8])
 ;
 ```
 
+![](https://github.com/Friendly-Pixel/Ar/workflows/PHPUnit%20tests/badge.svg)
+
 ## Install
 
 Install the latest version using [Composer](https://getcomposer.org/):
