@@ -18,6 +18,9 @@
         }
     },
     "scripts": {
+        "test": [
+            "phpunit -c phpunit.xml"
+        ],
         "post-install-cmd": [
             "bash ./githooks/install.sh"
         ],
