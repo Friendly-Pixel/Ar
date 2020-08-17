@@ -24,7 +24,7 @@ final class ForeachTest extends TestCase
         $this->assertEquals(count($array), $i);
 
         $i = 0;
-        Ar::new($array)->forEach($validate);
+        Ar::wrap($array)->forEach($validate);
         $this->assertEquals(count($array), $i);
     }
 }

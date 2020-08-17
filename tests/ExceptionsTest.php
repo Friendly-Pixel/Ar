@@ -49,6 +49,6 @@ final class ExceptionsTest extends TestCase
     public function testNew()
     {
         $this->expectException(InvalidArgumentException::class);
-        Ar::new(new stdClass());
+        Ar::wrap(new stdClass());
     }
 }

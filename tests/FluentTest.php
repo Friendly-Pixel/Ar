@@ -17,12 +17,12 @@ final class FluentTest extends TestCase
     {
         $expected = [2, 4, 6];
 
-        $a = Ar::new([1, 2, 3])->map([$this, 'timesTwo']);
+        $a = Ar::wrap([1, 2, 3])->map([$this, 'timesTwo']);
         foreach ($a as $key => $value) {
             $this->assertEquals($value, $expected[$key]);
         }
 
-        foreach (Ar::new([1, 2, 3])->map([$this, 'timesTwo']) as $key => $value) {
+        foreach (Ar::wrap([1, 2, 3])->map([$this, 'timesTwo']) as $key => $value) {
             $this->assertEquals($value, $expected[$key]);
         }
     }
@@ -34,7 +34,7 @@ final class FluentTest extends TestCase
                 return $value * 2;
             });
 
-        $numbers2 = Ar::new([1, 2, 3])
+        $numbers2 = Ar::wrap([1, 2, 3])
             ->map(function ($value, $key) {
                 return $value * 2;
             });
@@ -44,7 +44,7 @@ final class FluentTest extends TestCase
 
     public function testFluentArrayAccess()
     {
-        $fluent = Ar::new(['a' => 1, 'b' => 15]);
+        $fluent = Ar::wrap(['a' => 1, 'b' => 15]);
         $this->assertEquals(1, $fluent['a']);
         $this->assertEquals(15, $fluent['b']);
 
@@ -67,7 +67,7 @@ final class FluentTest extends TestCase
 
     public function testOffsetSet()
     {
-        $a = Ar::new([1, 2, 3]);
+        $a = Ar::wrap([1, 2, 3]);
         $a[1] = 5;
         $a[] = 10;
         $this->assertEquals($a->unwrap(), [1, 5, 3, 10]);
@@ -75,7 +75,7 @@ final class FluentTest extends TestCase
 
     public function testOffsetUnset()
     {
-        $a = Ar::new(['a', 'b', 'c']);
+        $a = Ar::wrap(['a', 'b', 'c']);
         unset($a[1]);
         $this->assertEquals($a->unwrap(), [0 => 'a', 2 => 'c']);
     }
@@ -83,7 +83,7 @@ final class FluentTest extends TestCase
     public function testJsonSerializable()
     {
         $array = ['a', 'b', 'c'];
-        $a = Ar::new($array);
+        $a = Ar::wrap($array);
         $this->assertEquals(json_encode($array), json_encode($a));
     }
 }

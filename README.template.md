@@ -26,7 +26,7 @@ Fluent style:
 
 ```php
 use FriendlyPixel\Ar\Ar;
-$ints = Ar::new([1, 5, 8])
+$ints = Ar::wrap([1, 5, 8])
     ->map(function($value, $key) { return $value * $value; })
     ->filter(function($value, $key) { return $value % 2 == 0; })
     ->unwrap()
@@ -49,10 +49,8 @@ $ composer require friendly-pixel/ar
 
 Fluent style only:
 
-- [new()](#new)
+- [wrap()](#wrap)
 - [unwrap()](#unwrap)
-- [toArray()](#toArray)
-
 
 
 <!-- METHODS_HERE -->
@@ -68,22 +66,27 @@ Fluent style only:
 
 
 
-<a name="new"></a>
-### new
+<a name="wrap"></a>
+### wrap
 
-Create a new ArFluent object wrapping the array.
+Wrap an array, so you can use fluent syntax to call multiple methods on it.
+Use `->unwrap()` at the end if you need a pure array again.
 
 ```php
 use FriendlyPixel\Ar\Ar;
-$numbers = Ar::new([1, 2, 3])
+$numbers = Ar::wrap([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
+    ->filter(function ($value) { return $value != 6; })
+    ->unwrap()
 ;
 
-// If you don't like the Ar::new syntax, you can also use ArFluent directly:
+// If you don't like the Ar::wrap syntax, you can also use ArFluent directly:
 use FriendlyPixel\Ar\ArFluent;
 
 $numbers = (new ArFluent([1, 2, 3]))
     ->map(function ($value, $key) { return $value * 2; })
+    ->filter(function ($value) { return $value != 6; })
+    ->unwrap()
 ;
 
 ```
@@ -97,7 +100,7 @@ Return the underlying array.
 
 ```php
 use FriendlyPixel\Ar\Ar;
-$numbers = Ar::new([1, 2, 3])
+$numbers = Ar::wrap([1, 2, 3])
     ->map(function ($value, $key) { return $value * 2; })
     ->unwrap()
 ;

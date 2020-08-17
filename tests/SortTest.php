@@ -17,7 +17,7 @@ final class SortTest extends TestCase
         $result = Ar::sort($array, [$this, 'sortIncreasing']);
         $this->assertEquals($array, [3, 2, 8]);
         $this->assertEquals($result, [2, 3, 8]);
-        $result = Ar::new($array)->sort([$this, 'sortIncreasing'])->toArray();
+        $result = Ar::wrap($array)->sort([$this, 'sortIncreasing'])->toArray();
         $this->assertEquals($array, [3, 2, 8]);
         $this->assertEquals($result, [2, 3, 8]);
     }

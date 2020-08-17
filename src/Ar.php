@@ -6,6 +6,30 @@ use InvalidArgumentException;
 
 class Ar
 {
+    /**
+     * Wrap an array, so you can use fluent syntax to call multiple methods on it.
+     * Use `->unwrap()` at the end if you need a pure array again.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * $numbers = Ar::wrap([1, 2, 3])
+     *     ->map(function ($value, $key) { return $value * 2; })
+     *     ->filter(function ($value) { return $value != 6; })
+     *     ->unwrap()
+     * ;
+     * ```
+     * 
+     * @param mixed $array 
+     */
+    public static function wrap(/* iterable */$array): ArFluent
+    {
+        return new ArFluent($array);
+    }
+
+    /**
+     * Alias for `Ar::wrap`.
+     * @deprecated since 0.6.0. Use `unwrap` instead.
+     */
     public static function new(/* iterable */$array): ArFluent
     {
         return new ArFluent($array);
@@ -19,7 +43,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $count = Ar::count([1, 2, 3]); 
-     * $count = Ar::new([1, 2, 3])
+     * $count = Ar::wrap([1, 2, 3])
      *     ->count()
      * ;
      * // Result: 3
@@ -33,12 +57,12 @@ class Ar
 
     /**
      * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are preserved, this means that the returned array will be associative. Use `filterValues` if you want a sequential result.
+     * Keys are preserved, this means that the returned array can have "gaps" in the keys. Use `filterValues` if you want a sequential result.
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
-     * $even = Ar::new([1, 2, 3, 12])
+     * $even = Ar::wrap([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
      *     ->unwrap()
      * ;
@@ -69,7 +93,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
-     * $even = Ar::new([1, 2, 3, 12])
+     * $even = Ar::wrap([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
      *     ->unwrap()
      * ;
@@ -143,7 +167,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $result = Ar::implode(['a', 'b', 'c'], ','); 
-     * $result = Ar::new(['a', 'b', 'c'])
+     * $result = Ar::wrap(['a', 'b', 'c'])
      *     ->implode(',')
      * ;
      * // result: "a,b,c"
@@ -161,7 +185,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
-     * $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys();
+     * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys();
      * // result: [3, 'foo', 1]
      * ```
      * 
@@ -196,7 +220,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
-     * $numbers = Ar::new([1, 2, 3])
+     * $numbers = Ar::wrap([1, 2, 3])
      *     ->map(function($value, $key) { return $value * 2; })
      *     ->unwrap()
      * ;
@@ -225,7 +249,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
-     * $numbers = Ar::new([1, 2, 3])
+     * $numbers = Ar::wrap([1, 2, 3])
      *     ->mapKeys(function($value, $key) { return $key * 2; })
      *     ->unwrap()
      * ;
@@ -274,7 +298,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
-     * $found = Ar::new([ ['a' => 1], [], ['a' => 3] ])
+     * $found = Ar::wrap([ ['a' => 1], [], ['a' => 3] ])
      *     ->search(function($value, $key) { return $value['a'] == 3; })
      * ;
      * // Result: ['a' => 3]
@@ -335,7 +359,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
-     * $result = Ar::new([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
+     * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
      * // result: [0 => 'a', 1 => 'b', 2 => 'c']
      * ```
      * 

@@ -24,7 +24,7 @@ final class ReduceTest extends TestCase
         $this->assertEquals($expected, $b);
 
         // Fluent
-        $b = Ar::new($a)
+        $b = Ar::wrap($a)
             ->reduce($callable, $initial);
         $this->assertEquals($expected, $b);
     }

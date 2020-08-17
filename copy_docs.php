@@ -14,7 +14,6 @@ $arString = file_get_contents('./src/Ar.php');
 $matches = [];
 $re = '/(\/\*\*(?:.|\n)*\*\/)\s+public static function ([a-zA-Z]+)\(/U';
 preg_match_all($re, $arString, $matches);
-// dump($matches);
 $madeChanges = false;
 
 /* Update ArFluent.php */
@@ -42,18 +41,26 @@ if ($arFluent != file_get_contents('src/ArFluent.php')) {
 /* Generate README.md */
 $readme = file_get_contents('./README.template.md');
 
-$rows = Ar::new($matches[2])
-    ->map(function ($funcName, $i) use ($matches) {
+$rows = Ar::wrap($matches[1])
+    ->filter(function ($comment) {
+        return stripos($comment, '@deprecated') === false;
+    })
+    ->map(function ($value, $i) use ($matches) {
         return [
-            'funcName' => $funcName,
             'comment' => $matches[1][$i],
+            'funcName' => $matches[2][$i],
         ];
+    })
+    ->filter(function ($row) {
+        // Don't include `wrap` docs from Ar.php. 
+        // It belongs to the fluent section of the readme.
+        return $row['funcName'] != 'wrap';
     })
     ->sort(function ($a, $b) {
         return strnatcmp($a['funcName'], $b['funcName']);
     });
 
-$toc = Ar::new($rows)
+$toc = Ar::wrap($rows)
     ->map(function ($row) {
         $funcName = $row['funcName'];
         return "- [$funcName()](#$funcName)";
@@ -61,7 +68,7 @@ $toc = Ar::new($rows)
     ->implode("\n");
 $readme = str_replace('<!-- METHOD_TOC_HERE -->', $toc, $readme);
 
-$methodDocs = Ar::new($rows)
+$methodDocs = Ar::wrap($rows)
     ->map(function ($row) {
         $comment = $row['comment'];
         $comment = str_replace("     * @", "     * \n     * @", $comment);

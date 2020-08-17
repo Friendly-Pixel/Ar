@@ -32,7 +32,7 @@ final class ArTest extends TestCase
         $this->assertEquals($expected, $b);
 
         // Fluent
-        $b = Ar::new($a)
+        $b = Ar::wrap($a)
             ->$funcName($param0)
             ->unwrap();
         $this->assertEquals($expected, $b);
@@ -214,7 +214,7 @@ final class ArTest extends TestCase
         $this->assertEquals($expected, $b);
 
         // Fluent
-        $b = Ar::new($a)
+        $b = Ar::wrap($a)
             ->$funcName($param0);
         $this->assertEquals($expected, $b);
     }
