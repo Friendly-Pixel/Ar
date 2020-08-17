@@ -28,7 +28,7 @@ class Ar
 
     /**
      * Alias for `Ar::wrap`.
-     * @deprecated since 0.6.0. Use `unwrap` instead.
+     * @deprecated since 0.11.0. Use `unwrap` instead.
      */
     public static function new(/* iterable */$array): ArFluent
     {
@@ -185,7 +185,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
-     * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys();
+     * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys()->unwrap();
      * // result: [3, 'foo', 1]
      * ```
      * 
@@ -359,7 +359,7 @@ class Ar
      * ```php
      * use FriendlyPixel\Ar\Ar;
      * $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
-     * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values();
+     * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
      * // result: [0 => 'a', 1 => 'b', 2 => 'c']
      * ```
      * 
