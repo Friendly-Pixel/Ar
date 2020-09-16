@@ -17,7 +17,7 @@
 !!!!!!!!
 !!!!!!!!
 -->
-# Ar makes working with PHP arrays easy.
+# Ar makes working with PHP arrays easy
 
 Fluent style:
 
