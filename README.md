@@ -58,6 +58,7 @@ $ composer require friendly-pixel/ar
 - [last()](#last)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
+- [push()](#push)
 - [reduce()](#reduce)
 - [search()](#search)
 - [sort()](#sort)
@@ -278,6 +279,25 @@ $numbers = Ar::wrap([1, 2, 3])
 
 
 
+<a name="push"></a>
+### push
+
+Append one or more items to the end of array.
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+$result = Ar::push([1, 2], 3, 4); 
+$result = Ar::wrap([1, 2])->push(3, 4)->unwrap();
+
+// result: [1, 2, 3, 4]
+```
+
+
+@return mixed[]
+
+
+
 <a name="reduce"></a>
 ### reduce
 
@@ -333,43 +353,15 @@ Sort an array by values using a user-defined comparison function.
 <a name="unshift"></a>
 ### unshift
 
-    //  * Removes duplicate values.
-    //  * Comparisons are non-strict, i.e. using `==`.
-    //  * Keys are preserved, this means that the returned array can have "gaps" in the keys. Use `uniqueValues` if you want a sequential result.
-    //  * 
-    //  * ```php
-    //  * use FriendlyPixel\Ar\Ar;
-    //  * 
-    //  * $numbers = Ar::unique([1, 2, 3], function($value, $key) { return $key * 2; }); 
-    //  * $numbers = Ar::wrap([1, 2, 3])
-    //  *     ->mapKeys(function($value, $key) { return $key * 2; })
-    //  *     ->unwrap();
-    //  * // Result: [0 => 2, 2 => 2, 4 => 3]
-    //  * ```
-    //  * 
-    //  * @param callable $callable ($value, $key): mixed
-    //  * @return mixed[]
-    //  */
-    // public static function unique(/* iterable */$array): array
-    // {
-    //     $array = self::makeArray($array);
-    //     $result = [];
-
-    //     foreach ($array as $key => $value) {
-    //         $result[call_user_func($callable, $value, $key)] = $value;
-    //     }
-
-    //     return $result;
-    // }
-
-    Prepend one or more items to the beginning of array.
+Prepend one or more items to the beginning of array.
 
 ```php
 use FriendlyPixel\Ar\Ar;
 
 $result = Ar::unshift([3, 4], 1, 2); 
-$result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
-// result: [0 => 'a', 1 => 'b', 2 => 'c']
+$result = Ar::wrap([3, 4])->unshift(1, 2)->unwrap();
+
+// result: [1, 2, 3, 4]
 ```
 
 

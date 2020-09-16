@@ -19,21 +19,21 @@ final class ArTest extends TestCase
      * 
      * @dataProvider returnsArrayProvider
      */
-    public function testReturnsArrayFunc(string $funcName, array $input, array $expected, $param0)
+    public function testReturnsArrayFunc(string $funcName, array $input, array $expected, $param0 = null, $param1 = null)
     {
         // Functional
         $a = $input;
-        $b = Ar::$funcName($a, $param0);
+        $b = Ar::$funcName($a, $param0, $param1);
         $this->assertEquals($expected, $b);
 
         // Iterable
         $it = new MyIterable($a);
-        $b = Ar::$funcName($it, $param0);
+        $b = Ar::$funcName($it, $param0, $param1);
         $this->assertEquals($expected, $b);
 
         // Fluent
         $b = Ar::wrap($a)
-            ->$funcName($param0)
+            ->$funcName($param0, $param1)
             ->unwrap();
         $this->assertEquals($expected, $b);
     }
@@ -153,6 +153,29 @@ final class ArTest extends TestCase
             $tests[] = ['mapKeys', [12 => 1,  81 => 2, 13 => 3], [24 => 1, 162 => 2, 26 => 3], $callable];
         }
 
+        // push
+        $tests[] = [
+            'push',
+            [1, 2],
+            [1, 2, 3, 4],
+            3,
+            4,
+        ];
+        $tests[] = [
+            'push',
+            ['a' => 'foo', 'b' => 'bar'],
+            ['a' => 'foo', 'b' => 'bar', 3, 4],
+            3,
+            4,
+        ];
+        $tests[] = [
+            'push',
+            ['a' => 'foo', 'b' => 'bar'],
+            ['a' => 'foo', 'b' => 'bar', 0 => 3, 1 => 4],
+            3,
+            4,
+        ];
+
         // sort
         foreach ([
             function ($a, $b) {
@@ -172,6 +195,15 @@ final class ArTest extends TestCase
                 $callable
             ];
         }
+
+        // unshift
+        $tests[] = [
+            'unshift',
+            [3, 4],
+            [1, 2, 3, 4],
+            1,
+            2,
+        ];
 
         // values
         $tests[] = [

@@ -27,7 +27,7 @@ final class FluentTest extends TestCase
         }
     }
 
-    public function testFluentEquals()
+    public function testEquals()
     {
         $numbers1 = (new ArFluent([1, 2, 3]))
             ->map(function ($value, $key) {
@@ -40,9 +40,12 @@ final class FluentTest extends TestCase
             });
 
         $this->assertEquals($numbers1, $numbers2);
+
+        $this->assertTrue($numbers1 == $numbers2);
+        $this->assertFalse($numbers1 === $numbers2);
     }
 
-    public function testFluentArrayAccess()
+    public function testArrayAccess()
     {
         $fluent = Ar::wrap(['a' => 1, 'b' => 15]);
         $this->assertEquals(1, $fluent['a']);
@@ -58,6 +61,10 @@ final class FluentTest extends TestCase
 
         $this->assertEquals(false, isset($fluent2['f']));
         $this->assertEquals(true, isset($fluent2['c']));
+
+        $fluent2['d'] = 4;
+
+        $this->assertEquals($fluent2['d'], 4);
     }
 
     public function timesTwo($value)

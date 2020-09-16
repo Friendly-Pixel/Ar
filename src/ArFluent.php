@@ -226,6 +226,25 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     }
 
     /**
+     * Append one or more items to the end of array.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $result = Ar::push([1, 2], 3, 4); 
+     * $result = Ar::wrap([1, 2])->push(3, 4)->unwrap();
+     * 
+     * // result: [1, 2, 3, 4]
+     * ```
+     * 
+     * @return ArFluent
+     */
+    public function push(...$values): self
+    {
+        return new static(Ar::push($this->array, ...$values));
+    }
+
+    /**
      * Return the first value for which the callable returns `true`.
      * Returns `null` otherwise.
      * 
@@ -271,6 +290,25 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     public function reduce(callable $callable, $initial = null)
     {
         return Ar::reduce($this->array, $callable, $initial);
+    }
+
+    /**
+     * Prepend one or more items to the beginning of array.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $result = Ar::unshift([3, 4], 1, 2); 
+     * $result = Ar::wrap([3, 4])->unshift(1, 2)->unwrap();
+     * 
+     * // result: [1, 2, 3, 4]
+     * ```
+     * 
+     * @return ArFluent
+     */
+    public function unshift(...$values): self
+    {
+        return new static(Ar::unshift($this->array, ...$values));
     }
 
     /**
