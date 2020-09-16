@@ -13,25 +13,27 @@ Consistent and (optionally) fluent `map`, `reduce` etc. for PHP arrays.
 * Immutable: the input array is never modified. Fluent style returns a new object for every call.
 * Tested: unit-tested with 100% code coverage.
 
-Functional style:
-
-```php
-use FriendlyPixel\Ar\Ar;
-$ints = [1, 5, 8];
-$ints = Ar::map($ints, function($value, $key) { return $value * $value; });
-$ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
-```
-
 Fluent style:
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $ints = Ar::wrap([1, 5, 8])
-    ->map(function($value, $key) { return $value * $value; })
-    ->filter(function($value, $key) { return $value % 2 == 0; })
-    ->unwrap()
-;
+    ->map(fn($num) => $num * $num)
+    ->filter(fn($value, $key) => $value % 2 == 0)
+    ->unwrap();
 ```
+
+Functional style:
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+$ints = [1, 5, 8];
+$ints = Ar::map($ints, fn($num) => $num * $num);
+$ints = Ar::filter($ints, fn($value, $key) => $value % 2 == 0)
+```
+
 
 ![](https://github.com/Friendly-Pixel/Ar/workflows/PHPUnit%20tests/badge.svg)
 

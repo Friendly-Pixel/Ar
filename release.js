@@ -66,7 +66,7 @@ confirm(`This will:
 
 Please  check git staging area
 
-Type y to confirm:`).then(() => {
+Type y to confirm: `).then(() => {
   execSync(`git tag ${newTag}`);
   execSync(`git push`);
   execSync(`git push --tags`);

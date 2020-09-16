@@ -40,7 +40,7 @@ final class ArTest extends TestCase
 
     public function returnsArrayProvider()
     {
-        $result = [];
+        $tests = [];
 
         // filter
         foreach ([
@@ -49,25 +49,25 @@ final class ArTest extends TestCase
             },
             [$this, 'isEven'],
         ] as $callable) {
-            $result[] = [
+            $tests[] = [
                 'filter',
                 [1, 2, 3, 12],
                 [1 => 2, 3 => 12],
                 $callable
             ];
-            $result[] = [
+            $tests[] = [
                 'filter',
                 ['a' => 1,  'b' => 2, 'c' => 3],
                 ['b' => 2],
                 $callable
             ];
-            $result[] = [
+            $tests[] = [
                 'filter',
                 [12 => 1,  81 => 2, 13 => 3],
                 [81 => 2],
                 $callable
             ];
-            $result[] = [
+            $tests[] = [
                 'filter',
                 [],
                 [],
@@ -82,25 +82,25 @@ final class ArTest extends TestCase
             },
             [$this, 'isEven'],
         ] as $callable) {
-            $result[] = [
+            $tests[] = [
                 'filterValues',
                 [1, 2, 3, 12],
                 [2, 12],
                 $callable
             ];
-            $result[] = [
+            $tests[] = [
                 'filterValues',
                 ['a' => 1,  'b' => 2, 'c' => 3],
                 [2],
                 $callable
             ];
-            $result[] = [
+            $tests[] = [
                 'filterValues',
                 [12 => 1,  81 => 2, 13 => 3],
                 [2],
                 $callable
             ];
-            $result[] = [
+            $tests[] = [
                 'filterValues',
                 [],
                 [],
@@ -109,7 +109,7 @@ final class ArTest extends TestCase
         }
 
         // flat
-        $result[] = [
+        $tests[] = [
             'flat',
             [['a', 'b'], ['c']],
             ['a', 'b', 'c'],
@@ -117,13 +117,13 @@ final class ArTest extends TestCase
         ];
 
         // keys
-        $result[] = [
+        $tests[] = [
             'keys',
             [3 => 'a', 'foo' => 'b', 1 => 'c'],
             [3, 'foo', 1],
             $callable
         ];
-        $result[] = [
+        $tests[] = [
             'keys',
             [],
             [],
@@ -137,9 +137,9 @@ final class ArTest extends TestCase
             },
             [$this, 'timesTwo'],
         ] as $callable) {
-            $result[] = ['map', [1, 2, 3], [2, 4, 6], $callable];
-            $result[] = ['map', ['a' => 1, 'b' => 2, 'c' => 3], ['a' => 2, 'b' => 4, 'c' => 6], $callable];
-            $result[] = ['map', [12 => 1, 81 => 2, 13 => 3], [12 => 2, 81 => 4, 13 => 6], $callable];
+            $tests[] = ['map', [1, 2, 3], [2, 4, 6], $callable];
+            $tests[] = ['map', ['a' => 1, 'b' => 2, 'c' => 3], ['a' => 2, 'b' => 4, 'c' => 6], $callable];
+            $tests[] = ['map', [12 => 1, 81 => 2, 13 => 3], [12 => 2, 81 => 4, 13 => 6], $callable];
         }
 
         // mapKeys
@@ -149,23 +149,23 @@ final class ArTest extends TestCase
             },
             [$this, 'keyTimesTwo'],
         ] as $callable) {
-            $result[] = ['mapKeys', [1, 2, 3], [0 => 1, 2 => 2, 4 => 3], $callable];
-            $result[] = ['mapKeys', [12 => 1,  81 => 2, 13 => 3], [24 => 1, 162 => 2, 26 => 3], $callable];
+            $tests[] = ['mapKeys', [1, 2, 3], [0 => 1, 2 => 2, 4 => 3], $callable];
+            $tests[] = ['mapKeys', [12 => 1,  81 => 2, 13 => 3], [24 => 1, 162 => 2, 26 => 3], $callable];
         }
 
-        // Sort
+        // sort
         foreach ([
             function ($a, $b) {
                 return $a - $b;
             },
         ] as $callable) {
-            $result[] = [
+            $tests[] = [
                 'sort',
                 [4, 8, 8, 1, 3, 6],
                 [1, 3, 4, 6, 8, 8],
                 $callable
             ];
-            $result[] = [
+            $tests[] = [
                 'sort',
                 [],
                 [],
@@ -174,26 +174,26 @@ final class ArTest extends TestCase
         }
 
         // values
-        $result[] = [
+        $tests[] = [
             'values',
             [3 => 'a', 'foo' => 'b', 1 => 'c'],
             [0 => 'a', 1 => 'b', 2 => 'c'],
             $callable
         ];
-        $result[] = [
+        $tests[] = [
             'values',
             [3 => 'a', 'foo' => 'b', 1 => 'c'],
             ['a', 'b', 'c'],
             $callable
         ];
-        $result[] = [
+        $tests[] = [
             'values',
             [],
             [],
             $callable
         ];
 
-        return $result;
+        return $tests;
     }
 
     /**
@@ -201,7 +201,7 @@ final class ArTest extends TestCase
      * 
      * @dataProvider returnsValueProvider
      */
-    public function testReturnsValueFunc(string $funcName, /* array */ $input, $expected, $param0)
+    public function testReturnsValueFunc(string $funcName, /* array */ $input, $expected, $param0 = null)
     {
         // Functional
         $a = $input;
@@ -273,6 +273,50 @@ final class ArTest extends TestCase
             ['a', 'b' => 10], // input
             'a,10', // expected
             ',' // glue
+        ];
+
+        // first
+        $tests[] = [
+            'first', // funcName
+            [1, 2, 3], // input
+            1, // expected
+        ];
+        $tests[] = [
+            'first', // funcName
+            [1 => 'bar', 0 => 'foo'], // input
+            'bar', // expected
+        ];
+        $tests[] = [
+            'first', // funcName
+            ['bar', 'foo'], // input
+            'bar', // expected
+        ];
+        $tests[] = [
+            'first', // funcName
+            ['a' => 'foo', 3 => 'bar', 1 => 'quux'], // input
+            'foo', // expected
+        ];
+
+        // last
+        $tests[] = [
+            'last', // funcName
+            [1, 2, 3], // input
+            3, // expected
+        ];
+        $tests[] = [
+            'last', // funcName
+            [1 => 'bar', 0 => 'foo'], // input
+            'foo', // expected
+        ];
+        $tests[] = [
+            'last', // funcName
+            ['bar', 'foo'], // input
+            'foo', // expected
+        ];
+        $tests[] = [
+            'last', // funcName
+            ['a' => 'foo', 3 => 'bar', 1 => 'quux'], // input
+            'quux', // expected
         ];
 
         return $tests;

@@ -12,11 +12,11 @@ class Ar
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $numbers = Ar::wrap([1, 2, 3])
      *     ->map(function ($value, $key) { return $value * 2; })
      *     ->filter(function ($value) { return $value != 6; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * ```
      * 
      * @param mixed $array 
@@ -28,7 +28,7 @@ class Ar
 
     /**
      * Alias for `Ar::wrap`.
-     * @deprecated since 0.11.0. Use `unwrap` instead.
+     * @deprecated since 0.11.0. Use `wrap` instead.
      */
     public static function new(/* iterable */$array): ArFluent
     {
@@ -42,6 +42,7 @@ class Ar
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $count = Ar::count([1, 2, 3]); 
      * $count = Ar::wrap([1, 2, 3])
      *     ->count()
@@ -61,11 +62,11 @@ class Ar
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
      * $even = Ar::wrap([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * // Result: [1 => 2, 3 => 12]
      * ```
      * 
@@ -92,11 +93,11 @@ class Ar
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
      * $even = Ar::wrap([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * // Result: [2, 12]
      * ```
      * 
@@ -115,6 +116,26 @@ class Ar
         }
 
         return $result;
+    }
+
+    /**
+     * Returns the first value of the array or `false` when it's empty.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * Ar::first([2, 3, 4]);
+     * Ar::wrap([2, 3, 4])->first();
+     * 
+     * // Result: 2
+     * ```
+     * 
+     * @return mixed|false
+     */
+    public static function first(/* iterable */$array)
+    {
+        $array = self::makeArray($array);
+        return reset($array);
     }
 
     /**
@@ -166,6 +187,7 @@ class Ar
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $result = Ar::implode(['a', 'b', 'c'], ','); 
      * $result = Ar::wrap(['a', 'b', 'c'])
      *     ->implode(',')
@@ -184,6 +206,7 @@ class Ar
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
      * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys()->unwrap();
      * // result: [3, 'foo', 1]
@@ -213,17 +236,37 @@ class Ar
     }
 
     /**
+     * Returns the last value of the array or `false` when it's empty.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * Ar::last([2, 3, 4]);
+     * Ar::wrap([2, 3, 4])->last();
+     * 
+     * // Result: 4
+     * ```
+     * 
+     * @return mixed|false
+     */
+    public static function last(/* iterable */$array)
+    {
+        $array = self::makeArray($array);
+        return end($array);
+    }
+
+    /**
      * Transform values.
      * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
      * Keys are preserved.
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
      * $numbers = Ar::wrap([1, 2, 3])
      *     ->map(function($value, $key) { return $value * 2; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * // Result: [2, 4, 6]
      * ```
      * 
@@ -248,11 +291,11 @@ class Ar
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
      * $numbers = Ar::wrap([1, 2, 3])
      *     ->mapKeys(function($value, $key) { return $key * 2; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
@@ -297,6 +340,7 @@ class Ar
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
      * $found = Ar::wrap([ ['a' => 1], [], ['a' => 3] ])
      *     ->search(function($value, $key) { return $value['a'] == 3; })
@@ -353,11 +397,62 @@ class Ar
         return \is_array($var) || $var instanceof \Traversable;
     }
 
+    // /**
+    //  * Removes duplicate values.
+    //  * Comparisons are non-strict, i.e. using `==`.
+    //  * Keys are preserved, this means that the returned array can have "gaps" in the keys. Use `uniqueValues` if you want a sequential result.
+    //  * 
+    //  * ```php
+    //  * use FriendlyPixel\Ar\Ar;
+    //  * 
+    //  * $numbers = Ar::unique([1, 2, 3], function($value, $key) { return $key * 2; }); 
+    //  * $numbers = Ar::wrap([1, 2, 3])
+    //  *     ->mapKeys(function($value, $key) { return $key * 2; })
+    //  *     ->unwrap();
+    //  * // Result: [0 => 2, 2 => 2, 4 => 3]
+    //  * ```
+    //  * 
+    //  * @param callable $callable ($value, $key): mixed
+    //  * @return mixed[]
+    //  */
+    // public static function unique(/* iterable */$array): array
+    // {
+    //     $array = self::makeArray($array);
+    //     $result = [];
+
+    //     foreach ($array as $key => $value) {
+    //         $result[call_user_func($callable, $value, $key)] = $value;
+    //     }
+
+    //     return $result;
+    // }
+
+    /**
+     * Prepend one or more items to the beginning of array.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $result = Ar::unshift([3, 4], 1, 2); 
+     * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
+     * // result: [0 => 'a', 1 => 'b', 2 => 'c']
+     * ```
+     * 
+     * @return mixed[]
+     */
+    public static function unshift(/* iterable */$array, ...$values): array
+    {
+        $result = $array; // make copy
+        array_unshift($result, ...$values);
+        return $result;
+    }
+
     /**
      * Return the values of an array as a sequential array.
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
      * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
      * // result: [0 => 'a', 1 => 'b', 2 => 'c']

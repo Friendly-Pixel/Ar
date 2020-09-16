@@ -25,6 +25,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $count = Ar::count([1, 2, 3]); 
      * $count = Ar::wrap([1, 2, 3])
      *     ->count()
@@ -43,11 +44,11 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
      * $even = Ar::wrap([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * // Result: [1 => 2, 3 => 12]
      * ```
      * 
@@ -65,11 +66,11 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
      * $even = Ar::wrap([1, 2, 3, 12])
      *     ->filter(function($value, $key) { return $value % 2 == 0; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * // Result: [2, 12]
      * ```
      * 
@@ -79,6 +80,25 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     public function filterValues(callable $callable): self
     {
         return new static(Ar::filterValues($this->array, $callable));
+    }
+
+    /**
+     * Returns the first value of the array or `false` when it's empty.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * Ar::first([2, 3, 4]);
+     * Ar::wrap([2, 3, 4])->first();
+     * 
+     * // Result: 2
+     * ```
+     * 
+     * @return mixed|false
+     */
+    public function first()
+    {
+        return Ar::first($this->array);
     }
 
     /**
@@ -110,6 +130,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $result = Ar::implode(['a', 'b', 'c'], ','); 
      * $result = Ar::wrap(['a', 'b', 'c'])
      *     ->implode(',')
@@ -127,6 +148,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
      * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys()->unwrap();
      * // result: [3, 'foo', 1]
@@ -140,17 +162,36 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     }
 
     /**
+     * Returns the last value of the array or `false` when it's empty.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * Ar::last([2, 3, 4]);
+     * Ar::wrap([2, 3, 4])->last();
+     * 
+     * // Result: 4
+     * ```
+     * 
+     * @return mixed|false
+     */
+    public function last()
+    {
+        return Ar::last($this->array);
+    }
+
+    /**
      * Transform values.
      * Pass every value, key into a user-supplied callable, and put the returned value into the result array.
      * Keys are preserved.
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
      * $numbers = Ar::wrap([1, 2, 3])
      *     ->map(function($value, $key) { return $value * 2; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * // Result: [2, 4, 6]
      * ```
      * 
@@ -168,11 +209,11 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
      * $numbers = Ar::wrap([1, 2, 3])
      *     ->mapKeys(function($value, $key) { return $key * 2; })
-     *     ->unwrap()
-     * ;
+     *     ->unwrap();
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
@@ -190,6 +231,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
      * $found = Ar::wrap([ ['a' => 1], [], ['a' => 3] ])
      *     ->search(function($value, $key) { return $value['a'] == 3; })
@@ -236,6 +278,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
+     * 
      * $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
      * $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
      * // result: [0 => 'a', 1 => 'b', 2 => 'c']
@@ -251,9 +294,9 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     /* ======= Fluent only ======= */
 
     /**
-     * @deprecated since 0.11.0. Use `unwrap` instead.
      * Return the underlying array.
      * Alias for `ArFluent::unwrap`
+     * @deprecated since 0.11.0. Use `unwrap` instead.
      * @return array 
      */
     public function toArray()

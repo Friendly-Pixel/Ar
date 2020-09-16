@@ -13,25 +13,27 @@ Consistent and (optionally) fluent `map`, `reduce` etc. for PHP arrays.
 * Immutable: the input array is never modified. Fluent style returns a new object for every call.
 * Tested: unit-tested with 100% code coverage.
 
-Functional style:
-
-```php
-use FriendlyPixel\Ar\Ar;
-$ints = [1, 5, 8];
-$ints = Ar::map($ints, function($value, $key) { return $value * $value; });
-$ints = Ar::filter($ints, function($value, $key) { return $value % 2 == 0; })
-```
-
 Fluent style:
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $ints = Ar::wrap([1, 5, 8])
-    ->map(function($value, $key) { return $value * $value; })
-    ->filter(function($value, $key) { return $value % 2 == 0; })
-    ->unwrap()
-;
+    ->map(fn($num) => $num * $num)
+    ->filter(fn($value, $key) => $value % 2 == 0)
+    ->unwrap();
 ```
+
+Functional style:
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+$ints = [1, 5, 8];
+$ints = Ar::map($ints, fn($num) => $num * $num);
+$ints = Ar::filter($ints, fn($value, $key) => $value % 2 == 0)
+```
+
 
 ![](https://github.com/Friendly-Pixel/Ar/workflows/PHPUnit%20tests/badge.svg)
 
@@ -48,15 +50,18 @@ $ composer require friendly-pixel/ar
 - [count()](#count)
 - [filter()](#filter)
 - [filterValues()](#filterValues)
+- [first()](#first)
 - [flat()](#flat)
 - [forEach()](#forEach)
 - [implode()](#implode)
 - [keys()](#keys)
+- [last()](#last)
 - [map()](#map)
 - [mapKeys()](#mapKeys)
 - [reduce()](#reduce)
 - [search()](#search)
 - [sort()](#sort)
+- [unshift()](#unshift)
 - [values()](#values)
 
 Fluent style only:
@@ -72,6 +77,7 @@ Count how many items there are in the array.
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $count = Ar::count([1, 2, 3]); 
 $count = Ar::wrap([1, 2, 3])
     ->count()
@@ -89,11 +95,11 @@ Keys are preserved, this means that the returned array can have "gaps" in the ke
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
 $even = Ar::wrap([1, 2, 3, 12])
     ->filter(function($value, $key) { return $value % 2 == 0; })
-    ->unwrap()
-;
+    ->unwrap();
 // Result: [1 => 2, 3 => 12]
 ```
 
@@ -112,11 +118,11 @@ Keys are not preserved, the returned array is sequential. Use `filter` to preser
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
 $even = Ar::wrap([1, 2, 3, 12])
     ->filter(function($value, $key) { return $value % 2 == 0; })
-    ->unwrap()
-;
+    ->unwrap();
 // Result: [2, 12]
 ```
 
@@ -124,6 +130,25 @@ $even = Ar::wrap([1, 2, 3, 12])
 @param callable $callable ($value, $key): bool
 
 @return mixed[]
+
+
+
+<a name="first"></a>
+### first
+
+Returns the first value of the array or `false` when it's empty.
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+Ar::first([2, 3, 4]);
+Ar::wrap([2, 3, 4])->first();
+
+// Result: 2
+```
+
+
+@return mixed|false
 
 
 
@@ -159,6 +184,7 @@ Join all values into a big string, using `$glue` as separator.
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $result = Ar::implode(['a', 'b', 'c'], ','); 
 $result = Ar::wrap(['a', 'b', 'c'])
     ->implode(',')
@@ -175,6 +201,7 @@ Return the keys of an array as a sequential array.
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $result = Ar::keys([3 => 'a', 'foo' => 'b', 1 => 'c']); 
 $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys()->unwrap();
 // result: [3, 'foo', 1]
@@ -182,6 +209,25 @@ $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->keys()->unwrap();
 
 
 @return mixed[]
+
+
+
+<a name="last"></a>
+### last
+
+Returns the last value of the array or `false` when it's empty.
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+Ar::last([2, 3, 4]);
+Ar::wrap([2, 3, 4])->last();
+
+// Result: 4
+```
+
+
+@return mixed|false
 
 
 
@@ -194,11 +240,11 @@ Keys are preserved.
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $numbers = Ar::map([1, 2, 3], function($value, $key) { return $value * 2; }); 
 $numbers = Ar::wrap([1, 2, 3])
     ->map(function($value, $key) { return $value * 2; })
-    ->unwrap()
-;
+    ->unwrap();
 // Result: [2, 4, 6]
 ```
 
@@ -217,11 +263,11 @@ Pass every value, key and key into a user-supplied callable, and use the returne
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $numbers = Ar::mapKeys([1, 2, 3], function($value, $key) { return $key * 2; }); 
 $numbers = Ar::wrap([1, 2, 3])
     ->mapKeys(function($value, $key) { return $key * 2; })
-    ->unwrap()
-;
+    ->unwrap();
 // Result: [0 => 2, 2 => 2, 4 => 3]
 ```
 
@@ -254,6 +300,7 @@ Returns `null` otherwise.
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $found = Ar::search([ ['a' => 1], ['a' => 8], ['a' => 3] ], function($value, $key) { return $value['a'] == 3; }); 
 $found = Ar::wrap([ ['a' => 1], [], ['a' => 3] ])
     ->search(function($value, $key) { return $value['a'] == 3; })
@@ -283,6 +330,53 @@ Sort an array by values using a user-defined comparison function.
 
 
 
+<a name="unshift"></a>
+### unshift
+
+    //  * Removes duplicate values.
+    //  * Comparisons are non-strict, i.e. using `==`.
+    //  * Keys are preserved, this means that the returned array can have "gaps" in the keys. Use `uniqueValues` if you want a sequential result.
+    //  * 
+    //  * ```php
+    //  * use FriendlyPixel\Ar\Ar;
+    //  * 
+    //  * $numbers = Ar::unique([1, 2, 3], function($value, $key) { return $key * 2; }); 
+    //  * $numbers = Ar::wrap([1, 2, 3])
+    //  *     ->mapKeys(function($value, $key) { return $key * 2; })
+    //  *     ->unwrap();
+    //  * // Result: [0 => 2, 2 => 2, 4 => 3]
+    //  * ```
+    //  * 
+    //  * @param callable $callable ($value, $key): mixed
+    //  * @return mixed[]
+    //  */
+    // public static function unique(/* iterable */$array): array
+    // {
+    //     $array = self::makeArray($array);
+    //     $result = [];
+
+    //     foreach ($array as $key => $value) {
+    //         $result[call_user_func($callable, $value, $key)] = $value;
+    //     }
+
+    //     return $result;
+    // }
+
+    Prepend one or more items to the beginning of array.
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+$result = Ar::unshift([3, 4], 1, 2); 
+$result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
+// result: [0 => 'a', 1 => 'b', 2 => 'c']
+```
+
+
+@return mixed[]
+
+
+
 <a name="values"></a>
 ### values
 
@@ -290,6 +384,7 @@ Return the values of an array as a sequential array.
 
 ```php
 use FriendlyPixel\Ar\Ar;
+
 $result = Ar::values([3 => 'a', 'foo' => 'b', 1 => 'c']); 
 $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
 // result: [0 => 'a', 1 => 'b', 2 => 'c']
