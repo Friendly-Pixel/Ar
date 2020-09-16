@@ -39,7 +39,27 @@ if ($arFluent != file_get_contents('src/ArFluent.php')) {
 
 
 /* Generate README.md */
-$readme = file_get_contents('./README.template.md');
+$readme = '<!-- 
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!! Never modify this file, `README.md`
+!!!!!!!!
+!!!!!!!! Modify `README_template.md` instead then run `copy_docs.php`
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+!!!!!!!!
+-->
+';
+$readme .= file_get_contents('./README.template.md');
 
 $rows = Ar::wrap($matches[1])
     ->filter(function ($comment) {
