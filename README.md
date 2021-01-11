@@ -353,6 +353,8 @@ $found = Ar::wrap([ ['a' => 1], [], ['a' => 3] ])
 
 Sort an array by values using a user-defined comparison function.
 
+This function assigns new keys to the elements in array. It will remove any existing keys that may have been assigned.
+
 
 @param callable $callable    function($valueA, $valueB): int 
                              Return an integer smaller then, equal to,

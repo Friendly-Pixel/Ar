@@ -269,6 +269,8 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     /**
      * Sort an array by values using a user-defined comparison function.
      * 
+     * This function assigns new keys to the elements in array. It will remove any existing keys that may have been assigned.
+     * 
      * @param callable $callable    function($valueA, $valueB): int 
      *                              Return an integer smaller then, equal to,
      *                              or larger than 0 to indicate that $valueA is less

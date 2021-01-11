@@ -36,6 +36,9 @@ final class ArTest extends TestCase
             ->$funcName($param0, $param1)
             ->unwrap();
         $this->assertEquals($expected, $b);
+
+        // Make sure source array was never modified
+        $this->assertEquals($input, $a);
     }
 
     public function returnsArrayProvider()
@@ -249,6 +252,9 @@ final class ArTest extends TestCase
         $b = Ar::wrap($a)
             ->$funcName($param0);
         $this->assertEquals($expected, $b);
+
+        // Make sure source array was never modified
+        $this->assertEquals($input, $a);
     }
 
     public function returnsValueProvider()
