@@ -199,6 +199,30 @@ final class ArTest extends TestCase
             ];
         }
 
+        // unique
+        $tests[] = [
+            'unique',
+            ['a', 'a', 'a', 'b', 'a'],
+            [0 => 'a', 3 => 'b']
+        ];
+        $tests[] = [
+            'unique',
+            [3 => 'a', 4 => 'a', 6 => 'c'],
+            [3 => 'a', 6 => 'c']
+        ];
+
+        // uniqueValues
+        $tests[] = [
+            'uniqueValues',
+            ['a', 'a', 'a', 'b', 'a'],
+            ['a', 'b']
+        ];
+        $tests[] = [
+            'uniqueValues',
+            [3 => 'a', 4 => 'a', 6 => 'c'],
+            ['a', 'c']
+        ];
+
         // unshift
         $tests[] = [
             'unshift',

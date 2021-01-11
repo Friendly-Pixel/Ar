@@ -75,6 +75,8 @@ $ composer require friendly-pixel/ar
 - [reduce()](#reduce)
 - [search()](#search)
 - [sort()](#sort)
+- [unique()](#unique)
+- [uniqueValues()](#uniqueValues)
 - [unshift()](#unshift)
 - [values()](#values)
 
@@ -360,6 +362,46 @@ This function assigns new keys to the elements in array. It will remove any exis
                              Return an integer smaller then, equal to,
                              or larger than 0 to indicate that $valueA is less
                              then, equal to, or larger than $valueB.
+
+@return mixed[]
+
+
+
+<a name="unique"></a>
+### unique
+
+Remove duplicate values from array.
+Keys are preserved, use `uniqueValues` for a sequential result.
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+$result = Ar::unique(['a', 'a', 'b']); 
+$result = Ar::wrap(['b', 4])->unique(['a', 'a', 'b'])->unwrap();
+
+// result: [0 => 'a', 2 => 'b']
+```
+
+
+@return mixed[]
+
+
+
+<a name="uniqueValues"></a>
+### uniqueValues
+
+Remove duplicate values from array.
+Keys are not preserved, the returned array is sequential. Use `unique` to preserve keys.
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+$result = Ar::uniqueValues(['a', 'a', 'b']); 
+$result = Ar::wrap(['b', 4])->uniqueValues(['a', 'a', 'b'])->unwrap();
+
+// result: ['a', 'b']
+```
+
 
 @return mixed[]
 

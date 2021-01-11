@@ -421,6 +421,46 @@ class Ar
     }
 
     /**
+     * Remove duplicate values from array.
+     * Keys are preserved, use `uniqueValues` for a sequential result.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $result = Ar::unique(['a', 'a', 'b']); 
+     * $result = Ar::wrap(['b', 4])->unique(['a', 'a', 'b'])->unwrap();
+     * 
+     * // result: [0 => 'a', 2 => 'b']
+     * ```
+     * 
+     * @return mixed[]
+     */
+    public static function unique(/* iterable */$array): array
+    {
+        return array_unique(self::makeArray($array));
+    }
+
+    /**
+     * Remove duplicate values from array.
+     * Keys are not preserved, the returned array is sequential. Use `unique` to preserve keys.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $result = Ar::uniqueValues(['a', 'a', 'b']); 
+     * $result = Ar::wrap(['b', 4])->uniqueValues(['a', 'a', 'b'])->unwrap();
+     * 
+     * // result: ['a', 'b']
+     * ```
+     * 
+     * @return mixed[]
+     */
+    public static function uniqueValues(/* iterable */$array): array
+    {
+        return array_values(array_unique(self::makeArray($array)));
+    }
+
+    /**
      * Prepend one or more items to the beginning of array.
      * 
      * ```php

@@ -295,6 +295,46 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     }
 
     /**
+     * Remove duplicate values from array.
+     * Keys are preserved, use `uniqueValues` for a sequential result.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $result = Ar::unique(['a', 'a', 'b']); 
+     * $result = Ar::wrap(['b', 4])->unique(['a', 'a', 'b'])->unwrap();
+     * 
+     * // result: [0 => 'a', 2 => 'b']
+     * ```
+     * 
+     * @return ArFluent
+     */
+    public function unique(): self
+    {
+        return new static(Ar::unique($this->array));
+    }
+
+    /**
+     * Remove duplicate values from array.
+     * Keys are not preserved, the returned array is sequential. Use `unique` to preserve keys.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $result = Ar::uniqueValues(['a', 'a', 'b']); 
+     * $result = Ar::wrap(['b', 4])->uniqueValues(['a', 'a', 'b'])->unwrap();
+     * 
+     * // result: ['a', 'b']
+     * ```
+     * 
+     * @return ArFluent
+     */
+    public function uniqueValues(): self
+    {
+        return new static(Ar::uniqueValues($this->array));
+    }
+
+    /**
      * Prepend one or more items to the beginning of array.
      * 
      * ```php
