@@ -10,6 +10,7 @@ use FriendlyPixel\Ar\Test\Traits\BaseTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use TypeError;
 
 final class ExceptionsTest extends TestCase
 {
@@ -18,7 +19,7 @@ final class ExceptionsTest extends TestCase
     /** @dataProvider provider */
     public function testException($funcName, $param0, $param1)
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
         Ar::$funcName($param0, $param1);
     }
 
@@ -48,7 +49,7 @@ final class ExceptionsTest extends TestCase
 
     public function testNew()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
         Ar::wrap(new stdClass());
     }
 }

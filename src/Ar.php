@@ -21,7 +21,7 @@ class Ar
      * 
      * @param mixed $array 
      */
-    public static function wrap(/* iterable */$array): ArFluent
+    public static function wrap(iterable $array): ArFluent
     {
         return new ArFluent($array);
     }
@@ -30,7 +30,7 @@ class Ar
      * Alias for `Ar::wrap`.
      * @deprecated since 0.11.0. Use `wrap` instead.
      */
-    public static function new(/* iterable */$array): ArFluent
+    public static function new(iterable $array): ArFluent
     {
         return new ArFluent($array);
     }
@@ -50,7 +50,7 @@ class Ar
      * // Result: 3
      * ```
      */
-    public static function count(/* iterable */$array): int
+    public static function count(iterable $array): int
     {
         $array = self::makeArray($array);
         return count($array);
@@ -73,7 +73,7 @@ class Ar
      * @param callable $callable ($value, $key): bool
      * @return mixed[]
      */
-    public static function filter(/* iterable */$array, callable $callable): array
+    public static function filter(iterable $array, callable $callable): array
     {
         self::testIterable($array);
         $result = [];
@@ -104,7 +104,7 @@ class Ar
      * @param callable $callable ($value, $key): bool
      * @return mixed[]
      */
-    public static function filterValues(/* iterable */$array, callable $callable): array
+    public static function filterValues(iterable $array, callable $callable): array
     {
         self::testIterable($array);
         $result = [];
@@ -132,7 +132,7 @@ class Ar
      * 
      * @return mixed|false
      */
-    public static function first(/* iterable */$array)
+    public static function first(iterable $array)
     {
         $array = self::makeArray($array);
         return reset($array);
@@ -143,7 +143,7 @@ class Ar
      * @param int $depth To what level to flatten the array. Default: 1
      * @return mixed[]
      */
-    public static function flat(/* iterable */$array, int $depth = 1)
+    public static function flat(iterable $array, int $depth = 1)
     {
         self::testIterable($array);
         $result = [];
@@ -171,7 +171,7 @@ class Ar
      * @param callable $callable ($value, $key)
      * @return mixed[]
      */
-    public static function forEach(/* iterable */$array, callable $callable): array
+    public static function forEach(iterable $array, callable $callable): array
     {
         self::testIterable($array);
         foreach ($array as $key => $value) {
@@ -195,7 +195,7 @@ class Ar
      * // result: "a,b,c"
      * ```
      */
-    public static function implode(/* iterable */$array, string $glue = ''): string
+    public static function implode(iterable $array, string $glue = ''): string
     {
         $array = self::makeArray($array);
         return implode($glue, $array);
@@ -214,13 +214,13 @@ class Ar
      * 
      * @return mixed[]
      */
-    public static function keys(/* iterable */$array): array
+    public static function keys(iterable $array): array
     {
         $array = self::makeArray($array);
         return array_keys($array);
     }
 
-    public static function makeArray(/* iterable */$array)
+    public static function makeArray(iterable $array)
     {
         if (is_array($array)) {
             return $array;
@@ -249,7 +249,7 @@ class Ar
      * 
      * @return mixed|false
      */
-    public static function last(/* iterable */$array)
+    public static function last(iterable $array)
     {
         $array = self::makeArray($array);
         return end($array);
@@ -273,7 +273,7 @@ class Ar
      * @param callable $callable ($value, $key): mixed
      * @return mixed[]
      */
-    public static function map(/* iterable */$array, callable $callable): array
+    public static function map(iterable $array, callable $callable): array
     {
         $array = self::makeArray($array);
         $result = [];
@@ -302,7 +302,7 @@ class Ar
      * @param callable $callable ($value, $key): mixed
      * @return mixed[]
      */
-    public static function mapKeys(/* iterable */$array, callable $callable): array
+    public static function mapKeys(iterable $array, callable $callable): array
     {
         $array = self::makeArray($array);
         $result = [];
@@ -328,7 +328,7 @@ class Ar
      * 
      * @return mixed[]
      */
-    public static function push(/* iterable */$array, ...$values): array
+    public static function push(iterable $array, ...$values): array
     {
         $array = self::makeArray($array);
         $result = $array; // make copy
@@ -343,7 +343,7 @@ class Ar
      * @param callable $callable function($carry, $value, $key): mixed
      * @return mixed
      */
-    public static function reduce(/* iterable */$array, callable $callable, $initial = null)
+    public static function reduce(iterable $array, callable $callable, $initial = null)
     {
         self::testIterable($array);
         $carry = $initial;
@@ -372,7 +372,7 @@ class Ar
      * @param callable $callable ($value, $key): bool
      * @return mixed
      */
-    public static function search(/* iterable */$array, callable $callable)
+    public static function search(iterable $array, callable $callable)
     {
         self::testIterable($array);
 
@@ -396,7 +396,7 @@ class Ar
      *                              then, equal to, or larger than $valueB.
      * @return mixed[]
      */
-    public static function sort(/* iterable */$array, callable $callable): array
+    public static function sort(iterable $array, callable $callable): array
     {
         $array = self::makeArray($array);
         usort($array, $callable);
@@ -435,7 +435,7 @@ class Ar
      * 
      * @return mixed[]
      */
-    public static function unique(/* iterable */$array): array
+    public static function unique(iterable $array): array
     {
         return array_unique(self::makeArray($array));
     }
@@ -455,7 +455,7 @@ class Ar
      * 
      * @return mixed[]
      */
-    public static function uniqueValues(/* iterable */$array): array
+    public static function uniqueValues(iterable $array): array
     {
         return array_values(array_unique(self::makeArray($array)));
     }
@@ -474,7 +474,7 @@ class Ar
      * 
      * @return mixed[]
      */
-    public static function unshift(/* iterable */$array, ...$values): array
+    public static function unshift(iterable $array, ...$values): array
     {
         $array = self::makeArray($array);
         $result = $array; // make copy
@@ -495,7 +495,7 @@ class Ar
      * 
      * @return mixed[]
      */
-    public static function values(/* iterable */$array): array
+    public static function values(iterable $array): array
     {
         $array = self::makeArray($array);
         return array_values($array);
