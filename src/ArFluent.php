@@ -11,7 +11,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     /** @var array $array */
     private $array = [];
 
-    public function __construct(/* iterable */$array = null)
+    public function __construct(iterable $array = null)
     {
         if ($array) {
             $this->array = Ar::makeArray($array);
@@ -226,6 +226,29 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     }
 
     /**
+     * Merges the elements of one or more arrays together so that the values of one are appended to the end of the previous one.
+     * If the input arrays have the same string keys, then the later value for that key will overwrite the previous one. If, however, the arrays contain numeric keys, the later value will not overwrite the original value, but will be appended.
+     * Values in the input arrays with numeric keys will be renumbered with incrementing keys starting from zero in the result array.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $numbers = Ar::merge(['a', 'b'], ['c', 'd'])); 
+     * $numbers = Ar::wrap(['a', 'b'])
+     *     ->merge(['b', 'c'])
+     *     ->unwrap();
+     * // Result:['a', 'b', 'c', 'd']
+     * ```
+     * 
+     * @var iterable[] $arrays
+     * @return ArFluent
+     */
+    public function merge(...$arrays): self
+    {
+        return new static(Ar::merge($this->array, ...$arrays));
+    }
+
+    /**
      * Append one or more items to the end of array.
      * 
      * ```php
@@ -386,6 +409,25 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
 
     /**
      * Return the underlying array.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * $numbers = Ar::wrap([1, 2, 3])
+     *     ->map(function ($value, $key) { return $value * 2; })
+     *     ->unwrap()
+     * ;
+     * // Result: [2, 4, 6]
+     * ```
+     * 
+     * Often you don't need to call this, since you can use use an `ArFluent` instance like an array:
+     * 
+     * ```php
+     * $letters = Ar::wrap(['a', 'b', 'c']);
+     * $a = $letters[0]; // works
+     * foreach ($letters as $letter) { // also works
+     *      print($letter);
+     * }
+     * ```
      * @return array 
      */
     public function unwrap()

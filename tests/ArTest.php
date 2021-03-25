@@ -156,6 +156,29 @@ final class ArTest extends TestCase
             $tests[] = ['mapKeys', [12 => 1,  81 => 2, 13 => 3], [24 => 1, 162 => 2, 26 => 3], $callable];
         }
 
+        // merge
+        $tests[] = [
+            'merge',
+            ['a', 'b'],
+            ['a', 'b', 'c', 'd', 'e'],
+            ['c', 'd'],
+            ['e'],
+        ];
+        $tests[] = [
+            'merge',
+            ['a', 'b', 'k1' => 'v1'],
+            ['a', 'b', 'c',  'd', 'e', 'k1' => 'v1', 'k2' => 'v2'],
+            ['c', 'k2' => 'v2', 'd'],
+            ['e'],
+        ];
+        $tests[] = [
+            'merge',
+            [],
+            [],
+            [],
+            [],
+        ];
+
         // push
         $tests[] = [
             'push',

@@ -315,6 +315,33 @@ class Ar
     }
 
     /**
+     * Merges the elements of one or more arrays together so that the values of one are appended to the end of the previous one.
+     * If the input arrays have the same string keys, then the later value for that key will overwrite the previous one. If, however, the arrays contain numeric keys, the later value will not overwrite the original value, but will be appended.
+     * Values in the input arrays with numeric keys will be renumbered with incrementing keys starting from zero in the result array.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $numbers = Ar::merge(['a', 'b'], ['c', 'd'])); 
+     * $numbers = Ar::wrap(['a', 'b'])
+     *     ->merge(['b', 'c'])
+     *     ->unwrap();
+     * // Result:['a', 'b', 'c', 'd']
+     * ```
+     * 
+     * @var iterable[] $arrays
+     * @return mixed[]
+     */
+    public static function merge(...$arrays): array
+    {
+        foreach ($arrays as $i => $array) {
+            $arrays[$i] = self::makeArray($array);
+        }
+
+        return array_merge(...$arrays);
+    }
+
+    /**
      * Append one or more items to the end of array.
      * 
      * ```php
