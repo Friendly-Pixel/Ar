@@ -2,7 +2,7 @@
 
 * __Consistent__: All functions accept the array as first parameter.
 * __Immutable__: the input array is never modified. Fluent style returns a new object for every call.
-* __Tested__: unit-tested with 100% code coverage.
+* __Tested__: unit-tested with 100% code coverage. ![](https://github.com/Friendly-Pixel/Ar/workflows/PHPUnit%20tests/badge.svg)
 * __Familiar__: function names follow PHP whereever possible.
 
 Fluent style:
@@ -24,9 +24,6 @@ $ints = [1, 5, 8];
 $ints = Ar::map($ints, fn($num) => $num * $num);
 $ints = Ar::filter($ints, fn($value, $key) => $value % 2 == 0)
 ```
-
-
-![](https://github.com/Friendly-Pixel/Ar/workflows/PHPUnit%20tests/badge.svg)
 
 ## Install
 
