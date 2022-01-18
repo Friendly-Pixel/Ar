@@ -1,5 +1,10 @@
 # Ar makes working with PHP arrays easy
 
+* __Consistent__: All functions accept the array as first parameter.
+* __Immutable__: the input array is never modified. Fluent style returns a new object for every call.
+* __Tested__: unit-tested with 100% code coverage.
+* __Familiar__: function names follow PHP whereever possible.
+
 Fluent style:
 
 ```php
@@ -7,10 +12,7 @@ use FriendlyPixel\Ar\Ar;
 
 $ints = Ar::wrap([1, 6, 8])
     ->map(fn ($num) => $num * $num)
-    ->filterValues(fn ($value, $key) => $value % 2 == 0)
-    ->unwrap();
-
-// Result: [36, 64]
+    ->filter(fn ($value, $key) => $value % 2 == 0);
 ```
 
 Functional style:
@@ -22,11 +24,6 @@ $ints = [1, 5, 8];
 $ints = Ar::map($ints, fn($num) => $num * $num);
 $ints = Ar::filter($ints, fn($value, $key) => $value % 2 == 0)
 ```
-
-* Consistent: All functional style functions accept the array as first parameter.
-* Immutable: the input array is never modified. Fluent style returns a new object for every call.
-* Tested: unit-tested with 100% code coverage.
-* Familiar: function names follow PHP whereever possible.
 
 
 ![](https://github.com/Friendly-Pixel/Ar/workflows/PHPUnit%20tests/badge.svg)

@@ -29,11 +29,11 @@ final class ExceptionsTest extends TestCase
         $func = function () {
         };
 
-        $tests[] = ['new', new stdClass(), null];
+        $tests[] = ['wrap', new stdClass(), null];
+        $tests[] = ['makeArray', new stdClass(), null];
         foreach ([null, new stdClass()] as $empty) {
             $tests[] = ['count', $empty, $func];
             $tests[] = ['filter', $empty, $func];
-            $tests[] = ['filterValues', $empty, $func];
             $tests[] = ['flat', $empty, 1];
             $tests[] = ['forEach', $empty, $func];
             $tests[] = ['implode', $empty, ','];

@@ -26,15 +26,6 @@ class Ar
         return new ArFluent($array);
     }
 
-    /**
-     * Alias for `Ar::wrap`.
-     * @deprecated since 0.11.0. Use `wrap` instead.
-     */
-    public static function new(iterable $array): ArFluent
-    {
-        return new ArFluent($array);
-    }
-
     /* === Functions, sorted alphabetically === */
 
     /**
@@ -58,7 +49,7 @@ class Ar
 
     /**
      * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are preserved, this means that the returned array can have "gaps" in the keys. Use `filterValues` if you want a sequential result.
+     * Keys are preserved only when `array_is_list($array)` returns false;
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
@@ -75,43 +66,20 @@ class Ar
      */
     public static function filter(iterable $array, callable $callable): array
     {
-        self::testIterable($array);
+        $array = self::makeArray($array);
         $result = [];
 
-        foreach ($array as $key => $value) {
-            if (call_user_func($callable, $value, $key) === true) {
-                $result[$key] = $value;
+        if (array_is_list($array)) {
+            foreach ($array as $key => $value) {
+                if (call_user_func($callable, $value, $key) === true) {
+                    $result[] = $value;
+                }
             }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are not preserved, the returned array is sequential. Use `filter` to preserve keys.
-     * 
-     * ```php
-     * use FriendlyPixel\Ar\Ar;
-     * 
-     * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
-     * $even = Ar::wrap([1, 2, 3, 12])
-     *     ->filter(function($value, $key) { return $value % 2 == 0; })
-     *     ->unwrap();
-     * // Result: [2, 12]
-     * ```
-     * 
-     * @param callable $callable ($value, $key): bool
-     * @return mixed[]
-     */
-    public static function filterValues(iterable $array, callable $callable): array
-    {
-        self::testIterable($array);
-        $result = [];
-
-        foreach ($array as $key => $value) {
-            if (call_user_func($callable, $value, $key) === true) {
-                $result[] = $value;
+        } else {
+            foreach ($array as $key => $value) {
+                if (call_user_func($callable, $value, $key) === true) {
+                    $result[$key] = $value;
+                }
             }
         }
 
@@ -145,7 +113,6 @@ class Ar
      */
     public static function flat(iterable $array, int $depth = 1)
     {
-        self::testIterable($array);
         $result = [];
 
         self::_flat($result, $array, $depth);
@@ -173,7 +140,6 @@ class Ar
      */
     public static function forEach(iterable $array, callable $callable): array
     {
-        self::testIterable($array);
         foreach ($array as $key => $value) {
             call_user_func($callable, $value, $key);
         }
@@ -224,15 +190,9 @@ class Ar
     {
         if (is_array($array)) {
             return $array;
-        } elseif (is_iterable($array)) {
-            return iterator_to_array($array, true);
-        } else {
-            $type = gettype($array);
-            if ($type == "object") {
-                $type = get_class($array);
-            }
-            throw new InvalidArgumentException('You must pass an array or iterable. You passed: ' . $type);
         }
+
+        return iterator_to_array($array, true);
     }
 
     /**
@@ -372,7 +332,6 @@ class Ar
      */
     public static function reduce(iterable $array, callable $callable, $initial = null)
     {
-        self::testIterable($array);
         $carry = $initial;
 
         foreach ($array as $key => $value) {
@@ -401,8 +360,6 @@ class Ar
      */
     public static function search(iterable $array, callable $callable)
     {
-        self::testIterable($array);
-
         foreach ($array as $key => $value) {
             if (call_user_func($callable, $value, $key) === true) {
                 return $value;
@@ -431,25 +388,30 @@ class Ar
         return $array;
     }
 
-    private static function testIterable($array)
-    {
-        if (!is_iterable($array)) {
-            $type = gettype($array);
-            if ($type == "object") {
-                $type = get_class($array);
-            }
-            throw new InvalidArgumentException('You must pass an array or iterable. You passed: ' . $type);
-        }
-    }
+    // private static function testIterable($array)
+    // {
+    //     if (!is_iterable($array)) {
+    //         $type = gettype($array);
+    //         if ($type == "object") {
+    //             $type = get_class($array);
+    //         }
+    //         throw new InvalidArgumentException('You must pass an array or iterable. You passed: ' . $type);
+    //     }
+    // }
 
-    public static function is_iterable($var)
-    {
-        return \is_array($var) || $var instanceof \Traversable;
-    }
+    // public static function is_iterable($var)
+    // {
+    //     return \is_array($var) || $var instanceof \Traversable;
+    // }
+
+    // public static function toArray(iterable $iterable): array {
+    //     if (is_array($iterable)) return $iterable;
+    //     return iterator_to_array($iterable);
+    // }
 
     /**
      * Remove duplicate values from array.
-     * Keys are preserved, use `uniqueValues` for a sequential result.
+     * Keys are preserved only when `array_is_list($array)` returns false;
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
@@ -464,27 +426,14 @@ class Ar
      */
     public static function unique(iterable $array): array
     {
-        return array_unique(self::makeArray($array));
-    }
+        $array = self::makeArray($array);
 
-    /**
-     * Remove duplicate values from array.
-     * Keys are not preserved, the returned array is sequential. Use `unique` to preserve keys.
-     * 
-     * ```php
-     * use FriendlyPixel\Ar\Ar;
-     * 
-     * $result = Ar::uniqueValues(['a', 'a', 'b']); 
-     * $result = Ar::wrap(['b', 4])->uniqueValues(['a', 'a', 'b'])->unwrap();
-     * 
-     * // result: ['a', 'b']
-     * ```
-     * 
-     * @return mixed[]
-     */
-    public static function uniqueValues(iterable $array): array
-    {
-        return array_values(array_unique(self::makeArray($array)));
+        $result = array_unique(self::makeArray($array));
+        if (array_is_list($array)) {
+            return array_values($result);
+        } else {
+            return $result;
+        }
     }
 
     /**

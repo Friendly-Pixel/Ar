@@ -19,6 +19,11 @@
 -->
 # Ar makes working with PHP arrays easy
 
+* __Consistent__: All functions accept the array as first parameter.
+* __Immutable__: the input array is never modified. Fluent style returns a new object for every call.
+* __Tested__: unit-tested with 100% code coverage.
+* __Familiar__: function names follow PHP whereever possible.
+
 Fluent style:
 
 ```php
@@ -26,10 +31,7 @@ use FriendlyPixel\Ar\Ar;
 
 $ints = Ar::wrap([1, 6, 8])
     ->map(fn ($num) => $num * $num)
-    ->filterValues(fn ($value, $key) => $value % 2 == 0)
-    ->unwrap();
-
-// Result: [36, 64]
+    ->filter(fn ($value, $key) => $value % 2 == 0);
 ```
 
 Functional style:
@@ -41,11 +43,6 @@ $ints = [1, 5, 8];
 $ints = Ar::map($ints, fn($num) => $num * $num);
 $ints = Ar::filter($ints, fn($value, $key) => $value % 2 == 0)
 ```
-
-* Consistent: All functional style functions accept the array as first parameter.
-* Immutable: the input array is never modified. Fluent style returns a new object for every call.
-* Tested: unit-tested with 100% code coverage.
-* Familiar: function names follow PHP whereever possible.
 
 
 ![](https://github.com/Friendly-Pixel/Ar/workflows/PHPUnit%20tests/badge.svg)
@@ -62,7 +59,6 @@ $ composer require friendly-pixel/ar
 
 - [count()](#count)
 - [filter()](#filter)
-- [filterValues()](#filterValues)
 - [first()](#first)
 - [flat()](#flat)
 - [forEach()](#forEach)
@@ -77,7 +73,6 @@ $ composer require friendly-pixel/ar
 - [search()](#search)
 - [sort()](#sort)
 - [unique()](#unique)
-- [uniqueValues()](#uniqueValues)
 - [unshift()](#unshift)
 - [values()](#values)
 
@@ -108,7 +103,7 @@ $count = Ar::wrap([1, 2, 3])
 ### filter
 
 Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-Keys are preserved, this means that the returned array can have "gaps" in the keys. Use `filterValues` if you want a sequential result.
+Keys are preserved only when `array_is_list($array)` returns false;
 
 ```php
 use FriendlyPixel\Ar\Ar;
@@ -118,29 +113,6 @@ $even = Ar::wrap([1, 2, 3, 12])
     ->filter(function($value, $key) { return $value % 2 == 0; })
     ->unwrap();
 // Result: [1 => 2, 3 => 12]
-```
-
-
-@param callable $callable ($value, $key): bool
-
-@return mixed[]
-
-
-
-<a name="filterValues"></a>
-### filterValues
-
-Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-Keys are not preserved, the returned array is sequential. Use `filter` to preserve keys.
-
-```php
-use FriendlyPixel\Ar\Ar;
-
-$even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
-$even = Ar::wrap([1, 2, 3, 12])
-    ->filter(function($value, $key) { return $value % 2 == 0; })
-    ->unwrap();
-// Result: [2, 12]
 ```
 
 
@@ -396,7 +368,7 @@ This function assigns new keys to the elements in array. It will remove any exis
 ### unique
 
 Remove duplicate values from array.
-Keys are preserved, use `uniqueValues` for a sequential result.
+Keys are preserved only when `array_is_list($array)` returns false;
 
 ```php
 use FriendlyPixel\Ar\Ar;
@@ -405,26 +377,6 @@ $result = Ar::unique(['a', 'a', 'b']);
 $result = Ar::wrap(['b', 4])->unique(['a', 'a', 'b'])->unwrap();
 
 // result: [0 => 'a', 2 => 'b']
-```
-
-
-@return mixed[]
-
-
-
-<a name="uniqueValues"></a>
-### uniqueValues
-
-Remove duplicate values from array.
-Keys are not preserved, the returned array is sequential. Use `unique` to preserve keys.
-
-```php
-use FriendlyPixel\Ar\Ar;
-
-$result = Ar::uniqueValues(['a', 'a', 'b']); 
-$result = Ar::wrap(['b', 4])->uniqueValues(['a', 'a', 'b'])->unwrap();
-
-// result: ['a', 'b']
 ```
 
 

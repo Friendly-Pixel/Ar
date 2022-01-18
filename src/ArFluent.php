@@ -40,7 +40,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
 
     /**
      * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are preserved, this means that the returned array can have "gaps" in the keys. Use `filterValues` if you want a sequential result.
+     * Keys are preserved only when `array_is_list($array)` returns false;
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
@@ -60,27 +60,6 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
         return new static(Ar::filter($this->array, $callable));
     }
 
-    /**
-     * Pass every value, key into a user-supplied callable, and only put the item into the result array if the returned value is `true`.
-     * Keys are not preserved, the returned array is sequential. Use `filter` to preserve keys.
-     * 
-     * ```php
-     * use FriendlyPixel\Ar\Ar;
-     * 
-     * $even = Ar::filter([1, 2, 3, 12], function($value, $key) { return $value % 2 == 0; }); 
-     * $even = Ar::wrap([1, 2, 3, 12])
-     *     ->filter(function($value, $key) { return $value % 2 == 0; })
-     *     ->unwrap();
-     * // Result: [2, 12]
-     * ```
-     * 
-     * @param callable $callable ($value, $key): bool
-     * @return ArFluent
-     */
-    public function filterValues(callable $callable): self
-    {
-        return new static(Ar::filterValues($this->array, $callable));
-    }
 
     /**
      * Returns the first value of the array or `false` when it's empty.
@@ -319,7 +298,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
 
     /**
      * Remove duplicate values from array.
-     * Keys are preserved, use `uniqueValues` for a sequential result.
+     * Keys are preserved only when `array_is_list($array)` returns false;
      * 
      * ```php
      * use FriendlyPixel\Ar\Ar;
@@ -337,25 +316,6 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
         return new static(Ar::unique($this->array));
     }
 
-    /**
-     * Remove duplicate values from array.
-     * Keys are not preserved, the returned array is sequential. Use `unique` to preserve keys.
-     * 
-     * ```php
-     * use FriendlyPixel\Ar\Ar;
-     * 
-     * $result = Ar::uniqueValues(['a', 'a', 'b']); 
-     * $result = Ar::wrap(['b', 4])->uniqueValues(['a', 'a', 'b'])->unwrap();
-     * 
-     * // result: ['a', 'b']
-     * ```
-     * 
-     * @return ArFluent
-     */
-    public function uniqueValues(): self
-    {
-        return new static(Ar::uniqueValues($this->array));
-    }
 
     /**
      * Prepend one or more items to the beginning of array.

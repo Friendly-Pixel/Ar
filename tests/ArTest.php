@@ -7,8 +7,10 @@ namespace FriendlyPixel\Ar\Test;
 use FriendlyPixel\Ar\Ar;
 use FriendlyPixel\Ar\ArFluent;
 use FriendlyPixel\Ar\Test\Traits\BaseTrait;
+use InvalidArgumentException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class ArTest extends TestCase
 {
@@ -55,7 +57,13 @@ final class ArTest extends TestCase
             $tests[] = [
                 'filter',
                 [1, 2, 3, 12],
-                [1 => 2, 3 => 12],
+                [0 => 2, 1 => 12],
+                $callable
+            ];
+            $tests[] = [
+                'filter',
+                [1, 2, 3, 12],
+                [2, 12],
                 $callable
             ];
             $tests[] = [
@@ -78,38 +86,6 @@ final class ArTest extends TestCase
             ];
         }
 
-        // filterValues
-        foreach ([
-            function ($v) {
-                return $v % 2 == 0;
-            },
-            [$this, 'isEven'],
-        ] as $callable) {
-            $tests[] = [
-                'filterValues',
-                [1, 2, 3, 12],
-                [2, 12],
-                $callable
-            ];
-            $tests[] = [
-                'filterValues',
-                ['a' => 1,  'b' => 2, 'c' => 3],
-                [2],
-                $callable
-            ];
-            $tests[] = [
-                'filterValues',
-                [12 => 1,  81 => 2, 13 => 3],
-                [2],
-                $callable
-            ];
-            $tests[] = [
-                'filterValues',
-                [],
-                [],
-                $callable
-            ];
-        }
 
         // flat
         $tests[] = [
@@ -226,24 +202,17 @@ final class ArTest extends TestCase
         $tests[] = [
             'unique',
             ['a', 'a', 'a', 'b', 'a'],
-            [0 => 'a', 3 => 'b']
+            [0 => 'a', 1 => 'b']
+        ];
+        $tests[] = [
+            'unique',
+            ['a', 'a', 'a', 'b', 'a'],
+            ['a', 'b']
         ];
         $tests[] = [
             'unique',
             [3 => 'a', 4 => 'a', 6 => 'c'],
             [3 => 'a', 6 => 'c']
-        ];
-
-        // uniqueValues
-        $tests[] = [
-            'uniqueValues',
-            ['a', 'a', 'a', 'b', 'a'],
-            ['a', 'b']
-        ];
-        $tests[] = [
-            'uniqueValues',
-            [3 => 'a', 4 => 'a', 6 => 'c'],
-            ['a', 'c']
         ];
 
         // unshift
@@ -405,6 +374,13 @@ final class ArTest extends TestCase
         ];
 
         return $tests;
+    }
+
+    public function testMakeArray()
+    {
+        $this->assertEquals([1, 2, 3], Ar::makeArray([1, 2, 3]));
+        $this->assertEquals([1, 2, 3], Ar::makeArray(new MyIterable([1, 2, 3])));
+        $this->assertIsArray(Ar::makeArray(new MyIterable([1, 2, 3])));
     }
 
     /* Callables */
