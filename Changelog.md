@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `Ar::filterValues` use `Ar::filter`
 - Removed `Ar::uniqueValues` use `Ar::unique`
 - Removed `Ar::new` use `Ar::wrap`
+- Removed PHP 7.2 support
 
 ## [0.14.0] - 2021-03-25
 - Use `iterable` typehint everywhere

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c954dcf69d0686ce9578abcac6fb91b",
+    "content-hash": "48c167e030e299df2167c4ce728739de",
     "packages": [
         {
             "name": "symfony/polyfill-php81",
@@ -2127,7 +2127,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2"
+        "php": ">=7.4"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
