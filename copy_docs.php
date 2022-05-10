@@ -24,6 +24,9 @@ foreach ($matches[1] as $i => $comment) {
     $re = '/(\/\*\*(\n|[^*]|\*[^\/])*+\*\/\s+)?public function ' . $funcName . '\(/';
     // dump($re);
     $changedComment = str_replace('@return mixed[]', '@return ArFluent', $comment);
+    $changedComment = str_replace('@template T', '', $changedComment);
+    $changedComment = str_replace('@param T[] $array', '', $changedComment);
+    $changedComment = str_replace('@return T[]', '@return ArFluent<T>', $changedComment);
     $arFluent = preg_replace($re, $changedComment . "\n    " . 'public function ' . $funcName . '(', $arFluent);
     if (preg_last_error()) {
         dump(array_flip(get_defined_constants(true)['pcre'])[preg_last_error()]);

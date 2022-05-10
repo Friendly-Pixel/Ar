@@ -6,11 +6,18 @@ use ArrayAccess;
 use IteratorAggregate;
 use JsonSerializable;
 
+/**
+ * @template T
+ */
 class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
 {
     /** @var array $array */
     private $array = [];
 
+    /**
+     * @param T[] $array
+     * @return ArFluent<T>
+     */
     public function __construct(iterable $array = null)
     {
         if ($array) {
@@ -52,8 +59,10 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // Result: [1 => 2, 3 => 12]
      * ```
      * 
-     * @param callable $callable ($value, $key): bool
-     * @return ArFluent
+     * 
+     *  
+     * @param callable $callable (T $value, mixed $key): bool
+     * @return ArFluent<T>
      */
     public function filter(callable $callable): self
     {
@@ -73,7 +82,9 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // Result: 2
      * ```
      * 
-     * @return mixed|false
+     * 
+     *  
+     * @return T|false
      */
     public function first()
     {
@@ -94,8 +105,10 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * Walk over every value, key.
      * Pass every value, key into a user-supplied callable.
      * 
-     * @param callable $callable ($value, $key)
-     * @return ArFluent
+     * 
+     *  
+     * @param callable $callable (T $value, mixed $key): void
+     * @return ArFluent<T>
      */
     public function forEach(callable $callable): self
     {
@@ -152,7 +165,9 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // Result: 4
      * ```
      * 
-     * @return mixed|false
+     * 
+     *  
+     * @return T|false
      */
     public function last()
     {
@@ -174,8 +189,11 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // Result: [2, 4, 6]
      * ```
      * 
-     * @param callable $callable ($value, $key): mixed
-     * @return ArFluent
+     * 
+     * @template V
+     *  
+     * @param callable $callable (T $value, mixed $key): V
+     * @return V[]
      */
     public function map(callable $callable): self
     {
@@ -196,8 +214,11 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
-     * @param callable $callable ($value, $key): mixed
-     * @return ArFluent
+     * @template K
+     * 
+     *  
+     * @param callable $callable (T $value, mixed $key): K
+     * @return array<K, T>
      */
     public function mapKeys(callable $callable): self
     {
@@ -219,8 +240,9 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // Result:['a', 'b', 'c', 'd']
      * ```
      * 
-     * @var iterable[] $arrays
-     * @return ArFluent
+     * 
+     * @var T[][] $arrays
+     * @return ArFluent<T>
      */
     public function merge(...$arrays): self
     {
@@ -239,7 +261,10 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // result: [1, 2, 3, 4]
      * ```
      * 
-     * @return ArFluent
+     * 
+     *  
+     * @param T[] $values
+     * @return ArFluent<T>
      */
     public function push(...$values): self
     {
@@ -260,8 +285,10 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // Result: ['a' => 3]
      * ```
      * 
-     * @param callable $callable ($value, $key): bool
-     * @return mixed
+     * 
+     *  
+     * @param callable $callable (T $value, mixed $key): bool
+     * @return T|null
      */
     public function search(callable $callable)
     {
@@ -295,7 +322,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      *      the end of the array.
      *      If it is omitted, then the sequence will have everything from offset up until the end of
      *      the array.
-     * @return ArFluent<U>
+     * @return ArFluent<T>
      */
     public function slice(
         int $offset,
@@ -309,11 +336,14 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * This function assigns new keys to the elements in array. It will remove any existing keys that may have been assigned.
      * 
-     * @param callable $callable    function($valueA, $valueB): int 
+     * 
+     * 
+     *  
+     * @param callable $callable    (T $valueA, T $valueB): int 
      *                              Return an integer smaller then, equal to,
      *                              or larger than 0 to indicate that $valueA is less
      *                              then, equal to, or larger than $valueB.
-     * @return ArFluent
+     * @return ArFluent<T>
      */
     public function sort(callable $callable): self
     {
@@ -323,9 +353,13 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     /**
      * Iteratively reduce the array to a single value using a callback function.
      * 
-     * @param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
+     * 
+     * @template V
+     *  
+     * @param callable $callable (V|null $carry, T $value, mixed $key): V
+     * @param V|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
      * @param callable $callable function($carry, $value, $key): mixed
-     * @return mixed
+     * @return V|null
      */
     public function reduce(callable $callable, $initial = null)
     {
@@ -345,7 +379,9 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // result: [0 => 'a', 2 => 'b']
      * ```
      * 
-     * @return ArFluent
+     * 
+     *  
+     * @return ArFluent<T>
      */
     public function unique(): self
     {
@@ -365,7 +401,10 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // result: [1, 2, 3, 4]
      * ```
      * 
-     * @return ArFluent
+     * 
+     *  
+     * @param T[] $values 
+     * @return ArFluent<T>
      */
     public function unshift(...$values): self
     {
@@ -383,7 +422,9 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * // result: [0 => 'a', 1 => 'b', 2 => 'c']
      * ```
      * 
-     * @return ArFluent
+     * 
+     * @param array<mixed, T> $array 
+     * @return array<int, T>
      */
     public function values(): self
     {
@@ -396,7 +437,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * Return the underlying array.
      * Alias for `ArFluent::unwrap`
      * @deprecated since 0.11.0. Use `unwrap` instead.
-     * @return array 
+     * @return T[]
      */
     public function toArray()
     {
@@ -424,7 +465,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      *      print($letter);
      * }
      * ```
-     * @return array 
+     * @return T[] 
      */
     public function unwrap()
     {

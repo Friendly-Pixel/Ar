@@ -1,3 +1,4 @@
 {
-    "intelephense.format.enable": true
+    "intelephense.format.enable": true,
+    "autoHide.autoHidePanel": false
 }

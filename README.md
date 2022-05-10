@@ -114,9 +114,13 @@ $even = Ar::wrap([1, 2, 3, 12])
 ```
 
 
-@param callable $callable ($value, $key): bool
+@template T
 
-@return mixed[]
+@param T[] $array 
+
+@param callable $callable (T $value, mixed $key): bool
+
+@return T[]
 
 
 
@@ -135,7 +139,11 @@ Ar::wrap([2, 3, 4])->first();
 ```
 
 
-@return mixed|false
+@template T
+
+@param T[] $array 
+
+@return T|false
 
 
 
@@ -157,9 +165,13 @@ Walk over every value, key.
 Pass every value, key into a user-supplied callable.
 
 
-@param callable $callable ($value, $key)
+@template T
 
-@return mixed[]
+@param T[] $array 
+
+@param callable $callable (T $value, mixed $key): void
+
+@return T[]
 
 
 
@@ -214,7 +226,11 @@ Ar::wrap([2, 3, 4])->last();
 ```
 
 
-@return mixed|false
+@template T
+
+@param T[] $array 
+
+@return T|false
 
 
 
@@ -236,9 +252,15 @@ $numbers = Ar::wrap([1, 2, 3])
 ```
 
 
-@param callable $callable ($value, $key): mixed
+@template T
 
-@return mixed[]
+@template V
+
+@param T[] $array 
+
+@param callable $callable (T $value, mixed $key): V
+
+@return V[]
 
 
 
@@ -259,9 +281,15 @@ $numbers = Ar::wrap([1, 2, 3])
 ```
 
 
-@param callable $callable ($value, $key): mixed
+@template K
 
-@return mixed[]
+@template T
+
+@param T[] $array 
+
+@param callable $callable (T $value, mixed $key): K
+
+@return array<K, T>
 
 
 
@@ -283,9 +311,11 @@ $numbers = Ar::wrap(['a', 'b'])
 ```
 
 
-@var iterable[] $arrays
+@template T
 
-@return mixed[]
+@var T[][] $arrays
+
+@return T[]
 
 
 
@@ -304,7 +334,13 @@ $result = Ar::wrap([1, 2])->push(3, 4)->unwrap();
 ```
 
 
-@return mixed[]
+@template T
+
+@param T[] $array 
+
+@param T[] $values
+
+@return T[]
 
 
 
@@ -314,11 +350,19 @@ $result = Ar::wrap([1, 2])->push(3, 4)->unwrap();
 Iteratively reduce the array to a single value using a callback function.
 
 
-@param mixed|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
+@template T
+
+@template V
+
+@param T[] $array 
+
+@param callable $callable (V|null $carry, T $value, mixed $key): V
+
+@param V|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
 
 @param callable $callable function($carry, $value, $key): mixed
 
-@return mixed
+@return V|null
 
 
 
@@ -339,9 +383,13 @@ $found = Ar::wrap([ ['a' => 1], [], ['a' => 3] ])
 ```
 
 
-@param callable $callable ($value, $key): bool
+@template T
 
-@return mixed
+@param T[] $array 
+
+@param callable $callable (T $value, mixed $key): bool
+
+@return T|null
 
 
 
@@ -391,12 +439,17 @@ Sort an array by values using a user-defined comparison function.
 This function assigns new keys to the elements in array. It will remove any existing keys that may have been assigned.
 
 
-@param callable $callable    function($valueA, $valueB): int 
+
+@template T
+
+@param T[] $array 
+
+@param callable $callable    (T $valueA, T $valueB): int 
                              Return an integer smaller then, equal to,
                              or larger than 0 to indicate that $valueA is less
                              then, equal to, or larger than $valueB.
 
-@return mixed[]
+@return T[]
 
 
 
@@ -416,7 +469,11 @@ $result = Ar::wrap(['b', 4])->unique(['a', 'a', 'b'])->unwrap();
 ```
 
 
-@return mixed[]
+@template T
+
+@param T[] $array 
+
+@return T[]
 
 
 
@@ -435,7 +492,13 @@ $result = Ar::wrap([3, 4])->unshift(1, 2)->unwrap();
 ```
 
 
-@return mixed[]
+@template T
+
+@param T[] $array 
+
+@param T[] $values 
+
+@return T[]
 
 
 
@@ -453,7 +516,11 @@ $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
 ```
 
 
-@return mixed[]
+@template T
+
+@param array<mixed, T> $array 
+
+@return array<int, T>
 
 
 
