@@ -269,6 +269,42 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
     }
 
     /**
+     * Extract a slice of the array, include `$length` items, and starting from `$offset`.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $even = Ar::slice(['a', 'b', 'c', 'd'], 1, 2); 
+     * $even = Ar::wrap(['a', 'b', 'c', 'd'])
+     *     ->slice(1, 2)
+     *     ->unwrap();
+     * // Result: ['b', 'c']
+     * ```
+     * 
+     * 
+     *  
+     * @param int $offset
+     *      If offset is non-negative, the sequence will start at that offset in the array.
+     *      If offset is negative, the sequence will start that far from the end of the array. 
+     * @param ?int $length 
+     *      If length is given and is positive, then the sequence will have up to that many elements
+     *      in it.
+     *      If the array is shorter than the length, then only the available array elements will be
+     *      present.
+     *      If length is given and is negative then the sequence will stop that many elements from 
+     *      the end of the array.
+     *      If it is omitted, then the sequence will have everything from offset up until the end of
+     *      the array.
+     * @return ArFluent<U>
+     */
+    public function slice(
+        int $offset,
+        ?int $length = null
+    ) {
+        return new static(Ar::slice($this->array, $offset, $length));
+    }
+
+    /**
      * Sort an array by values using a user-defined comparison function.
      * 
      * This function assigns new keys to the elements in array. It will remove any existing keys that may have been assigned.

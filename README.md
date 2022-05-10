@@ -68,6 +68,7 @@ $ composer require friendly-pixel/ar
 - [push()](#push)
 - [reduce()](#reduce)
 - [search()](#search)
+- [slice()](#slice)
 - [sort()](#sort)
 - [unique()](#unique)
 - [unshift()](#unshift)
@@ -341,6 +342,44 @@ $found = Ar::wrap([ ['a' => 1], [], ['a' => 3] ])
 @param callable $callable ($value, $key): bool
 
 @return mixed
+
+
+
+<a name="slice"></a>
+### slice
+
+Extract a slice of the array, include `$length` items, and starting from `$offset`.
+
+```php
+use FriendlyPixel\Ar\Ar;
+
+$even = Ar::slice(['a', 'b', 'c', 'd'], 1, 2); 
+$even = Ar::wrap(['a', 'b', 'c', 'd'])
+    ->slice(1, 2)
+    ->unwrap();
+// Result: ['b', 'c']
+```
+
+
+@template T
+
+@param T[] $array 
+
+@param int $offset
+     If offset is non-negative, the sequence will start at that offset in the array.
+     If offset is negative, the sequence will start that far from the end of the array. 
+
+@param ?int $length 
+     If length is given and is positive, then the sequence will have up to that many elements
+     in it.
+     If the array is shorter than the length, then only the available array elements will be
+     present.
+     If length is given and is negative then the sequence will stop that many elements from 
+     the end of the array.
+     If it is omitted, then the sequence will have everything from offset up until the end of
+     the array.
+
+@return T[]
 
 
 

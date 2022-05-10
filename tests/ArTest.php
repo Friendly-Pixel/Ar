@@ -21,21 +21,26 @@ final class ArTest extends TestCase
      * 
      * @dataProvider returnsArrayProvider
      */
-    public function testReturnsArrayFunc(string $funcName, array $input, array $expected, $param0 = null, $param1 = null)
+    public function testReturnsArrayFunc(string $funcName, array $input, array $expected, $param0 = null, $param1 = null, $param2 = null)
     {
+        $params = [$param0, $param1];
+        if ($param2 !== null) {
+            $params[] = $param2;
+        }
+
         // Functional
         $a = $input;
-        $b = Ar::$funcName($a, $param0, $param1);
+        $b = Ar::$funcName($a, ...$params);
         $this->assertEquals($expected, $b);
 
         // Iterable
         $it = new MyIterable($a);
-        $b = Ar::$funcName($it, $param0, $param1);
+        $b = Ar::$funcName($it, ...$params);
         $this->assertEquals($expected, $b);
 
         // Fluent
         $b = Ar::wrap($a)
-            ->$funcName($param0, $param1)
+            ->$funcName(...$params)
             ->unwrap();
         $this->assertEquals($expected, $b);
 
@@ -176,6 +181,50 @@ final class ArTest extends TestCase
             ['a' => 'foo', 'b' => 'bar', 0 => 3, 1 => 4],
             3,
             4,
+        ];
+
+        // slice
+        $tests[] = [
+            'slice',
+            ['a', 'b', 'c', 'd'],
+            ['b', 'c'],
+            1,
+            2
+        ];
+        $tests[] = [
+            'slice',
+            ['a', 'b', 'c', 'd'],
+            ['d'],
+            -1,
+        ];
+        $tests[] = [
+            'slice',
+            ['a', 'b', 'c', 'd'],
+            ['b'],
+            -3,
+            -2
+        ];
+        $tests[] = [
+            'slice',
+            ['a', 'b', 'c', 'd'],
+            ['a', 'b'],
+            0,
+            -2
+        ];
+        // Preserve keys in associative arrays
+        $tests[] = [
+            'slice',
+            ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4],
+            ['b' => 2, 'c' => 3],
+            1,
+            2
+        ];
+        $tests[] = [
+            'slice',
+            [5 => 'a', 6 => 'b', 8 => 'c', 10 => 'd'],
+            [6 => 'b', 8 => 'c'],
+            1,
+            2
         ];
 
         // sort
