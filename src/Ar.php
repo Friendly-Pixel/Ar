@@ -350,9 +350,9 @@ class Ar
      * @template V
      * @param T[] $array 
      * @param callable $callable (V|null $carry, T $value, mixed $key): V
-     * @param V|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
+     * @param V $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
      * @param callable $callable function($carry, $value, $key): mixed
-     * @return V|null
+     * @return V
      */
     public static function reduce(iterable $array, callable $callable, $initial = null)
     {
