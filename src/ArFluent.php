@@ -84,7 +84,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * 
      *  
-     * @return T|false
+     * @return T
      */
     public function first()
     {
@@ -167,7 +167,7 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * 
      * 
      *  
-     * @return T|false
+     * @return T
      */
     public function last()
     {
@@ -357,9 +357,9 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
      * @template V
      *  
      * @param callable $callable (V|null $carry, T $value, mixed $key): V
-     * @param V|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
+     * @param V $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
      * @param callable $callable function($carry, $value, $key): mixed
-     * @return V|null
+     * @return V
      */
     public function reduce(callable $callable, $initial = null)
     {

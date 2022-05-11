@@ -104,7 +104,7 @@ class Ar
      * 
      * @template T
      * @param T[] $array 
-     * @return T|false
+     * @return T
      */
     public static function first(iterable $array)
     {
@@ -217,7 +217,7 @@ class Ar
      * 
      * @template T
      * @param T[] $array 
-     * @return T|false
+     * @return T
      */
     public static function last(iterable $array)
     {
