@@ -501,14 +501,16 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
         unset($this->array[$offset]);
     }
 
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return isset($this->array[$offset]) ? $this->array[$offset] : null;
     }
 
     /* === JsonSerializable implementation === */
 
-    public function jsonSerialize(): mixed
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return $this->array;
     }

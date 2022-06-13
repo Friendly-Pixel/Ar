@@ -140,7 +140,8 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
      *
      * {@inheritDoc}
      */
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->get($offset);
     }
