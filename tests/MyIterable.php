@@ -4,6 +4,7 @@ namespace FriendlyPixel\Ar\Test;
 
 use ArrayIterator;
 use Closure;
+use Traversable;
 
 class MyIterable implements \IteratorAggregate, \ArrayAccess
 {
@@ -129,7 +130,7 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
      *
      * {@inheritDoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->containsKey($offset);
     }
@@ -139,7 +140,7 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
      *
      * {@inheritDoc}
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }
@@ -149,7 +150,7 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
      *
      * {@inheritDoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (!isset($offset)) {
             $this->add($value);
@@ -165,7 +166,7 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
      *
      * {@inheritDoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }
@@ -271,7 +272,7 @@ class MyIterable implements \IteratorAggregate, \ArrayAccess
      *
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->elements);
     }

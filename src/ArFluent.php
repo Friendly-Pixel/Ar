@@ -5,6 +5,7 @@ namespace FriendlyPixel\Ar;
 use ArrayAccess;
 use IteratorAggregate;
 use JsonSerializable;
+use Traversable;
 
 /**
  * @template T
@@ -474,14 +475,14 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
 
     /* === IteratorAggregate implementation === */
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->array);
     }
 
     /* === Arrayaccess implementation === */
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (!isset($offset)) {
             $this->array[] = $value;
@@ -490,24 +491,24 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
         }
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->array[$offset]);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->array[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return isset($this->array[$offset]) ? $this->array[$offset] : null;
     }
 
     /* === JsonSerializable implementation === */
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->array;
     }
