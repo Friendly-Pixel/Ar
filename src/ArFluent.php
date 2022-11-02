@@ -3,6 +3,7 @@
 namespace FriendlyPixel\Ar;
 
 use ArrayAccess;
+use Countable;
 use IteratorAggregate;
 use JsonSerializable;
 use Traversable;
@@ -10,7 +11,7 @@ use Traversable;
 /**
  * @template T
  */
-class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable
+class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable, Countable
 {
     /** @var array $array */
     private $array = [];
