@@ -19,9 +19,9 @@ class Ar
      *     ->unwrap();
      * ```
      * 
-     * @template T
-     * @param T[] $array 
-     * @return ArFluent<T>
+     * @template A
+     * @param A[] $array 
+     * @return ArFluent<A>
      */
     public static function wrap(iterable $array): ArFluent
     {
@@ -63,10 +63,10 @@ class Ar
      * // Result: [1 => 2, 3 => 12]
      * ```
      * 
-     * @template T
-     * @param T[] $array 
-     * @param callable $callable (T $value, mixed $key): bool
-     * @return T[]
+     * @template A
+     * @param A[] $array 
+     * @param callable(A $value, mixed $key): bool $callable
+     * @return A[]
      */
     public static function filter(iterable $array, callable $callable): array
     {
@@ -102,9 +102,9 @@ class Ar
      * // Result: 2
      * ```
      * 
-     * @template T
-     * @param T[] $array 
-     * @return T
+     * @template A
+     * @param A[] $array 
+     * @return A
      */
     public static function first(iterable $array)
     {
@@ -141,10 +141,10 @@ class Ar
      * Walk over every value, key.
      * Pass every value, key into a user-supplied callable.
      * 
-     * @template T
-     * @param T[] $array 
-     * @param callable $callable (T $value, mixed $key): void
-     * @return T[]
+     * @template A
+     * @param A[] $array 
+     * @param callable(A $value, mixed $key): void $callable
+     * @return A[] Original array, unmodified
      */
     public static function forEach(iterable $array, callable $callable): array
     {
@@ -215,9 +215,9 @@ class Ar
      * // Result: 4
      * ```
      * 
-     * @template T
-     * @param T[] $array 
-     * @return T
+     * @template A
+     * @param A[] $array 
+     * @return A
      */
     public static function last(iterable $array)
     {
@@ -240,11 +240,11 @@ class Ar
      * // Result: [2, 4, 6]
      * ```
      * 
-     * @template T
-     * @template V
-     * @param T[] $array 
-     * @param callable $callable (T $value, mixed $key): V
-     * @return V[]
+     * @template A
+     * @template B
+     * @param A[] $array 
+     * @param callable(A $value, mixed $key): B $callable
+     * @return B[]
      */
     public static function map(iterable $array, callable $callable): array
     {
@@ -272,11 +272,11 @@ class Ar
      * // Result: [0 => 2, 2 => 2, 4 => 3]
      * ```
      * 
+     * @template A
      * @template K
-     * @template T
-     * @param T[] $array 
-     * @param callable $callable (T $value, mixed $key): K
-     * @return array<K, T>
+     * @param A[] $array 
+     * @param callable(A $value, mixed $key): K $callable
+     * @return array<K, A>
      */
     public static function mapKeys(iterable $array, callable $callable): array
     {
@@ -305,9 +305,9 @@ class Ar
      * // Result:['a', 'b', 'c', 'd']
      * ```
      * 
-     * @template T
-     * @var T[][] $arrays
-     * @return T[]
+     * @template A
+     * @var A[][] $arrays
+     * @return A[]
      */
     public static function merge(...$arrays): array
     {
@@ -330,10 +330,10 @@ class Ar
      * // result: [1, 2, 3, 4]
      * ```
      * 
-     * @template T
-     * @param T[] $array 
-     * @param T[] $values
-     * @return T[]
+     * @template A
+     * @param A[] $array 
+     * @param A[] $values
+     * @return A[]
      */
     public static function push(iterable $array, ...$values): array
     {
@@ -346,13 +346,12 @@ class Ar
     /**
      * Iteratively reduce the array to a single value using a callback function.
      * 
-     * @template T
-     * @template V
-     * @param T[] $array 
-     * @param callable $callable (V|null $carry, T $value, mixed $key): V
-     * @param V $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
-     * @param callable $callable function($carry, $value, $key): mixed
-     * @return V
+     * @template A
+     * @template B
+     * @param A[] $array 
+     * @param callable(B|null $carry, A $value, mixed $key): B $callable
+     * @param B|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
+     * @return B
      */
     public static function reduce(iterable $array, callable $callable, $initial = null)
     {
@@ -379,10 +378,10 @@ class Ar
      * // Result: ['a' => 3]
      * ```
      * 
-     * @template T
-     * @param T[] $array 
-     * @param callable $callable (T $value, mixed $key): bool
-     * @return T|null
+     * @template A
+     * @param A[] $array 
+     * @param callable(A $value, mixed $key): bool $callable
+     * @return A|null
      */
     public static function search(iterable $array, callable $callable)
     {
@@ -408,8 +407,8 @@ class Ar
      * // Result: ['b', 'c']
      * ```
      * 
-     * @template T
-     * @param T[] $array 
+     * @template A
+     * @param A[] $array 
      * @param int $offset
      *      If offset is non-negative, the sequence will start at that offset in the array.
      *      If offset is negative, the sequence will start that far from the end of the array. 
@@ -422,7 +421,7 @@ class Ar
      *      the end of the array.
      *      If it is omitted, then the sequence will have everything from offset up until the end of
      *      the array.
-     * @return T[]
+     * @return A[]
      */
     public static function slice(
         iterable $array,
@@ -443,13 +442,13 @@ class Ar
      * This function assigns new keys to the elements in array. It will remove any existing keys that may have been assigned.
      * 
      * 
-     * @template T
-     * @param T[] $array 
-     * @param callable $callable    (T $valueA, T $valueB): int 
+     * @template A
+     * @param A[] $array 
+     * @param callable(A $valueA, A $valueB): int $callable    
      *                              Return an integer smaller then, equal to,
      *                              or larger than 0 to indicate that $valueA is less
      *                              then, equal to, or larger than $valueB.
-     * @return T[]
+     * @return A[]
      */
     public static function sort(iterable $array, callable $callable): array
     {
@@ -493,9 +492,9 @@ class Ar
      * // result: [0 => 'a', 2 => 'b']
      * ```
      * 
-     * @template T
-     * @param T[] $array 
-     * @return T[]
+     * @template A
+     * @param A[] $array 
+     * @return A[]
      */
     public static function unique(iterable $array): array
     {
@@ -521,10 +520,10 @@ class Ar
      * // result: [1, 2, 3, 4]
      * ```
      * 
-     * @template T
-     * @param T[] $array 
-     * @param T[] $values 
-     * @return T[]
+     * @template A
+     * @param A[] $array 
+     * @param A[] $values 
+     * @return A[]
      */
     public static function unshift(iterable $array, ...$values): array
     {
@@ -545,9 +544,9 @@ class Ar
      * // result: [0 => 'a', 1 => 'b', 2 => 'c']
      * ```
      * 
-     * @template T
-     * @param array<mixed, T> $array 
-     * @return array<int, T>
+     * @template A
+     * @param array<mixed, A> $array 
+     * @return array<int, A>
      */
     public static function values(iterable $array): array
     {

@@ -114,13 +114,13 @@ $even = Ar::wrap([1, 2, 3, 12])
 ```
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@param callable $callable (T $value, mixed $key): bool
+@param callable(A $value, mixed $key): bool $callable
 
-@return T[]
+@return A[]
 
 
 
@@ -139,11 +139,11 @@ Ar::wrap([2, 3, 4])->first();
 ```
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@return T
+@return A
 
 
 
@@ -165,13 +165,13 @@ Walk over every value, key.
 Pass every value, key into a user-supplied callable.
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@param callable $callable (T $value, mixed $key): void
+@param callable(A $value, mixed $key): void $callable
 
-@return T[]
+@return A[] Original array, unmodified
 
 
 
@@ -226,11 +226,11 @@ Ar::wrap([2, 3, 4])->last();
 ```
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@return T
+@return A
 
 
 
@@ -252,15 +252,15 @@ $numbers = Ar::wrap([1, 2, 3])
 ```
 
 
-@template T
+@template A
 
-@template V
+@template B
 
-@param T[] $array 
+@param A[] $array 
 
-@param callable $callable (T $value, mixed $key): V
+@param callable(A $value, mixed $key): B $callable
 
-@return V[]
+@return B[]
 
 
 
@@ -281,15 +281,15 @@ $numbers = Ar::wrap([1, 2, 3])
 ```
 
 
+@template A
+
 @template K
 
-@template T
+@param A[] $array 
 
-@param T[] $array 
+@param callable(A $value, mixed $key): K $callable
 
-@param callable $callable (T $value, mixed $key): K
-
-@return array<K, T>
+@return array<K, A>
 
 
 
@@ -311,11 +311,11 @@ $numbers = Ar::wrap(['a', 'b'])
 ```
 
 
-@template T
+@template A
 
-@var T[][] $arrays
+@var A[][] $arrays
 
-@return T[]
+@return A[]
 
 
 
@@ -334,13 +334,13 @@ $result = Ar::wrap([1, 2])->push(3, 4)->unwrap();
 ```
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@param T[] $values
+@param A[] $values
 
-@return T[]
+@return A[]
 
 
 
@@ -350,19 +350,17 @@ $result = Ar::wrap([1, 2])->push(3, 4)->unwrap();
 Iteratively reduce the array to a single value using a callback function.
 
 
-@template T
+@template A
 
-@template V
+@template B
 
-@param T[] $array 
+@param A[] $array 
 
-@param callable $callable (V|null $carry, T $value, mixed $key): V
+@param callable(B|null $carry, A $value, mixed $key): B $callable
 
-@param V $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
+@param B|null $initial If the optional initial is available, it will be used at the beginning of the process, or as a final result in case the array is empty.
 
-@param callable $callable function($carry, $value, $key): mixed
-
-@return V
+@return B
 
 
 
@@ -383,13 +381,13 @@ $found = Ar::wrap([ ['a' => 1], [], ['a' => 3] ])
 ```
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@param callable $callable (T $value, mixed $key): bool
+@param callable(A $value, mixed $key): bool $callable
 
-@return T|null
+@return A|null
 
 
 
@@ -409,9 +407,9 @@ $even = Ar::wrap(['a', 'b', 'c', 'd'])
 ```
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
 @param int $offset
      If offset is non-negative, the sequence will start at that offset in the array.
@@ -427,7 +425,7 @@ $even = Ar::wrap(['a', 'b', 'c', 'd'])
      If it is omitted, then the sequence will have everything from offset up until the end of
      the array.
 
-@return T[]
+@return A[]
 
 
 
@@ -440,16 +438,16 @@ This function assigns new keys to the elements in array. It will remove any exis
 
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@param callable $callable    (T $valueA, T $valueB): int 
+@param callable(A $valueA, A $valueB): int $callable    
                              Return an integer smaller then, equal to,
                              or larger than 0 to indicate that $valueA is less
                              then, equal to, or larger than $valueB.
 
-@return T[]
+@return A[]
 
 
 
@@ -469,11 +467,11 @@ $result = Ar::wrap(['b', 4])->unique(['a', 'a', 'b'])->unwrap();
 ```
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@return T[]
+@return A[]
 
 
 
@@ -492,13 +490,13 @@ $result = Ar::wrap([3, 4])->unshift(1, 2)->unwrap();
 ```
 
 
-@template T
+@template A
 
-@param T[] $array 
+@param A[] $array 
 
-@param T[] $values 
+@param A[] $values 
 
-@return T[]
+@return A[]
 
 
 
@@ -516,11 +514,11 @@ $result = Ar::wrap([3 => 'a', 'foo' => 'b', 1 => 'c'])->values()->unwrap();
 ```
 
 
-@template T
+@template A
 
-@param array<mixed, T> $array 
+@param array<mixed, A> $array 
 
-@return array<int, T>
+@return array<int, A>
 
 
 
