@@ -314,6 +314,58 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable, Coun
     ) {
         return new static(Ar::slice($this->array, $offset, $length));
     }
+    
+    /**
+     * Remove a portion of the array and replace it with something else.
+     * Other than the default php function, this returns the changed array, not the extracted
+     * elements.
+     * 
+     * ```php
+     * use FriendlyPixel\Ar\Ar;
+     * 
+     * $even = Ar::splice(['a', 'b', 'c', 'd'], 1, 1, ['q', 'x']); 
+     * $even = Ar::wrap(['a', 'b', 'c', 'd'])
+     *     ->splice(1, 1, ['q', 'x'])
+     *     ->unwrap();
+     * // Result: ['a', 'q', 'x', 'c', 'd']
+     * ```
+     *  
+     * @param int $offset
+     *      If offset is positive then the start of the removed portion is at that offset from 
+     *      the beginning of the array. 
+     * 
+     *      If offset is negative then the start of the removed portion is at that offset from 
+     *      the end of the array. 
+     * @param ?int $length 
+     *      If length is omitted, removes everything from offset to the end of the array.
+     *
+     *      If length is specified and is positive, then that many elements will be removed.
+     *       
+     *      If length is specified and is negative, then the end of the removed portion will be 
+     *      that many elements from the end of the array.
+     *       
+     *      If length is specified and is zero, no elements will be removed. 
+     * @param A[] $replacement
+     *      If replacement array is specified, then the removed elements are replaced with elements 
+     *      from this array.
+     * 
+     *      If offset and length are such that nothing is removed, then the elements from the 
+     *      replacement array are inserted in the place specified by the offset. 
+     *
+     *      If replacement is just one element it is not necessary to put array() or square brackets 
+     *      around it, unless the element is an array itself, an object or null. 
+     *      
+     *      Note: Keys in the replacement array are not preserved.
+     * @return ArFluent<A> Other than the default php function, this returns the changed array, not the 
+     *     extracted elements.
+     */
+    public function splice(
+        int $offset,
+        ?int $length = null,
+        mixed $replacement = []
+    ) {
+        return new static(Ar::splice($this->array, $offset, $length, $replacement));
+    }
 
     /**
      * Sort an array by values using a user-defined comparison function.

@@ -226,6 +226,64 @@ final class ArTest extends TestCase
             1,
             2
         ];
+        
+        // splice
+        $tests[] = [
+            'splice',
+            ['a', 'b', 'c', 'd'],
+            ['a', 'q', 'x', 'd'],
+            1,
+            2,
+            ['q', 'x']
+        ];
+        $tests[] = [
+            'splice',
+            ['a', 'b', 'c', 'd'],
+            ['a', 'b', 'c', 'q'],
+            -1,
+            1,
+            'q'
+        ];
+        $tests[] = [
+            'splice',
+            ['a', 'b', 'c', 'd'],
+            ['a', 'q', 'd'],
+            -3,
+            2,
+            'q'
+        ];
+        $tests[] = [
+            'splice',
+            ['a', 'b', 'c', 'd'],
+            ['a', 'q', 'd'],
+            -3,
+            -1,
+            'q'
+        ];
+        $tests[] = [
+            'splice',
+            ['a', 'b', 'c', 'd'],
+            ['a', 'q', 'd'],
+            1,
+            2,
+            'q'
+        ];
+        $tests[] = [
+            'splice',
+            ['a', 'b', 'c', 'd'],
+            ['a', 'q', 'b', 'c', 'd'],
+            1,
+            0,
+            'q'
+        ];
+        $tests[] = [
+            'splice',
+            ['a', 'b', 'c', 'd'],
+            ['a', 'q'],
+            1,
+            null,
+            'q'
+        ];
 
         // sort
         foreach ([
