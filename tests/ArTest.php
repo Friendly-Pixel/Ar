@@ -23,9 +23,15 @@ final class ArTest extends TestCase
      */
     public function testReturnsArrayFunc(string $funcName, array $input, array $expected, $param0 = null, $param1 = null, $param2 = null)
     {
-        $params = [$param0, $param1];
+        $params = [];
+        if ($param0 !== null) {
+            $params = [$param0];
+        }
+        if ($param1 !== null) {
+            $params = [$param0, $param1];
+        }
         if ($param2 !== null) {
-            $params[] = $param2;
+            $params = [$param0, $param1, $param2];
         }
 
         // Functional
@@ -320,6 +326,16 @@ final class ArTest extends TestCase
             'unique',
             [3 => 'a', 4 => 'a', 6 => 'c'],
             [3 => 'a', 6 => 'c']
+        ];
+        $tests[] = [
+            'unique',
+            [['a' => 1], ['b' => 2], ['a' => 1]],
+            [['a' => 1], ['b' => 2]],
+        ];
+        $tests[] = [
+            'unique',
+            ['a', 'a', 'a' . 'b', 'b', 'ab'],
+            ['a', 'ab', 'b']
         ];
 
         // unshift

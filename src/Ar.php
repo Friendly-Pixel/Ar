@@ -554,13 +554,20 @@ class Ar
      * 
      * @template A
      * @param A[] $array 
+     * @param int $flags The optional second parameter flags may be used to modify the sorting behavior using these values:
+     *     Sorting type flags:
+     *     
+     *     SORT_REGULAR - compare items normally (don't change types)
+     *     SORT_NUMERIC - compare items numerically
+     *     SORT_STRING - compare items as strings
+     *     SORT_LOCALE_STRING - compare items as strings, based on the current locale.
      * @return A[]
      */
-    public static function unique(iterable $array): array
+    public static function unique(iterable $array, int $flags = SORT_REGULAR): array
     {
         $array = self::makeArray($array);
 
-        $result = array_unique(self::makeArray($array));
+        $result = array_unique(self::makeArray($array), $flags);
         if (array_is_list($array)) {
             return array_values($result);
         } else {

@@ -410,11 +410,18 @@ class ArFluent implements IteratorAggregate, ArrayAccess, JsonSerializable, Coun
      * // result: [0 => 'a', 2 => 'b']
      * ```
      *  
+     * @param int $flags The optional second parameter flags may be used to modify the sorting behavior using these values:
+     *     Sorting type flags:
+     *     
+     *     SORT_REGULAR - compare items normally (don't change types)
+     *     SORT_NUMERIC - compare items numerically
+     *     SORT_STRING - compare items as strings
+     *     SORT_LOCALE_STRING - compare items as strings, based on the current locale.
      * @return ArFluent<A>
      */
-    public function unique(): self
+    public function unique(int $flags = SORT_REGULAR): self
     {
-        return new static(Ar::unique($this->array));
+        return new static(Ar::unique($this->array, $flags));
     }
 
 
